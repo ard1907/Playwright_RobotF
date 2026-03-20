@@ -73,6 +73,7 @@ results/
 reports/
 browser/
 screenshots/
+test_examples/
 
 ########################################
 # Coverage Reports

@@ -1,0 +1,14 @@
+# Playwright
+playwright
+
+# Robot Framework
+robotframework
+robotframework-browser
+robotframework-seleniumlibrary
+robotframework-sshlibrary
+robotframework-databaselibrary
+robotframework-requests
+robotframework-jsonlibrary
+
+# Hilfsbibliotheken
+requests>=2.31.0

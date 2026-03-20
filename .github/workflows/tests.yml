@@ -1,0 +1,111 @@
+name: Robot Framework Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+  schedule:
+    # Run tests daily at 9 AM UTC
+    - cron: '0 9 * * *'
+
+jobs:
+  test:
+    runs-on: windows-latest
+    
+    strategy:
+      matrix:
+        python-version: ['3.11']
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: ${{ matrix.python-version }}
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirement.txt
+    
+    - name: Install Playwright browsers
+      run: |
+        python -m playwright install chromium
+    
+    - name: Run Smoke Tests
+      run: |
+        robot --include smoke --outputdir results tests/
+    
+    - name: Run Login Tests
+      run: |
+        robot --include login --outputdir results tests/
+    
+    - name: Run All Tests with Report
+      run: |
+        robot --outputdir results --report results/report.html --log results/log.html tests/
+    
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: robot-test-results
+        path: results/
+        retention-days: 30
+    
+    - name: Publish Test Report
+      uses: actions/upload-artifact@v3
+      if: always()
+      with:
+        name: playwright-traces
+        path: browser/traces/
+        retention-days: 7
+    
+    - name: Comment PR with Test Results
+      if: github.event_name == 'pull_request' && always()
+      uses: actions/github-script@v6
+      with:
+        script: |
+          const fs = require('fs');
+          const summary = fs.readFileSync('results/output.xml', 'utf8');
+          github.rest.issues.createComment({
+            issue_number: context.issue.number,
+            owner: context.repo.owner,
+            repo: context.repo.repo,
+            body: '## 🤖 Robot Framework Test Results\n\n✅ Tests executed. Check artifacts for detailed report.'
+          });
+
+  performance-tests:
+    runs-on: windows-latest
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirement.txt
+    
+    - name: Install Playwright browsers
+      run: |
+        python -m playwright install chromium
+    
+    - name: Run Performance Tests
+      run: |
+        robot --include performance --outputdir results tests/
+    
+    - name: Upload Performance Results
+      uses: actions/upload-artifact@v3
+      with:
+        name: performance-test-results
+        path: results/
+        retention-days: 60

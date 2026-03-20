@@ -1,0 +1,28 @@
+{
+  "recommendations": [
+	"ms-azure-devops.azure-pipelines",
+	"ms-azuretools.vscode-containers",
+	"alexkrechik.cucumberautocomp",
+	"ms-vscode-remote.remote-containers",
+	"ms-vscode-remote.vscode-remote-extensionpack",
+	"ms-azuretools.vscode-docker",
+	"docker.docker",
+	"github.vscode-github-actions",
+	"eamodio.gitlens",
+	"github.vscode-pull-request-github",
+	"github.copilot-chat",
+	"ms-toolsai.jupyter",
+	"ritwickdey.liveserver",
+	"yzhang.markdown-all-in-one",
+	"ms-playwright.playwright",
+	"ms-python.vscode-pylance",
+	"ms-python.python",
+	"ms-python.debugpy",
+	"ms-python.vscode-python-envs",
+	"mechatroner.rainbow-csv",
+	"d-biehl.robotcode",
+	"vscode-icons-team.vscode-icons",
+	"redhat.vscode-yaml",
+	"esbenp.prettier-vscode"
+  ]
+}
