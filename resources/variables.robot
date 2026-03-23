@@ -24,3 +24,9 @@ ${TITLE_FAQ}               FAQ
 ${TITLE_IMPRESSUM}         Impressum
 ${TITLE_DATENSCHUTZ}       Datenschutzerklärung
 ${TITLE_BARRIEREFREIHEIT}  Barrierefreiheit
+
+# ── Authentication Info / Login Page ──────────────────────────────────────────
+${AUTH_INFO_URL}            ${BASE_URL}authentication-info
+${TITLE_AUTH_INFO}          Datenschutzcockpit
+${TITLE_LEICHTE_SPRACHE}    Datenschutzcockpit - Leichte Sprache
+${TITLE_GEBAERDENSPRACHE}   Datenschutzcockpit - Gebärdensprache

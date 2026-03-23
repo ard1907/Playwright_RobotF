@@ -19,6 +19,12 @@ Navigate To Landing Page
     Go To               ${BASE_URL}
     Wait For Load State    networkidle
 
+Navigate To Authentication Info Page
+    [Documentation]    Navigates the current page to the SPA Authentication Info
+    ...                (Login) route and waits for the network to become idle.
+    Go To               ${AUTH_INFO_URL}
+    Wait For Load State    networkidle
+
 
 # ── Generic Assertions ─────────────────────────────────────────────────────────
 
@@ -50,6 +56,25 @@ Close Currently Open Dialog
     ...    role=button[name="Menü schließen"]
     ...    detached
     ...    timeout=${TIMEOUT}
+
+
+# ── New-Tab Helpers ────────────────────────────────────────────────────────────
+
+Switch To Newly Opened Tab
+    [Documentation]    Switches the active page context to the most recently
+    ...                opened browser tab and waits for it to fully load.
+    ...                Call this immediately after clicking a link that opens
+    ...                a new tab (target=_blank).
+    Switch Page    NEW
+    Wait For Load State    networkidle
+
+Close Current Tab And Return
+    [Documentation]    Closes the currently active tab and restores the browser
+    ...                context to the previous (original) tab. Use after
+    ...                external-link navigation tests to restore the suite state.
+    Close Page
+    Switch Page    PREVIOUS
+    Wait For Load State    networkidle
 
 # Pause
 #     [Documentation]    Stoppt den Test im Browser für Debugging
