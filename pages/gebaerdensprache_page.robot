@@ -26,15 +26,18 @@ ${GS_DIALOG}                 role=dialog
 
 # ── Dialog Headings ────────────────────────────────────────────────────────────
 # NOTE: Verify actual heading text on first run.
-${GS_H1_HEADING}             role=heading[name="Gebärdensprache"]
+# ${GS_H1_HEADING}             role=heading[name="Gebärdensprache"]
+${GS_H1_HEADING}             //h1[contains(text(), "Informationen in Gebärdensprache")]
 
 # ── Content Anchors ────────────────────────────────────────────────────────────
-${GS_SIGN_LANG_MENTION}      text=Gebärdensprache
+# ${GS_SIGN_LANG_MENTION}      text=Gebärdensprache
+${GS_SIGN_LANG_MENTION}      //h2[contains(text(), "Informationen zur Erklärung der Barrierefreiheit")]
 
 # ── Video Element ─────────────────────────────────────────────────────────────
 # Checks that a playable video element exists inside the dialog.
 # Fallback: if the video is embedded via an <iframe>, adjust to css=iframe.
-${GS_VIDEO_ELEMENT}          css=video
+# ${GS_VIDEO_ELEMENT}          css=video
+${GS_VIDEO_ELEMENT}          //a[contains(text(), "Hier geht´s zum Video.")]
 
 # ── Close Button ──────────────────────────────────────────────────────────────
 ${GS_CLOSE_BTN}              role=button[name="Menü schließen"]
@@ -64,7 +67,12 @@ Verify Gebaerdensprache Video Is Present
     [Documentation]    Checks that a <video> element exists in the dialog,
     ...                confirming the sign-language video embed has rendered.
     ...                NOTE: Adjust selector to css=iframe if embed uses an iframe.
-    Element Is Visible    ${GS_VIDEO_ELEMENT}
+
+    ${elements}=    Get Elements    ${GS_VIDEO_ELEMENT}
+    Log   ${elements}
+    FOR  ${element}    IN     @{elements}
+        Element Is Visible    ${element}
+    END
 
 Verify Gebaerdensprache Close Button Is Present
     [Documentation]    Confirms the universal dialog close button is accessible.

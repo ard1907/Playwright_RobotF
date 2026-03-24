@@ -24,7 +24,8 @@ ${LP_SIGN_LANGUAGE_BTN}      role=button[name="Zum Gebärdensprache-Video"]
 # ── Main Content ───────────────────────────────────────────────────────────────
 ${LP_H1_HEADING}             role=heading[name="Behalten Sie Ihre Daten im Blick"]
 ${LP_INTRO_TEXT}             text=Im Datenschutzcockpit sehen Sie
-${LP_LOGIN_BUTTON}           role=button[name="Zur Anmeldung"]
+# ${LP_LOGIN_BUTTON}           role=button[name="Zur Anmeldung"]
+${LP_LOGIN_BUTTON}           //button[@id="button-anfrage-starten"]
 ${LP_FAQ_SECTION_HEADING}    role=heading[name="Häufige Fragen"]
 
 # ── Footer Navigation ──────────────────────────────────────────────────────────

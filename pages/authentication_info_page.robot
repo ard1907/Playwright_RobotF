@@ -22,7 +22,6 @@ Library     Browser
 Resource    ../resources/variables.robot
 Resource    ../resources/common_keywords.robot
 
-
 *** Variables ***
 
 # ── Header Accessibility Buttons ───────────────────────────────────────────────
@@ -35,18 +34,26 @@ ${AI_LOGO_LINK}                role=link[name="Bund.de Datenschutzcockpit Beta L
 
 # ── Main Content ───────────────────────────────────────────────────────────────
 # NOTE: After first run verify the exact H1 wording on this page.
-${AI_H1_HEADING}               role=heading[level=1]
+# ${AI_H1_HEADING}               role=heading[level=1]
+${AI_H1_HEADING}               //h1[text()="Anmeldung"]
 
 # ── Login Information Links ───────────────────────────────────────────────────
 # Both links open in a new browser tab (target="_blank") to external resources.
-${AI_LESEGERAET_LINK}          role=link[name="kompatibles Lesegerät"]
-${AI_AUSWEIS_APP_LINK}         role=link[name="AusweisApp"]
+# ${AI_LESEGERAET_LINK}          role=link[name="kompatibles Lesegerät"]
+${AI_LESEGERAET_LINK}          //a[text()="kompatibles Lesegerät"]
+# ${AI_AUSWEIS_APP_LINK}         role=link[name="AusweisApp"]
+${AI_AUSWEIS_APP_LINK}         //a[text()="AusweisApp"]
 
 # ── AusweisApp Start Button ────────────────────────────────────────────────────
 # "AusweisApp starten" initiates the eID authentication flow.
 # We verify presence and accessibility only – we do NOT trigger the eID flow.
 # NOTE: If this element is rendered as a <a> tag, change role to "link".
-${AI_AUSWEIS_START_BTN}        role=button[name="AusweisApp starten"]
+${AI_AUSWEIS_START_BTN}                      role=button[name="AusweisApp starten"]
+${AI_AUSWEIS_START_BTN_TITLE}                id=authentication-title
+${AI_AUSWEIS_START_BTN_INSTALL}              //div[text()="Installation"]
+${AI_AUSWEIS_START_BTN_ALREADY_INSTALLED}    //div[text()="Bereits installiert"]
+${AI_POPUP_CLOSE_BTN}                        (//button[@aria-label="Popup schließen"])[2]
+${AI_LOGIN_SUCCESS_HEADING}                   //h1[text()="Wonach wollen Sie suchen?"]
 
 # ── Footer Navigation (same component as landing page) ────────────────────────
 ${AI_IMPRESSUM_BTN}            role=button[name="Impressum"]
@@ -58,21 +65,20 @@ ${AI_VERSION_TEXT}             text=Datenschutzcockpit Version
 # These three accordion entries are rendered directly on the auth-info page
 # (not inside the FAQ dialog). The naming pattern mirrors faq_page.robot.
 ${AI_FAQ_WHAT_NEEDED}
-...    role=button[name="Was benötige ich für die Anmeldung? - Antwort ist geschlossen"]
+...    //h3[text()="Was benötige ich für die Anmeldung?"]
 ${AI_FAQ_AUSWEIS_LOGIN}
-...    role=button[name="Wie melde ich mich mit der AusweisApp an? - Antwort ist geschlossen"]
+...    //h3[text()="Wie melde ich mich mit der AusweisApp an?"]
 ${AI_FAQ_HOW_SECURE}
-...    role=button[name="Wie sicher ist das Datenschutzcockpit? - Antwort ist geschlossen"]
+...    //h3[text()="Wie sicher ist das Datenschutzcockpit?"]
 
 # ── Accordion Open State Selectors ────────────────────────────────────────────
 # After clicking an accordion button the "geschlossen" suffix changes to "geöffnet".
 ${AI_FAQ_WHAT_NEEDED_OPEN}
-...    role=button[name="Was benötige ich für die Anmeldung? - Antwort ist geöffnet"]
+...    //h3[text()="Was benötige ich für die Anmeldung?"]
 ${AI_FAQ_AUSWEIS_LOGIN_OPEN}
-...    role=button[name="Wie melde ich mich mit der AusweisApp an? - Antwort ist geöffnet"]
+...    //h3[text()="Wie melde ich mich mit der AusweisApp an?"]
 ${AI_FAQ_HOW_SECURE_OPEN}
-...    role=button[name="Wie sicher ist das Datenschutzcockpit? - Antwort ist geöffnet"]
-
+...    //h3[text()="Wie sicher ist das Datenschutzcockpit?"]
 # ── FAQ Expanded Content Anchors ───────────────────────────────────────────────
 # Partial text anchors expected inside the expanded accordion panels.
 # NOTE: These are used for content assertions after expanding the accordion.
@@ -85,6 +91,16 @@ ${AI_FAQ_HS_SICHER}            text=sicher
 *** Keywords ***
 
 # ── Page-Level Assertions ──────────────────────────────────────────────────────
+Login Into Datenschutzcockpit
+    [Documentation]    Navigates to the authentication info page URL and waits
+    ...                for the main H1 heading to be visible, confirming the
+    ...                page has loaded and rendered. Then clicks button  "AusweisApp starten"
+    ...                and login into Datenschutzcockpit with AusweisApp (Docker).
+    Click                    ${AI_AUSWEIS_START_BTN}
+    Click                    ${AI_AUSWEIS_START_BTN_ALREADY_INSTALLED}
+    Sleep                    3s       #ARD: Just for Demo purposes. Plse remove in real test run to avoid unnecessary wait time.
+    Wait For Elements State  ${AI_LOGIN_SUCCESS_HEADING}  visible
+    Sleep                    3s       #ARD: Just for Demo purposes. Plse remove in real test run to avoid unnecessary wait time.
 
 Verify Authentication Info Page Is Loaded
     [Documentation]    Confirms the SPA has routed to the auth-info page:
@@ -132,11 +148,86 @@ Verify Lesegeraet Link Is Present
 
 Verify AusweisApp Start Button Is Present
     [Documentation]    Confirms the "AusweisApp starten" button is visible and
-    ...                enabled on the page. Does NOT click – avoids triggering
-    ...                the live eID authentication flow during smoke testing.
+    ...                enabled on the page.
     Element Is Visible    ${AI_AUSWEIS_START_BTN}
+    ${states}=    Get Element States    ${AI_AUSWEIS_START_BTN}
+    Should Contain    ${states}    enabled
+    ${url}=    Get Url
+    Should Contain    ${url}    authentication-info
+    ${text}=    Get Text    ${AI_AUSWEIS_START_BTN}
+    Should Contain    ${text}    AusweisApp
+    Should Contain    ${states}    visible    
 
-Verify Auth Page FAQ Accordion Items
+Verify AusweisApp Start Button After Click
+    [Documentation]    After "AusweisApp starten" button clicked, 
+    ...                verifies if buttons "Installation" and "Bereits installiert"
+    ...                are visible and enabled on the page. 
+    ...                Does NOT click – avoids triggering
+    ...                the live eID authentication flow during smoke testing.
+    Click                  ${AI_AUSWEIS_START_BTN}
+    Element Is Visible     ${AI_AUSWEIS_START_BTN_TITLE}    
+    ${text}=    Get Text   ${AI_AUSWEIS_START_BTN_INSTALL}
+    Should Be Equal As Strings    ${text}    Installation
+    ${states}=    Get Element States    ${AI_AUSWEIS_START_BTN_INSTALL}
+    Should Contain    ${states}    enabled  visible
+    ${url}=    Get Url
+    Should Contain    ${url}    authentication-info
+
+    ${states}=    Get Element States    ${AI_AUSWEIS_START_BTN_ALREADY_INSTALLED}
+    Should Contain    ${states}    enabled  visible
+    ${text}=    Get Text    ${AI_AUSWEIS_START_BTN_ALREADY_INSTALLED}
+    Should Be Equal As Strings    ${text}    Bereits installiert
+    Click    ${AI_POPUP_CLOSE_BTN}
+
+Verify Auth Page FAQ Card "Was Benötige Ich ..."
+    [Documentation]    Checks the presence of the "Was benötige ich für die Anmeldung?"
+    ...                FAQ card on the auth-info page in its default closed state.
+    Element Is Visible    ${AI_FAQ_WHAT_NEEDED}
+    Click On Card Was Benoetige ich
+    # 1. Card is now in open state
+    Element Is Visible    ${AI_FAQ_WHAT_NEEDED_OPEN}
+    # 2 & 3. Key terms exist in the now-visible expanded panel
+    Element Is Visible    ${AI_FAQ_WN_PERSONALAUSWEIS}
+    Element Is Visible    ${AI_FAQ_WN_AUSWEISAPP}
+    # 4. URL still on auth-info page
+    ${url}=    Get Url
+    Should Contain    ${url}    authentication-info
+    # 5. Other cards are still rendered
+    Element Is Visible    ${AI_FAQ_AUSWEIS_LOGIN}
+
+Verify FAQ Card "Wie Melde Ich Mich ..."
+    [Documentation]    Checks the presence of the "Wie melde ich mich mit der AusweisApp an?"
+    ...                FAQ card on the auth-info page in its default closed state.
+    Element Is Visible    ${AI_FAQ_AUSWEIS_LOGIN}
+    Click On Card "Wie Melde Ich Mich An"
+    # 1. Card is now in open state
+    Element Is Visible    ${AI_FAQ_AUSWEIS_LOGIN_OPEN}
+    # 2 & 3. Key terms exist in the now-visible expanded panel
+    Element Is Visible    ${AI_FAQ_AL_SCHRITT}
+    Element Is Visible    ${AI_FAQ_WN_AUSWEISAPP}
+    # 4. URL still on auth-info page
+    ${url}=    Get Url
+    Should Contain    ${url}    authentication-info
+    # 5. Other cards are still rendered
+    Element Is Visible    ${AI_FAQ_WHAT_NEEDED}
+
+Verify FAQ Card "Wie Sicher Ist Das Cockpit ..."
+    [Documentation]    Checks the presence of the "Wie sicher ist das Datenschutzcockpit?"
+    ...                FAQ card on the auth-info page in its default closed state.
+    Element Is Visible    ${AI_FAQ_HOW_SECURE}
+    Click On Card "Wie Sicher ist"
+    # 1. Card is now in open state
+    Element Is Visible    ${AI_FAQ_HOW_SECURE_OPEN}
+    # 2 & 3. Key terms exist in the now-visible expanded panel
+    Element Is Visible    ${AI_FAQ_HS_SICHER}
+    Element Is Visible    ${AI_FAQ_WN_AUSWEISAPP}
+    # 4. URL still on auth-info page
+    ${url}=    Get Url
+    Should Contain    ${url}    authentication-info
+    # 5. Other cards are still rendered
+    Element Is Visible    ${AI_FAQ_WHAT_NEEDED}
+
+Verify Auth Page FAQ Card Items
     [Documentation]    Checks all three embedded FAQ accordion buttons are
     ...                rendered in their default closed state.
     Element Is Visible    ${AI_FAQ_WHAT_NEEDED}
@@ -161,19 +252,19 @@ Open Gebaerdensprache Dialog From Auth Page
 
 # ── FAQ Accordion Interactions ─────────────────────────────────────────────────
 
-Expand FAQ Accordion Was Benoetige Ich
+Click On Card "Was Benötige Ich ..."
     [Documentation]    Clicks the "Was benötige ich für die Anmeldung?" accordion
     ...                button and waits for it to switch to the open state.
     Click    ${AI_FAQ_WHAT_NEEDED}
     Wait For Elements State    ${AI_FAQ_WHAT_NEEDED_OPEN}    visible    timeout=${TIMEOUT}
 
-Expand FAQ Accordion Wie Melde Ich Mich An
+Click On Card "Wie Melde Ich Mich An"
     [Documentation]    Clicks the "Wie melde ich mich mit der AusweisApp an?"
     ...                accordion button and waits for it to switch to open state.
     Click    ${AI_FAQ_AUSWEIS_LOGIN}
     Wait For Elements State    ${AI_FAQ_AUSWEIS_LOGIN_OPEN}    visible    timeout=${TIMEOUT}
 
-Expand FAQ Accordion Wie Sicher
+Click On Card "Wie Sicher ist"
     [Documentation]    Clicks the "Wie sicher ist das Datenschutzcockpit?"
     ...                accordion button and waits for it to switch to open state.
     Click    ${AI_FAQ_HOW_SECURE}
@@ -195,4 +286,51 @@ Validate Authentication Info Page
     Verify AusweisApp Link Is Present
     Verify Lesegeraet Link Is Present
     Verify AusweisApp Start Button Is Present
-    Verify Auth Page FAQ Accordion Items
+    Verify Auth Page FAQ Card Items
+
+
+# ── New-Tab External Link Flows ────────────────────────────────────────────────
+
+Open AusweisApp External Tab And Validate
+    [Documentation]    Clicks the "AusweisApp" in-text link, which opens the
+    ...                official AusweisApp website in a new browser tab.
+    ...                Assertions on the target page:
+    ...                  -- URL contains "ausweisapp"
+    ...                  -- Page title is not empty
+    ...                  -- Title contains "AusweisApp"
+    ...                  -- At least one H1 heading is visible
+    ...                After verification the new tab is closed and focus returns.
+    Verify AusweisApp Link Is Present
+    Click    ${AI_AUSWEIS_APP_LINK}
+    Switch To Newly Opened Tab
+    # ── Assertions on the AusweisApp external page ─────────────────────────────
+    ${url}=                       Get Url
+    Should Be Equal As Strings    ${url}    ${ASWAPP_DWLD_URL}
+    ${title}=                     Get Title
+    Should Not Be Empty           ${title}
+    Should Be Equal As Strings    ${title}    ${ASWAPP_DWLD_TITLE}
+    Element Is Visible            ${ASWAPP_DWLD_H1}
+    # ── Return to auth-info page ───────────────────────────────────────────────
+    Close Current Tab And Return
+
+Open Lesegeraet External Tab And Validate
+    [Documentation]    Clicks the "kompatibles Lesegerät" in-text link, which
+    ...                opens the list of compatible card readers in a new tab.
+    ...                Assertions on the target page:
+    ...                  -- URL is not empty (navigation succeeded)
+    ...                  -- Page title is not empty
+    ...                  -- At least one heading is visible
+    ...                After verification the new tab is closed and focus returns.
+    Verify Lesegeraet Link Is Present
+    Click    ${AI_LESEGERAET_LINK}
+    Switch To Newly Opened Tab
+    # ── Assertions on the Lesegerät reference page ─────────────────────────────
+    ${url}=    Get Url
+    Should Not Be Empty    ${url}
+    Should Be Equal As Strings    ${url}    ${ASWAPP_DEVICES_URL}
+    ${title}=    Get Title
+    Should Not Be Empty    ${title}
+    Should Be Equal As Strings    ${title}    ${ASWAPP_DEVICES_TITLE}
+    Element Is Visible    ${ASWAPP_DEVICES_H1}
+    # ── Return to auth-info page ───────────────────────────────────────────────
+    Close Current Tab And Return

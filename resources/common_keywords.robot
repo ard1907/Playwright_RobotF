@@ -7,6 +7,11 @@
 *** Settings ***
 Library     Browser
 Resource    variables.robot
+Resource    ../pages/landing_page.robot
+
+*** Variables ***
+
+${LOGIN_BUTTON}           //button[@id="button-anfrage-starten"]
 
 
 *** Keywords ***
@@ -18,20 +23,36 @@ Navigate To Landing Page
     ...                for the network to become idle (handles SPA hydration).
     Go To               ${BASE_URL}
     Wait For Load State    networkidle
+    ${url}=             Get Url
+    Should Be Equal As Strings    ${url}    ${BASE_URL}
 
 Navigate To Authentication Info Page
     [Documentation]    Navigates the current page to the SPA Authentication Info
     ...                (Login) route and waits for the network to become idle.
-    Go To               ${AUTH_INFO_URL}
-    Wait For Load State    networkidle
+    ${url}=             Get Url
+    IF  "${url}" == "${AUTH_INFO_URL}"   
+        RETURN
+    ELSE
+        Go To               ${AUTH_INFO_URL}
+        Wait For Load State    networkidle       
+    END
+    ${url}=             Get Url
+    IF  "${url}" != "${AUTH_INFO_URL}"
+        Click               ${LOGIN_BUTTON}
+        Wait For Load State    networkidle
+        ${url}=             Get Url
+        Should Contain    ${url}    authentication-info
+        ${title}=           Get Title
+    END
 
-
+    
 # ── Generic Assertions ─────────────────────────────────────────────────────────
 
 Verify Page Title Contains
     [Documentation]    Asserts that the current document title contains the
     ...                provided text fragment (case-sensitive).
     [Arguments]    ${expected_text}
+    ${url}=      Get Url
     ${title}=    Get Title
     Should Contain    ${title}    ${expected_text}
 
@@ -72,8 +93,10 @@ Close Current Tab And Return
     [Documentation]    Closes the currently active tab and restores the browser
     ...                context to the previous (original) tab. Use after
     ...                external-link navigation tests to restore the suite state.
+    ${page_ids}=       Get Page Ids
+    Log    Current Page IDs: ${page_ids}
     Close Page
-    Switch Page    PREVIOUS
+    Switch Page    ${page_ids}[0]
     Wait For Load State    networkidle
 
 # Pause

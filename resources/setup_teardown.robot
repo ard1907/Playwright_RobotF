@@ -26,8 +26,9 @@ Open Application Browser
         New Browser    browser=${browser_type}    headless=${headless_bool}   slowMo=${slow_mo}    args=["--start-maximized"]
         New Context    viewport=None  locale=de-DE
     END
-    New Page       ${BASE_URL}
+    New Page               ${url}
     Wait For Load State    networkidle
+    ${url}=            Get Url
 
 Open Application Browser OLD
     [Documentation]    Starts a new Chromium (or configured) browser process,

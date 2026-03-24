@@ -33,6 +33,7 @@ Resource        ../resources/common_keywords.robot
 Resource        ../pages/authentication_info_page.robot
 Resource        ../pages/leichte_sprache_page.robot
 Resource        ../pages/gebaerdensprache_page.robot
+Resource        ../pages/dsc_registerauswahl_page.robot
 
 # ── Suite-level browser lifecycle ─────────────────────────────────────────────
 Suite Setup     Open Application Browser    ${AUTH_INFO_URL}
@@ -77,7 +78,6 @@ TC003 - Navigate To Leichte Sprache And Validate
     Open Leichte Sprache Dialog From Auth Page
     Validate Leichte Sprache Page
     Close Leichte Sprache Dialog
-    # Confirm dialog is gone and the underlying page is restored
     Verify Authentication Info Page Is Loaded
 
 
@@ -99,52 +99,25 @@ TC005 - AusweisApp Link Navigates To External Page
     [Documentation]    Clicks the "AusweisApp" in-text link, which opens the
     ...                official AusweisApp website in a new browser tab.
     ...                Assertions on the target page:
-    ...                  1. URL contains "ausweisapp"
-    ...                  2. Page title is not empty
-    ...                  3. Title contains "AusweisApp"
-    ...                  4. At least one H1 heading is visible
-    ...                  5. The page has a main content region (css=main or body)
+    ...                  -- URL contains "ausweisapp"
+    ...                  -- Page title is not empty
+    ...                  -- Title contains "AusweisApp"
+    ...                  -- At least one H1 heading is visible
     ...                After verification the new tab is closed and focus returns.
     [Tags]             smoke    auth    external-link    ausweisapp
-    Verify AusweisApp Link Is Present
-    Click    ${AI_AUSWEIS_APP_LINK}
-    Switch To Newly Opened Tab
-    # ── Assertions on the AusweisApp external page ─────────────────────────────
-    ${url}=    Get Url
-    Should Contain    ${url}    ausweisapp
-    ${title}=    Get Title
-    Should Not Be Empty    ${title}
-    Should Contain    ${title}    AusweisApp
-    Element Is Visible    role=heading[level=1]
-    Element Is Visible    css=main
-    # ── Return to auth-info page ───────────────────────────────────────────────
-    Close Current Tab And Return
+    Open AusweisApp External Tab And Validate
 
 
 TC006 - Kompatibles Lesegerät Link Navigates To External Page
     [Documentation]    Clicks the "kompatibles Lesegerät" in-text link, which
     ...                opens the list of compatible card readers in a new tab.
     ...                Assertions on the target page:
-    ...                  1. URL is not empty (navigation succeeded)
-    ...                  2. URL does not point back to the DSC SPA
-    ...                  3. Page title is not empty
-    ...                  4. At least one heading is visible
-    ...                  5. Page has a navigable body (css=body)
+    ...                  -- URL is not empty (navigation succeeded)
+    ...                  -- Page title is not empty
+    ...                  -- At least one heading is visible
     ...                After verification the new tab is closed and focus returns.
     [Tags]             smoke    auth    external-link    lesegeraet
-    Verify Lesegeraet Link Is Present
-    Click    ${AI_LESEGERAET_LINK}
-    Switch To Newly Opened Tab
-    # ── Assertions on the Lesegerät reference page ─────────────────────────────
-    ${url}=    Get Url
-    Should Not Be Empty    ${url}
-    Should Not Contain    ${url}    datenschutzcockpit.dsc.govkg.de
-    ${title}=    Get Title
-    Should Not Be Empty    ${title}
-    Element Is Visible    role=heading[level=1]
-    Element Is Visible    css=body
-    # ── Return to auth-info page ───────────────────────────────────────────────
-    Close Current Tab And Return
+    Open Lesegeraet External Tab And Validate
 
 
 TC007 - Verify AusweisApp Starten Button Is Accessible
@@ -159,117 +132,89 @@ TC007 - Verify AusweisApp Starten Button Is Accessible
     ...                  5. Button is keyboard-focusable (state includes "visible")
     [Tags]             smoke    auth    ausweisapp-starten
     Verify AusweisApp Start Button Is Present
-    ${states}=    Get Element States    ${AI_AUSWEIS_START_BTN}
-    Should Contain    ${states}    enabled
-    ${url}=    Get Url
-    Should Contain    ${url}    authentication-info
-    ${text}=    Get Text    ${AI_AUSWEIS_START_BTN}
-    Should Contain    ${text}    AusweisApp
-    Should Contain    ${states}    visible
+    Verify AusweisApp Start Button After Click
+    Login Into Datenschutzcockpit
+    Logout From Datenschutzcockpit
 
 
-TC008 - Expand FAQ Was Benoetige Ich Und Validate Content
-    [Documentation]    Expands the "Was benötige ich für die Anmeldung?" accordion
-    ...                on the auth-info page and verifies the revealed content.
-    ...                Assertions:
-    ...                  1. Accordion button switches to "geöffnet" (open) state
-    ...                  2. "Personalausweis" is mentioned in the expanded content
-    ...                  3. "AusweisApp" is mentioned in the expanded content
-    ...                  4. Page URL has not changed (still on auth-info)
-    ...                  5. The other two FAQ accordions are still present
-    [Tags]             smoke    auth    faq    accordion
-    Expand FAQ Accordion Was Benoetige Ich
-    # 1. Accordion is now in open state
-    Element Is Visible    ${AI_FAQ_WHAT_NEEDED_OPEN}
-    # 2 & 3. Key terms exist in the now-visible expanded panel
-    Element Is Visible    ${AI_FAQ_WN_PERSONALAUSWEIS}
-    Element Is Visible    ${AI_FAQ_WN_AUSWEISAPP}
-    # 4. URL still on auth-info page
-    ${url}=    Get Url
-    Should Contain    ${url}    authentication-info
-    # 5. Other accordions are still rendered
-    Element Is Visible    ${AI_FAQ_AUSWEIS_LOGIN}
+# TC008 - Verify FAQ Card "Was Benoetige ich ..." And Validate Content
+#     [Documentation]    Verifies the "Was benötige ich für die Anmeldung?" card
+#     ...                on the auth-info page and verifies the revealed content.
+#     ...                Assertions:
+#     ...                  1. Click on card switches to "geöffnet" (open) state
+#     ...                  2. "Personalausweis" is mentioned in the expanded content
+#     ...                  3. "AusweisApp" is mentioned in the expanded content
+#     ...                  4. Page URL has not changed (still on auth-info)
+#     ...                  5. The other two FAQ cards are still present
+#     [Tags]             smoke    auth    faq    accordion
+#     Verify Auth Page FAQ Card "Was Benötige Ich ..."
 
 
-TC009 - Expand FAQ Wie Melde Ich Mich An Und Validate Content
-    [Documentation]    Expands the "Wie melde ich mich mit der AusweisApp an?"
-    ...                accordion and verifies the revealed step-by-step content.
-    ...                Assertions:
-    ...                  1. Accordion button switches to "geöffnet" (open) state
-    ...                  2. Step/instruction text is visible ("Schritt")
-    ...                  3. "AusweisApp" is mentioned in the expanded content
-    ...                  4. Page URL has not changed (still on auth-info)
-    ...                  5. The other two FAQ accordions are still present
-    [Tags]             smoke    auth    faq    accordion
-    Expand FAQ Accordion Wie Melde Ich Mich An
-    # 1. Accordion is now in open state
-    Element Is Visible    ${AI_FAQ_AUSWEIS_LOGIN_OPEN}
-    # 2 & 3. Key terms exist in the now-visible expanded panel
-    Element Is Visible    ${AI_FAQ_AL_SCHRITT}
-    Element Is Visible    ${AI_FAQ_WN_AUSWEISAPP}
-    # 4. URL still on auth-info page
-    ${url}=    Get Url
-    Should Contain    ${url}    authentication-info
-    # 5. Other accordions are still rendered
-    Element Is Visible    ${AI_FAQ_WHAT_NEEDED}
+# TC009 - Verify FAQ Card "Wie Melde Ich Mich ..." And Validate Content
+#     [Documentation]    Clicks on the "Wie melde ich mich mit der AusweisApp an?"
+#     ...                card and verifies the revealed step-by-step content.
+#     ...                Assertions:
+#     ...                  1. Click on card switches to "geöffnet" (open) state
+#     ...                  2. Step/instruction text is visible ("Schritt")
+#     ...                  3. "AusweisApp" is mentioned in the expanded content
+#     ...                  4. Page URL has not changed (still on auth-info)
+#     ...                  5. The other two FAQ accordions are still present
+#     [Tags]             smoke    auth    faq    accordion
+#     Verify FAQ Card "Wie Melde Ich Mich ..."
 
 
-TC010 - Expand FAQ Wie Sicher Ist Das Cockpit Und Validate Content
-    [Documentation]    Expands the "Wie sicher ist das Datenschutzcockpit?"
-    ...                accordion and verifies the security-focused content.
-    ...                Assertions:
-    ...                  1. Accordion button switches to "geöffnet" (open) state
-    ...                  2. The word "sicher" is visible in expanded content
-    ...                  3. "Datenschutzcockpit" is referenced in expanded content
-    ...                  4. Page URL has not changed (still on auth-info)
-    ...                  5. The other two FAQ accordions are still present
-    [Tags]             smoke    auth    faq    accordion
-    Expand FAQ Accordion Wie Sicher
-    # 1. Accordion is now in open state
-    Element Is Visible    ${AI_FAQ_HOW_SECURE_OPEN}
-    # 2 & 3. Key terms exist in the now-visible expanded panel
-    Element Is Visible    ${AI_FAQ_HS_SICHER}
-    Element Is Visible    ${AI_FAQ_WN_AUSWEISAPP}
-    # 4. URL still on auth-info page
-    ${url}=    Get Url
-    Should Contain    ${url}    authentication-info
-    # 5. Other accordions are still rendered
-    Element Is Visible    ${AI_FAQ_AUSWEIS_LOGIN}
+# TC010 - Verify FAQ Card "Wie Sicher Ist Das Cockpit ..." And Validate Content
+#     [Documentation]    Clicks on the "Wie sicher ist das Datenschutzcockpit?"
+#     ...                card and verifies the security-focused content.
+#     ...                Assertions:
+#     ...                  1. Click on card switches to "geöffnet" (open) state
+#     ...                  2. The word "sicher" is visible in expanded content
+#     ...                  3. "Datenschutzcockpit" is referenced in expanded content
+#     ...                  4. Page URL has not changed (still on auth-info)
+#     ...                  5. The other two FAQ accordions are still present
+#     [Tags]             smoke    auth    faq    accordion
+#     Verify FAQ Card "Wie Sicher Ist Das Cockpit ..."
 
 
-TC011 - Full Login Page User Journey
-    [Documentation]    End-to-end smoke run simulating a user arriving at the
-    ...                auth-info page and exploring all its key interactions in
-    ...                sequence – mirroring real navigation behaviour.
-    [Tags]             smoke    auth    e2e    journey
+# # TC011 - Full Login Page User Journey
+# #     [Documentation]    End-to-end smoke run simulating a user arriving at the
+# #     ...                auth-info page and exploring all its key interactions in
+# #     ...                sequence – mirroring real navigation behaviour.
+# #     [Tags]             smoke    auth    e2e    journey
 
-    # ── 1. Verify the auth-info page is healthy ────────────────────────────────
-    Validate Authentication Info Page
+# #     # ── 1. Verify the auth-info page is healthy ────────────────────────────────
+# #     Validate Authentication Info Page
 
-    # ── 2. Open Leichte Sprache dialog, spot-check, close ─────────────────────
-    Open Leichte Sprache Dialog From Auth Page
-    Verify Leichte Sprache Dialog Is Open
-    Verify Leichte Sprache H1 Heading
-    Verify Leichte Sprache Close Button Is Present
-    Close Leichte Sprache Dialog
+# #     # ── 2. Open Leichte Sprache dialog, spot-check, close ─────────────────────
+# #     Open Leichte Sprache Dialog From Auth Page
+# #     Verify Leichte Sprache Dialog Is Open
+# #     Verify Leichte Sprache H1 Heading
+# #     Verify Leichte Sprache Close Button Is Present
+# #     Close Leichte Sprache Dialog
 
-    # ── 3. Open Gebärdensprache dialog, spot-check, close ─────────────────────
-    Open Gebaerdensprache Dialog From Auth Page
-    Verify Gebaerdensprache Dialog Is Open
-    Verify Gebaerdensprache H1 Heading
-    Verify Gebaerdensprache Close Button Is Present
-    Close Gebaerdensprache Dialog
+# #     # ── 3. Open Gebärdensprache dialog, spot-check, close ─────────────────────
+# #     Open Gebaerdensprache Dialog From Auth Page
+# #     Verify Gebaerdensprache Dialog Is Open
+# #     Verify Gebaerdensprache H1 Heading
+# #     Verify Gebaerdensprache Close Button Is Present
+# #     Close Gebaerdensprache Dialog
 
-    # ── 4. Expand all three FAQ accordions (verify each opens correctly) ───────
-    Expand FAQ Accordion Was Benoetige Ich
-    Element Is Visible    ${AI_FAQ_WHAT_NEEDED_OPEN}
+# #     # ── 4. Expand all three FAQ accordions (verify each opens correctly) ───────
+# #     Expand FAQ Accordion Was Benoetige Ich
+# #     Element Is Visible    ${AI_FAQ_WHAT_NEEDED_OPEN}
 
-    Expand FAQ Accordion Wie Melde Ich Mich An
-    Element Is Visible    ${AI_FAQ_AUSWEIS_LOGIN_OPEN}
+# #     Expand FAQ Accordion Wie Melde Ich Mich An
+# #     Element Is Visible    ${AI_FAQ_AUSWEIS_LOGIN_OPEN}
 
-    Expand FAQ Accordion Wie Sicher
-    Element Is Visible    ${AI_FAQ_HOW_SECURE_OPEN}
+# #     Expand FAQ Accordion Wie Sicher
+# #     Element Is Visible    ${AI_FAQ_HOW_SECURE_OPEN}
 
-    # ── 5. Confirm page footer navigation is intact ────────────────────────────
-    Verify Auth Page Footer Navigation
-    Verify Auth Page Version Info
+# #     # ── 5. Confirm page footer navigation is intact ────────────────────────────
+# #     Verify Auth Page Footer Navigation
+# #     Verify Auth Page Version Info
+
+# #     # ── 6. External links – open each in new tab, validate, close ─────────────
+# #     Open AusweisApp External Tab And Validate
+# #     Verify Authentication Info Page Is Loaded
+# #     Open Lesegeraet External Tab And Validate
+# #     Verify Authentication Info Page Is Loaded

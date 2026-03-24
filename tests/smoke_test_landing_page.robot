@@ -25,7 +25,7 @@ Resource        ../resources/variables.robot
 Resource        ../resources/setup_teardown.robot
 Resource        ../resources/common_keywords.robot
 
-Resource        ../pages/landing_page.robot
+# Resource        ../pages/landing_page.robot
 Resource        ../pages/faq_page.robot
 Resource        ../pages/impressum_page.robot
 Resource        ../pages/datenschutz_page.robot

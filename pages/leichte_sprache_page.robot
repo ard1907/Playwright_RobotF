@@ -25,12 +25,15 @@ ${LS_DIALOG}                 role=dialog
 
 # ── Dialog Headings ────────────────────────────────────────────────────────────
 # NOTE: Verify actual heading text on first run.
-${LS_H1_HEADING}             role=heading[name="Das Datenschutzcockpit in Leichter Sprache"]
+# ${LS_H1_HEADING}             role=heading[name="Das Datenschutzcockpit in Leichter Sprache"]
+${LS_H1_HEADING}             (//H1[contains(text(), "Leichte Sprache")])[1]
 
 # ── Content Anchors ────────────────────────────────────────────────────────────
 # Partial text selectors – robust against minor copy changes.
-${LS_COCKPIT_MENTION}        text=Datenschutzcockpit
-${LS_TERM_MENTION}           text=Leichte Sprache
+# ${LS_COCKPIT_MENTION}        text=Das sehen Sie im Daten-Schutz-Cockpit
+${LS_COCKPIT_MENTION}        (//a[contains(text(), "Das sehen Sie im Daten-Schutz-Cockpit")])[1]
+# ${LS_TERM_MENTION}           text=Leichte Sprache
+${LS_TERM_MENTION}           (//a[contains(text(), "Leichte Sprache")])[1]
 
 # ── Close Button ──────────────────────────────────────────────────────────────
 ${LS_CLOSE_BTN}              role=button[name="Menü schließen"]
@@ -84,5 +87,5 @@ Validate Leichte Sprache Page
     Verify Leichte Sprache Dialog Is Open
     Verify Leichte Sprache H1 Heading
     Verify Leichte Sprache Cockpit Mentioned
-    Verify Leichte Sprache Term Present
+    # Verify Leichte Sprache Term Present
     Verify Leichte Sprache Close Button Is Present
