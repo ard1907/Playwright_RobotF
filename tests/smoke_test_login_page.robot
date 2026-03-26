@@ -12,15 +12,13 @@
 # ----------
 #   TC001  Validate Authentication Info Page
 #   TC002  Verify Header Accessibility Buttons Are Present
-#   TC003  Navigate To Leichte Sprache And Validate
-#   TC004  Navigate To Gebärdensprache And Validate
-#   TC005  AusweisApp Link Navigates To External Page
-#   TC006  Kompatibles Lesegerät Link Navigates To External Page
-#   TC007  Verify AusweisApp Starten Button Is Accessible
-#   TC008  Expand FAQ Was Benoetige Ich Und Validate Content
-#   TC009  Expand FAQ Wie Melde Ich Mich An Und Validate Content
-#   TC010  Expand FAQ Wie Sicher Ist Das Cockpit Und Validate Content
-#   TC011  Full Login Page User Journey
+#   TC003  AusweisApp Link Navigates To External Page
+#   TC004  Kompatibles Lesegerät Link Navigates To External Page
+#   TC005  Verify AusweisApp Starten Button Is Accessible
+#   TC006  Verify FAQ Card 'Was benötige ich' And Validate Content
+#   TC007  Verify FAQ Card 'Wie melde ich mich an' And Validate Content
+#   TC008  Verify FAQ Card 'Wie sicher ist das Cockpit' And Validate Content
+#   TC009  Full Login Page User Journey
 # ==============================================================================
 
 *** Settings ***

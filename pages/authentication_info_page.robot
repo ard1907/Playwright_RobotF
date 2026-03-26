@@ -208,6 +208,7 @@ Verify Auth Page FAQ Card "Was Benötige Ich ..."
     Should Be Equal As Strings   ${title}    ${AI_CARDS_TAB_TITLES}[NEEDED_TAB_TITLE]
     # 5. Other cards are still rendered
     Element Is Visible    ${AI_FAQ_CARD_REGISTER}
+    Element Is Visible    ${AI_FAQ_CARD_SECURE}
 
 Verify Auth Page FAQ Card "Wie Melde Ich Mich ..."
     [Documentation]    Checks the presence of the "Wie melde ich mich mit der AusweisApp an?"
@@ -225,6 +226,7 @@ Verify Auth Page FAQ Card "Wie Melde Ich Mich ..."
     Should Be Equal As Strings   ${title}    ${AI_CARDS_TAB_TITLES}[REGISTER_TAB_TITLE]
     # 5. Other cards are still rendered
     Element Is Visible    ${AI_FAQ_CARD_NEEDED}
+    Element Is Visible    ${AI_FAQ_CARD_SECURE}
 
 Verify Auth Page FAQ Card "Wie Sicher Ist Das Cockpit ..."
     [Documentation]    Checks the presence of the "Wie sicher ist das Datenschutzcockpit?"
@@ -244,7 +246,7 @@ Verify Auth Page FAQ Card "Wie Sicher Ist Das Cockpit ..."
     Should Be Equal As Strings   ${title}    ${AI_CARDS_TAB_TITLES}[SECURE_TAB_TITLE]
     # 5. Other cards are still rendered
     Element Is Visible    ${AI_FAQ_CARD_SECURE}
-    Element Is Visible    ${AI_FAQ_CARD_SECURE_OPEN}
+    Element Is Visible    ${AI_FAQ_CARD_NEEDED}
 
 Verify Auth Page FAQ Card Items
     [Documentation]    Checks all three embedded FAQ card buttons are

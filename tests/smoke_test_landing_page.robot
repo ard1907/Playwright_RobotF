@@ -11,11 +11,18 @@
 # Test Cases
 # ----------
 #   TC001  Validate Landing Page
-#   TC002  Navigate To FAQ And Validate
-#   TC003  Navigate To Impressum And Validate
-#   TC004  Navigate To Datenschutz And Validate
-#   TC005  Navigate To Barrierefreiheit And Validate
-#   TC006  Full SPA User Journey (end-to-end smoke)
+#   TC002  Navigate To Leichte Sprache And Validate
+#   TC003  Navigate To Gebärdensprache And Validate
+#   TC004  Navigate To FAQ And Validate
+#   TC005  Navigate To Impressum And Validate
+#   TC006  Navigate To Datenschutz And Validate
+#   TC007  Navigate To Barrierefreiheit And Validate
+#   TC008  Verify All FAQ Cards Are Rendered On Landing Page
+#   TC009  Verify FAQ Card 'Was ist das Datenschutzcockpit' And Validate Content
+#   TC010  Verify FAQ Card 'Was sehe ich im Datenschutzcockpit' And Validate Content
+#   TC011  Verify FAQ Card 'Wer betreibt das Datenschutzcockpit' And Validate Content
+#   TC012  Verify FAQ Card 'Weitere Informationen' And Validate Content
+#   TC013  Full SPA User Journey (end-to-end smoke)
 # ==============================================================================
 
 *** Settings ***
@@ -119,11 +126,72 @@ TC007 - Navigate To Barrierefreiheit And Validate
     Close Barrierefreiheit Dialog
 
 
-TC008 - Full SPA User Journey
+TC008 - Verify All FAQ Cards Are Rendered On Landing Page
+    [Documentation]    Confirms the "Häufige Fragen" section and all four FAQ
+    ...                accordion cards are visible in their default closed state
+    ...                without opening any of them.
+    [Tags]             smoke    landing    faq    accordion
+    Verify Landing Page FAQ Cards Are Rendered
+
+
+TC009 - Verify FAQ Card 'Was ist das Datenschutzcockpit' And Validate Content
+    [Documentation]    Clicks the "Was ist das Datenschutzcockpit?" accordion on
+    ...                the Landing Page and verifies the revealed modal content.
+    ...                Assertions:
+    ...                  1. Click opens the modal (H1 heading visible)
+    ...                  2. SPA tab title updates to reflect the open card
+    ...                  3. URL remains on the landing page (no navigation)
+    ...                  4. The other FAQ cards are still rendered
+    [Tags]             smoke    landing    faq    accordion
+    Verify Landing Page FAQ Card "Was Ist Das Datenschutzcockpit ..."
+    Close Currently Open Dialog
+
+
+TC010 - Verify FAQ Card 'Was sehe ich im Datenschutzcockpit' And Validate Content
+    [Documentation]    Clicks the "Was sehe ich im Datenschutzcockpit?" accordion
+    ...                on the Landing Page and verifies the revealed modal content.
+    ...                Assertions:
+    ...                  1. Click opens the modal (H1 heading visible)
+    ...                  2. SPA tab title updates to reflect the open card
+    ...                  3. URL remains on the landing page (no navigation)
+    ...                  4. The other FAQ cards are still rendered
+    [Tags]             smoke    landing    faq    accordion
+    Verify Landing Page FAQ Card "Was Sehe Ich Im Datenschutzcockpit ..."
+    Close Currently Open Dialog
+
+
+TC011 - Verify FAQ Card 'Wer betreibt das Datenschutzcockpit' And Validate Content
+    [Documentation]    Clicks the "Wer betreibt das Datenschutzcockpit?" accordion
+    ...                on the Landing Page and verifies the revealed modal content.
+    ...                Assertions:
+    ...                  1. Click opens the modal (H1 heading visible)
+    ...                  2. SPA tab title updates to reflect the open card
+    ...                  3. URL remains on the landing page (no navigation)
+    ...                  4. The other FAQ cards are still rendered
+    [Tags]             smoke    landing    faq    accordion
+    Verify Landing Page FAQ Card "Wer Betreibt Das Datenschutzcockpit ..."
+    Close Currently Open Dialog
+
+
+TC012 - Verify FAQ Card 'Weitere Informationen' And Validate Content
+    [Documentation]    Clicks the "Weitere Informationen" accordion on the
+    ...                Landing Page and verifies the revealed modal content.
+    ...                Assertions:
+    ...                  1. Click opens the modal (H1 heading visible)
+    ...                  2. SPA tab title updates to reflect the open card
+    ...                  3. URL remains on the landing page (no navigation)
+    ...                  4. The other FAQ cards are still rendered
+    [Tags]             smoke    landing    faq    accordion
+    Verify Landing Page FAQ Card "Weitere Informationen ..."
+    Close Currently Open Dialog
+
+
+TC013 - Full SPA User Journey
     [Documentation]    End-to-end smoke run that simulates a real user journey
     ...                through all SPA views in sequence.  Each dialog is opened,
     ...                spot-checked, and closed before the next one is opened –
     ...                mimicking natural navigation behaviour.
+    ...                Step 8 expands all four Landing Page FAQ cards in sequence.
     [Tags]             smoke    e2e    journey
 
     # ── 1. Assert the landing page is healthy ─────────────────────────────────
@@ -177,3 +245,23 @@ TC008 - Full SPA User Journey
     Verify Barrierefreiheit Compatibility Section
     Verify Barrierefreiheit Feedback Section
     Close Barrierefreiheit Dialog
+
+    # ── 8. Expand each Landing Page FAQ card, spot-check, close ───────────────
+    Click On Card - Was Ist Das Datenschutzcockpit
+    Element Is Visible    ${LP_FAQ_CARD_WHAT_IS_OPEN}
+    Close Currently Open Dialog
+
+    Click On Card - Was Sehe Ich Im Datenschutzcockpit
+    Element Is Visible    ${LP_FAQ_CARD_WHAT_SEE_OPEN}
+    Close Currently Open Dialog
+
+    Click On Card - Wer Betreibt Das Datenschutzcockpit
+    Element Is Visible    ${LP_FAQ_CARD_WHO_OPS_OPEN}
+    Close Currently Open Dialog
+
+    Click On Card - Weitere Informationen
+    Element Is Visible    ${LP_FAQ_CARD_MORE_INFO_OPEN}
+    Close Currently Open Dialog
+
+    # Confirm the landing page is still intact after all card interactions
+    Verify Landing Page Is Loaded

@@ -37,6 +37,30 @@ ${LP_VERSION_TEXT}           text=Datenschutzcockpit Version
 # ── Floating FAQ Sidebar Button ────────────────────────────────────────────────
 ${LP_FAQ_FLOAT_BUTTON}       role=button[name="FAQ"]
 
+# ── Landing Page FAQ Cards (in the "Häufige Fragen" section, not inside FAQ dialog) ──
+# Closed state – accordion buttons visible directly on the landing page.
+${LP_FAQ_CARD_WHAT_IS}       //h3[text()="Was ist das Datenschutzcockpit?"]
+${LP_FAQ_CARD_WHAT_SEE}      //h3[text()="Was sehe ich im Datenschutzcockpit?"]
+${LP_FAQ_CARD_WHO_OPS}       //h3[text()="Wer betreibt das Datenschutzcockpit?"]
+${LP_FAQ_CARD_MORE_INFO}     (//h3[text()="Weitere Informationen"])[1]
+
+# Open state – each card opens as a modal overlay; H1 identifies the active card.
+${LP_FAQ_CARD_WHAT_IS_OPEN}
+...    //div[@class="modal" and @aria-hidden="false"]//h1[text()="Was ist das Datenschutzcockpit?"]
+${LP_FAQ_CARD_WHAT_SEE_OPEN}
+...    //div[@class="modal" and @aria-hidden="false"]//h1[text()="Was sehe ich im Datenschutzcockpit?"]
+${LP_FAQ_CARD_WHO_OPS_OPEN}
+...    //div[@class="modal" and @aria-hidden="false"]//h1[text()="Wer betreibt das Datenschutzcockpit?"]
+${LP_FAQ_CARD_MORE_INFO_OPEN}
+...    //div[@class="modal" and @aria-hidden="false"]//h1[text()="Weitere Informationen"]
+
+# Tab titles – the SPA router updates the document title when a card modal opens.
+&{LP_FAQ_CARDS_TAB_TITLES}
+...    WHAT_IS=Datenschutzcockpit - Was ist das Datenschutzcockpit
+...    WHAT_SEE=Datenschutzcockpit - Was sehe ich im Datenschutzcockpit
+...    WHO_OPS=Datenschutzcockpit - Wer betreibt das Datenschutzcockpit
+...    MORE_INFO=Datenschutzcockpit - Weitere Informationen
+
 
 *** Keywords ***
 
@@ -67,6 +91,15 @@ Verify Landing Page FAQ Section
     [Documentation]    Checks the "Häufige Fragen" (Frequently Asked Questions)
     ...                section heading is present on the landing page.
     Element Is Visible    ${LP_FAQ_SECTION_HEADING}
+
+Verify Landing Page FAQ Cards Are Rendered
+    [Documentation]    Confirms the "Häufige Fragen" heading and all four FAQ
+    ...                accordion cards are rendered in their default closed state.
+    Element Is Visible    ${LP_FAQ_SECTION_HEADING}
+    Element Is Visible    ${LP_FAQ_CARD_WHAT_IS}
+    Element Is Visible    ${LP_FAQ_CARD_WHAT_SEE}
+    Element Is Visible    ${LP_FAQ_CARD_WHO_OPS}
+    Element Is Visible    ${LP_FAQ_CARD_MORE_INFO}
 
 Verify Landing Page Footer Navigation
     [Documentation]    Verifies all three footer navigation buttons are visible:
@@ -113,6 +146,108 @@ Open Barrierefreiheit Dialog
     Wait For Elements State    role=dialog    visible    timeout=${TIMEOUT}
 
 
+# ── FAQ Card Interactions ─────────────────────────────────────────────────────
+
+Click On Card - Was Ist Das Datenschutzcockpit
+    [Documentation]    Clicks the "Was ist das Datenschutzcockpit?" accordion
+    ...                card and waits for the modal overlay to become visible.
+    Click    ${LP_FAQ_CARD_WHAT_IS}
+    Wait For Elements State    ${LP_FAQ_CARD_WHAT_IS_OPEN}    visible    timeout=${TIMEOUT}
+
+Click On Card - Was Sehe Ich Im Datenschutzcockpit
+    [Documentation]    Clicks the "Was sehe ich im Datenschutzcockpit?" accordion
+    ...                card and waits for the modal overlay to become visible.
+    Click    ${LP_FAQ_CARD_WHAT_SEE}
+    Wait For Elements State    ${LP_FAQ_CARD_WHAT_SEE_OPEN}    visible    timeout=${TIMEOUT}
+
+Click On Card - Wer Betreibt Das Datenschutzcockpit
+    [Documentation]    Clicks the "Wer betreibt das Datenschutzcockpit?" accordion
+    ...                card and waits for the modal overlay to become visible.
+    Click    ${LP_FAQ_CARD_WHO_OPS}
+    Wait For Elements State    ${LP_FAQ_CARD_WHO_OPS_OPEN}    visible    timeout=${TIMEOUT}
+
+Click On Card - Weitere Informationen
+    [Documentation]    Clicks the "Weitere Informationen" accordion card and
+    ...                waits for the modal overlay to become visible.
+    Click    ${LP_FAQ_CARD_MORE_INFO}
+    Wait For Elements State    ${LP_FAQ_CARD_MORE_INFO_OPEN}    visible    timeout=${TIMEOUT}
+
+
+# ── FAQ Card Content Validation ───────────────────────────────────────────────
+
+Verify Landing Page FAQ Card "Was Ist Das Datenschutzcockpit ..."
+    [Documentation]    Opens the "Was ist das Datenschutzcockpit?" card and
+    ...                verifies: modal heading visible, SPA tab title updated,
+    ...                URL unchanged, and the other three cards still rendered.
+    Element Is Visible    ${LP_FAQ_CARD_WHAT_IS}
+    Click On Card - Was Ist Das Datenschutzcockpit
+    # 1. Card is now in open (modal) state
+    Element Is Visible    ${LP_FAQ_CARD_WHAT_IS_OPEN}
+    # 2. SPA router updated the tab title
+    ${title}=    Get Title
+    Should Be Equal As Strings    ${title}    ${LP_FAQ_CARDS_TAB_TITLES}[WHAT_IS]
+    # 3. URL has not left the landing page
+    ${url}=    Get Url
+    Should Be Equal As Strings    ${url}    ${BASE_URL}
+    # 4. Other FAQ cards remain rendered (one-card-at-a-time behaviour)
+    Element Is Visible    ${LP_FAQ_CARD_WHAT_SEE}
+    Element Is Visible    ${LP_FAQ_CARD_WHO_OPS}
+
+Verify Landing Page FAQ Card "Was Sehe Ich Im Datenschutzcockpit ..."
+    [Documentation]    Opens the "Was sehe ich im Datenschutzcockpit?" card and
+    ...                verifies: modal heading visible, SPA tab title updated,
+    ...                URL unchanged, and the other three cards still rendered.
+    Element Is Visible    ${LP_FAQ_CARD_WHAT_SEE}
+    Click On Card - Was Sehe Ich Im Datenschutzcockpit
+    # 1. Card is now in open (modal) state
+    Element Is Visible    ${LP_FAQ_CARD_WHAT_SEE_OPEN}
+    # 2. SPA router updated the tab title
+    ${title}=    Get Title
+    Should Be Equal As Strings    ${title}    ${LP_FAQ_CARDS_TAB_TITLES}[WHAT_SEE]
+    # 3. URL has not left the landing page
+    ${url}=    Get Url
+    Should Be Equal As Strings    ${url}    ${BASE_URL}
+    # 4. Other FAQ cards remain rendered
+    Element Is Visible    ${LP_FAQ_CARD_WHAT_IS}
+    Element Is Visible    ${LP_FAQ_CARD_WHO_OPS}
+
+Verify Landing Page FAQ Card "Wer Betreibt Das Datenschutzcockpit ..."
+    [Documentation]    Opens the "Wer betreibt das Datenschutzcockpit?" card and
+    ...                verifies: modal heading visible, SPA tab title updated,
+    ...                URL unchanged, and the other three cards still rendered.
+    Element Is Visible    ${LP_FAQ_CARD_WHO_OPS}
+    Click On Card - Wer Betreibt Das Datenschutzcockpit
+    # 1. Card is now in open (modal) state
+    Element Is Visible    ${LP_FAQ_CARD_WHO_OPS_OPEN}
+    # 2. SPA router updated the tab title
+    ${title}=    Get Title
+    Should Be Equal As Strings    ${title}    ${LP_FAQ_CARDS_TAB_TITLES}[WHO_OPS]
+    # 3. URL has not left the landing page
+    ${url}=    Get Url
+    Should Be Equal As Strings    ${url}    ${BASE_URL}
+    # 4. Other FAQ cards remain rendered
+    Element Is Visible    ${LP_FAQ_CARD_WHAT_IS}
+    Element Is Visible    ${LP_FAQ_CARD_WHAT_SEE}
+
+Verify Landing Page FAQ Card "Weitere Informationen ..."
+    [Documentation]    Opens the "Weitere Informationen" card and verifies:
+    ...                modal heading visible, SPA tab title updated, URL
+    ...                unchanged, and the other three cards still rendered.
+    Element Is Visible    ${LP_FAQ_CARD_MORE_INFO}
+    Click On Card - Weitere Informationen
+    # 1. Card is now in open (modal) state
+    Element Is Visible    ${LP_FAQ_CARD_MORE_INFO_OPEN}
+    # 2. SPA router updated the tab title
+    ${title}=    Get Title
+    Should Be Equal As Strings    ${title}    ${LP_FAQ_CARDS_TAB_TITLES}[MORE_INFO]
+    # 3. URL has not left the landing page
+    ${url}=    Get Url
+    Should Be Equal As Strings    ${url}    ${BASE_URL}
+    # 4. Other FAQ cards remain rendered
+    Element Is Visible    ${LP_FAQ_CARD_WHAT_IS}
+    Element Is Visible    ${LP_FAQ_CARD_WHAT_SEE}
+
+
 # ── Aggregate Validation ───────────────────────────────────────────────────────
 
 Validate Landing Page
@@ -123,6 +258,7 @@ Validate Landing Page
     Verify Landing Page Intro Text
     Verify Landing Page CTA Button
     Verify Landing Page FAQ Section
+    Verify Landing Page FAQ Cards Are Rendered
     Verify Landing Page Footer Navigation
     Verify Landing Page FAQ Float Button
     Verify Landing Page Version Info
