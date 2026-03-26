@@ -1,0 +1,12 @@
+services:
+
+  # AusweisApp SDK im Automatic Mode (headless, Developer-Mode, eingebettete Testkarte)
+  # Browser navigiert zu http://127.0.0.1:24727/eID-Client?tcTokenURL=...
+  # Der SDK authentifiziert vollautomatisch ohne weiteres Python-Skript.
+  ausweisapp-sdk:
+    build:
+      context: .
+      dockerfile: ausweisapp-sdk.Dockerfile
+    ports:
+      - "127.0.0.1:24727:24727"
+    restart: "no"

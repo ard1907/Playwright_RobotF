@@ -6,7 +6,7 @@
 # Behaviour    : Opens as a modal dialog overlay – same URL is kept.
 #
 # Selectors captured from live ARIA tree inspection.
-# Accordion buttons carry state suffix " - Antwort ist geschlossen" when closed.
+# Card buttons carry state suffix " - Antwort ist geschlossen" when closed.
 # ==============================================================================
 
 *** Settings ***
@@ -22,7 +22,7 @@ ${FAQ_H1_HEADING}          role=heading[name="Informationen zum Datenschutzcockp
 ${FAQ_H2_HOW_IT_WORKS}     role=heading[name="Wie funktioniert das Datenschutzcockpit?"]
 ${FAQ_H2_HOW_TO_LOGIN}     role=heading[name="Wie funktioniert die Anmeldung?"]
 
-# ── "How it works" Accordion Items (closed / default state) ───────────────────
+# ── "How it works" Card Items (closed / default state) ────────────────────────
 ${FAQ_ITEM_WHAT_IS}
 ...    role=button[name="Was ist das Datenschutzcockpit? - Antwort ist geschlossen"]
 ${FAQ_ITEM_WHAT_SEE}
@@ -32,7 +32,7 @@ ${FAQ_ITEM_WHO_OPERATES}
 ${FAQ_ITEM_MORE_INFO}
 ...    role=button[name="Weitere Informationen - Antwort ist geschlossen"]
 
-# ── "Login" Accordion Items (closed / default state) ─────────────────────────
+# ── "Login" Card Items (closed / default state) ─────────────────────────
 ${FAQ_ITEM_WHAT_NEEDED}
 ...    role=button[name="Was benötige ich für die Anmeldung? - Antwort ist geschlossen"]
 ${FAQ_ITEM_AUSWEIS_LOGIN}
@@ -66,16 +66,16 @@ Verify FAQ Login Section
     ...                is displayed in the dialog.
     Element Is Visible    ${FAQ_H2_HOW_TO_LOGIN}
 
-Verify FAQ Accordion Items
-    [Documentation]    Checks that all four "How it works" accordion buttons are
+Verify FAQ Card Items
+    [Documentation]    Checks that all four "How it works" card buttons are
     ...                rendered in their default closed state.
     Element Is Visible    ${FAQ_ITEM_WHAT_IS}
     Element Is Visible    ${FAQ_ITEM_WHAT_SEE}
     Element Is Visible    ${FAQ_ITEM_WHO_OPERATES}
     Element Is Visible    ${FAQ_ITEM_MORE_INFO}
 
-Verify FAQ Login Accordion Items
-    [Documentation]    Checks that all three "Login" accordion buttons are rendered
+Verify FAQ Login Card Items
+    [Documentation]    Checks that all three "Login" card buttons are rendered
     ...                in their default closed state.
     Element Is Visible    ${FAQ_ITEM_WHAT_NEEDED}
     Element Is Visible    ${FAQ_ITEM_AUSWEIS_LOGIN}
@@ -102,6 +102,6 @@ Validate FAQ Page
     Verify FAQ Main Heading
     Verify FAQ How It Works Section
     Verify FAQ Login Section
-    Verify FAQ Accordion Items
-    Verify FAQ Login Accordion Items
+    Verify FAQ Card Items
+    Verify FAQ Login Card Items
     Verify FAQ Close Button Is Present

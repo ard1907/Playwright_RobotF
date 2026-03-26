@@ -27,6 +27,7 @@ ${LS_DIALOG}                 role=dialog
 # NOTE: Verify actual heading text on first run.
 # ${LS_H1_HEADING}             role=heading[name="Das Datenschutzcockpit in Leichter Sprache"]
 ${LS_H1_HEADING}             (//H1[contains(text(), "Leichte Sprache")])[1]
+${LS_EASY_LANGUAGE_BTN}        role=button[name="Das Datenschutzcockpit in Leichter Sprache"]
 
 # ── Content Anchors ────────────────────────────────────────────────────────────
 # Partial text selectors – robust against minor copy changes.
@@ -71,6 +72,11 @@ Verify Leichte Sprache Close Button Is Present
 
 
 # ── Dialog Lifecycle ───────────────────────────────────────────────────────────
+Open Leichte Sprache Dialog
+    [Documentation]    Clicks the "Leichte Sprache" header button on the landing
+    ...                page and waits for the corresponding dialog to appear.
+    Click    ${LS_EASY_LANGUAGE_BTN}
+    Wait For Elements State    role=dialog    visible    timeout=${TIMEOUT}
 
 Close Leichte Sprache Dialog
     [Documentation]    Closes the Leichte Sprache dialog via the shared

@@ -38,6 +38,7 @@ ${GS_SIGN_LANG_MENTION}      //h2[contains(text(), "Informationen zur Erklärung
 # Fallback: if the video is embedded via an <iframe>, adjust to css=iframe.
 # ${GS_VIDEO_ELEMENT}          css=video
 ${GS_VIDEO_ELEMENT}          //a[contains(text(), "Hier geht´s zum Video.")]
+${GS_SIGN_LANGUAGE_BTN}      role=button[name="Zum Gebärdensprache-Video"]
 
 # ── Close Button ──────────────────────────────────────────────────────────────
 ${GS_CLOSE_BTN}              role=button[name="Menü schließen"]
@@ -80,6 +81,12 @@ Verify Gebaerdensprache Close Button Is Present
 
 
 # ── Dialog Lifecycle ───────────────────────────────────────────────────────────
+
+Open Gebaerdensprache Dialog
+    [Documentation]    Clicks the "Gebärdensprache-Video" header button on the
+    ...                auth-info page and waits for the dialog to appear.
+    Click    ${GS_SIGN_LANGUAGE_BTN}
+    Wait For Elements State    role=dialog    visible    timeout=${TIMEOUT}
 
 Close Gebaerdensprache Dialog
     [Documentation]    Closes the Gebärdensprache dialog via the shared

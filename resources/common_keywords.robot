@@ -6,12 +6,16 @@
 
 *** Settings ***
 Library     Browser
+Library     String
 Resource    variables.robot
-Resource    ../pages/landing_page.robot
+# Resource    ../pages/landing_page.robot
 
 *** Variables ***
 
 ${LOGIN_BUTTON}           //button[@id="button-anfrage-starten"]
+&{AUSWEIS_URLS}           AusweisApp=https://www.ausweisapp.bund.de/
+...                       AusweisAppHome=https://www.ausweisapp.bund.de/home/
+...                       Personalausweisportal=https://www.personalausweisportal.de/Webs/PA/DE/startseite/startseite-node.html
 
 
 *** Keywords ***
@@ -62,6 +66,7 @@ Element Is Visible
     ...                Uses the global ${TIMEOUT} so tests fail fast on breakage.
     [Arguments]    ${selector}
     Wait For Elements State    ${selector}    visible    timeout=${TIMEOUT}
+    ${ele_state}=    Get Element States    ${selector}
 
 
 # ── Dialog Helpers ─────────────────────────────────────────────────────────────
@@ -80,6 +85,46 @@ Close Currently Open Dialog
 
 
 # ── New-Tab Helpers ────────────────────────────────────────────────────────────
+Open External Tab And Validate
+    [Documentation]    Clicks the "AusweisApp" in-text link, which opens the
+    ...                official AusweisApp website in a new browser tab.
+    ...                Assertions on the target page:
+    ...                  -- URL contains given argument "expected_h1_url_fragment"
+    ...                  -- Page title is not empty
+    ...                  -- Title contains given argument "expected_h1_url_fragment"
+    ...                  -- At least one H1 heading is visible
+    ...                After verification the new tab is closed and focus returns.
+    [Arguments]             ${expected_h1_url_fragment}
+    ${h1_selector}=         Replace String    //h1[contains(text(), "XXXX")]    XXXX    ${expected_h1_url_fragment}
+    ${lower_url_fragment}=  Convert To Lowercase    ${expected_h1_url_fragment}
+    ${link_url_selector}=   Replace String    //a[contains(@href, "XXXX") and contains(@target, "blank")]    XXXX    ${lower_url_fragment}
+    Element Is Visible      ${link_url_selector}
+    Click                   ${link_url_selector}
+    Switch To Newly Opened Tab
+    ${url}=                 Get Url
+    Should Contain          ${url}    ${lower_url_fragment}
+    ${title}=               Get Title
+    Should Not Be Empty     ${title}
+    Should Contain          ${title}    ${expected_h1_url_fragment}
+    Element Is Visible      ${h1_selector}
+    Close Current Tab And Return
+
+Open External Tab And Validate Just URL
+    [Documentation]    Clicks the "AusweisApp" in-text link, which opens the
+    ...                official AusweisApp or Personalausweis website in a new browser tab.
+    ...                Assertions on the target page:
+    ...                  -- just external URL is checked, no title or content assertions
+    ...                After verification the new tab is closed and focus returns.
+    [Arguments]             ${expected_h1_url_fragment}
+    Log    ${AUSWEIS_URLS}[${expected_h1_url_fragment}]
+    ${link_url_selector}=   Set Variable    //a[contains(@href, "${AUSWEIS_URLS}[${expected_h1_url_fragment}]") and contains(@target, "blank")]
+    Element Is Visible      ${link_url_selector}
+    Click                   ${link_url_selector}
+    Switch To Newly Opened Tab
+    ${url}=                 Get Url
+    Should Contain          ${url}    ${AUSWEIS_URLS}[${expected_h1_url_fragment}]
+    Close Current Tab And Return
+
 
 Switch To Newly Opened Tab
     [Documentation]    Switches the active page context to the most recently
@@ -99,6 +144,3 @@ Close Current Tab And Return
     Switch Page    ${page_ids}[0]
     Wait For Load State    networkidle
 
-# Pause
-#     [Documentation]    Stoppt den Test im Browser für Debugging
-#     Evaluate JavaScript    debugger

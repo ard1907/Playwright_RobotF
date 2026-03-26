@@ -4,9 +4,7 @@
 # URL   : https://datenschutzcockpit.dsc.govkg.de/spa/cockpit/register-auswahl
 # Title : Datenschutzcockpit - Registerauswahl
 #
-# This page explains the eID login process: which hardware/software is needed
-# (AusweisApp, compatible card reader), how to start the login, and embeds
-# the three login-related FAQ accordion items directly on the page.
+# This page ...
 #
 # NOTE: Verify all selectors against the live page after the first test run.
 #       Adjust heading text and link names if the SPA content differs.

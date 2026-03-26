@@ -25,8 +25,10 @@ Resource        ../resources/variables.robot
 Resource        ../resources/setup_teardown.robot
 Resource        ../resources/common_keywords.robot
 
-# Resource        ../pages/landing_page.robot
+Resource        ../pages/landing_page.robot
 Resource        ../pages/faq_page.robot
+Resource        ../pages/leichte_sprache_page.robot
+Resource        ../pages/gebaerdensprache_page.robot
 Resource        ../pages/impressum_page.robot
 Resource        ../pages/datenschutz_page.robot
 Resource        ../pages/barrierefreiheit_page.robot
@@ -48,7 +50,34 @@ TC001 - Validate Landing Page
     Validate Landing Page
 
 
-TC002 - Navigate To FAQ And Validate
+TC002 - Navigate To Leichte Sprache And Validate
+    [Documentation]    Clicks the "Das Datenschutzcockpit in Leichter Sprache"
+    ...                header button, confirms the dialog opens, and runs all
+    ...                Leichte Sprache assertions: title change, dialog visibility,
+    ...                H1 heading, body content references, and close button.
+    ...                Finally closes the dialog and verifies the page is restored.
+    [Tags]             smoke    auth    leichte-sprache    accessibility
+    Open Leichte Sprache Dialog
+    Validate Leichte Sprache Page
+    Close Leichte Sprache Dialog
+    Verify Landing Page Is Loaded
+
+
+TC003 - Navigate To Gebärdensprache And Validate
+    [Documentation]    Clicks the "Zum Gebärdensprache-Video" header button,
+    ...                confirms the dialog opens, and runs all Gebärdensprache
+    ...                assertions: title change, dialog visibility, H1 heading,
+    ...                content reference, video element, and close button.
+    ...                Finally closes the dialog and verifies the page is restored.
+    [Tags]             smoke    auth    gebaerdensprache    accessibility
+    Open Gebaerdensprache Dialog
+    Validate Gebaerdensprache Page
+    Close Gebaerdensprache Dialog
+    # Confirm we are back on the landing page
+    Verify Landing Page Is Loaded
+
+
+TC004 - Navigate To FAQ And Validate
     [Documentation]    Opens the FAQ dialog via the floating FAQ button and
     ...                checks: dialog visibility, page title change, H1, both
     ...                H2 section headings, and all seven accordion entries.
@@ -58,7 +87,7 @@ TC002 - Navigate To FAQ And Validate
     Close FAQ Dialog
 
 
-TC003 - Navigate To Impressum And Validate
+TC005 - Navigate To Impressum And Validate
     [Documentation]    Opens the Impressum dialog via the footer button and
     ...                checks: dialog visibility, page title change, H1, all
     ...                four H2 section headings, and the three key organisations.
@@ -68,7 +97,7 @@ TC003 - Navigate To Impressum And Validate
     Close Impressum Dialog
 
 
-TC004 - Navigate To Datenschutz And Validate
+TC006 - Navigate To Datenschutz And Validate
     [Documentation]    Opens the Datenschutzerklärung dialog via the footer and
     ...                checks: dialog visibility, page title change, H1, four
     ...                numbered section headings, DSGVO reference, BVA mention,
@@ -79,7 +108,7 @@ TC004 - Navigate To Datenschutz And Validate
     Close Datenschutz Dialog
 
 
-TC005 - Navigate To Barrierefreiheit And Validate
+TC007 - Navigate To Barrierefreiheit And Validate
     [Documentation]    Opens the Barrierefreiheit dialog via the footer and
     ...                checks: dialog visibility, page title change, H1, two H2
     ...                headings, three H3 headings, BITV reference, and contact
@@ -90,7 +119,7 @@ TC005 - Navigate To Barrierefreiheit And Validate
     Close Barrierefreiheit Dialog
 
 
-TC006 - Full SPA User Journey
+TC008 - Full SPA User Journey
     [Documentation]    End-to-end smoke run that simulates a real user journey
     ...                through all SPA views in sequence.  Each dialog is opened,
     ...                spot-checked, and closed before the next one is opened –
@@ -100,16 +129,32 @@ TC006 - Full SPA User Journey
     # ── 1. Assert the landing page is healthy ─────────────────────────────────
     Validate Landing Page
 
-    # ── 2. Open FAQ, spot-check, close ────────────────────────────────────────
+    # ── 2. Open Leichte Sprache, spot-check, close ────────────────────────────────────────
+    Open Leichte Sprache Dialog
+    Verify Leichte Sprache Dialog Is Open
+    Verify Leichte Sprache H1 Heading
+    Close Leichte Sprache Dialog
+    Verify Landing Page Is Loaded
+
+    # ── 3. Open Gebärdensprache, spot-check, close ────────────────────────────────────────
+    Open Gebaerdensprache Dialog
+    Verify Gebaerdensprache Dialog Is Open
+    Verify Gebaerdensprache H1 Heading
+    Verify Gebaerdensprache Video Is Present
+    Close Gebaerdensprache Dialog
+    # Confirm we are back on the landing page
+    Verify Landing Page Is Loaded
+
+    # ── 4. Open FAQ, spot-check, close ────────────────────────────────────────
     Open FAQ Dialog
     Verify FAQ Dialog Is Open
     Verify FAQ Main Heading
     Verify FAQ How It Works Section
     Verify FAQ Login Section
-    Verify FAQ Accordion Items
+    Verify FAQ Card Items
     Close FAQ Dialog
 
-    # ── 3. Open Impressum, spot-check, close ──────────────────────────────────
+    # ── 5. Open Impressum, spot-check, close ──────────────────────────────────
     Open Impressum Dialog
     Verify Impressum Dialog Is Open
     Verify Impressum H1 Heading
@@ -117,7 +162,7 @@ TC006 - Full SPA User Journey
     Verify Impressum Key Organizations
     Close Impressum Dialog
 
-    # ── 4. Open Datenschutz, spot-check, close ────────────────────────────────
+    # ── 6. Open Datenschutz, spot-check, close ────────────────────────────────
     Open Datenschutz Dialog
     Verify Datenschutz Dialog Is Open
     Verify Datenschutz H1 Heading
@@ -125,7 +170,7 @@ TC006 - Full SPA User Journey
     Verify Datenschutz DSGVO Reference
     Close Datenschutz Dialog
 
-    # ── 5. Open Barrierefreiheit, spot-check, close ───────────────────────────
+    # ── 7. Open Barrierefreiheit, spot-check, close ───────────────────────────
     Open Barrierefreiheit Dialog
     Verify Barrierefreiheit Dialog Is Open
     Verify Barrierefreiheit H1 Heading
