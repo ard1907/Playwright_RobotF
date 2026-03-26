@@ -16,6 +16,7 @@ ${LOGIN_BUTTON}           //button[@id="button-anfrage-starten"]
 &{AUSWEIS_URLS}           AusweisApp=https://www.ausweisapp.bund.de/
 ...                       AusweisAppHome=https://www.ausweisapp.bund.de/home/
 ...                       Personalausweisportal=https://www.personalausweisportal.de/Webs/PA/DE/startseite/startseite-node.html
+${DIALOG_SELECTOR}        //div[contains(@class,"modal") and @aria-hidden="false"]
 
 
 *** Keywords ***
@@ -70,6 +71,12 @@ Element Is Visible
 
 
 # ── Dialog Helpers ─────────────────────────────────────────────────────────────
+
+Check If Dialog Is Open
+    [Documentation]    Checks if a dialog/modal is currently open by looking for
+    ...                the presence of a common dialog selector with aria-hidden="false".
+    ${is_open}=         Run Keyword And Return Status    Get Element Count    ${DIALOG_SELECTOR}
+    RETURN              ${is_open}
 
 Close Currently Open Dialog
     [Documentation]    Closes the currently open modal/dialog by clicking the

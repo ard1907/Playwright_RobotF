@@ -61,12 +61,16 @@ ${AI_DATENSCHUTZ_BTN}          role=button[name="Datenschutz"]
 ${AI_BARRIEREFREIHEIT_BTN}     role=button[name="Barrierefreiheit"]
 ${AI_VERSION_TEXT}             text=Datenschutzcockpit Version
 
-# ── Card Open State Selectors ────────────────────────────────────────────
-# ── Was benötige ich für die Anmeldung? ──────────────────────────────────
-${AI_FAQ_WHAT_NEEDED}
+# ── Auth Info Cards Variables ─────────────────────────────────────────────────
+&{AI_CARDS_TAB_TITLES}          NEEDED_TAB_TITLE=Datenschutzcockpit - Was benötige ich für die Anmeldung 
+...                            REGISTER_TAB_TITLE=Datenschutzcockpit - Wie melde ich mich mit der AusweisApp an
+...                            SECURE_TAB_TITLE=Datenschutzcockpit - Wie sicher ist das Datenschutzcockpit
+
+# ── Card: Was benötige ich für die Anmeldung? ─────────────────────────────────
+${AI_FAQ_CARD_NEEDED}
 ...    //h3[text()="Was benötige ich für die Anmeldung?"]                     # closed state = default state
-${AI_FAQ_WHAT_NEEDED_OPEN}
-...    //h1[text()="Was benötige ich für die Anmeldung?"]                     # open state has H1 instead of H3
+${AI_FAQ_CARD_NEEDED_OPEN}
+...    //div[@class="modal" and @aria-hidden="false"]//h1[text()="Was benötige ich für die Anmeldung?"]   # open state has H1 instead of H3
 ${AI_FAQ_WN_PERSONALAUSWEIS}   (//li[contains(text(),"Personalausweis")])[2]
 ${AI_FAQ_WN_TITEL_H2}          //h2[contains(text(),"Sie benötigen für die Anmeldung:")]
 ${AI_FAQ_WN_EXT_LINK_01}       //a[contains(text(),"Mehr Informationen zur PIN")]
@@ -74,25 +78,24 @@ ${AI_FAQ_WN_EXT_LINK_02}       //a[contains(text(),"Mehr Informationen zu geeign
 ${AI_FAQ_WN_EXT_LINK_03}       //a[contains(text(),"Mehr Informationen zur Software")]
 
 
-# ── Card Open State Selectors ────────────────────────────────────────────
-# ── Wie melde ich mich mit der AusweisApp an? ────────────────────────────
-${AI_FAQ_AUSWEIS_LOGIN}
+
+# ── Card: Wie melde ich mich mit der AusweisApp an? ────────────────────────────
+${AI_FAQ_CARD_REGISTER}
 ...    //h3[text()="Wie melde ich mich mit der AusweisApp an?"]               # closed state = default state
 
-${AI_FAQ_AUSWEIS_LOGIN_OPEN}
-...    //h1[text()="Wie melde ich mich mit der AusweisApp an?"]               # open state has H1 instead of H3
+${AI_FAQ_CARD_REGISTER_OPEN}
+...    //div[@class="modal" and @aria-hidden="false"]//h1[text()="Wie melde ich mich mit der AusweisApp an?"]   # open state has H1 instead of H3
 ${AI_FAQ_AL_SCHRITT}           text=Schritt
 
-# ── Card Open State Selectors ────────────────────────────────────────────
-# ── Wie sicher ist das Datenschutzcockpit? ───────────────────────────────
-${AI_FAQ_HOW_SECURE}
+# ── Card: Wie sicher ist das Datenschutzcockpit? ───────────────────────────────
+${AI_FAQ_CARD_SECURE}
 ...    //h3[text()="Wie sicher ist das Datenschutzcockpit?"]                  # closed state = default state
-${AI_FAQ_HOW_SECURE_OPEN}
-...    //h1[text()="Wie sicher ist das Datenschutzcockpit?"]                  # open state has H1 instead of H3
+${AI_FAQ_CARD_SECURE_OPEN}
+...    //div[@class="modal" and @aria-hidden="false"]//h1[text()="Wie sicher ist das Datenschutzcockpit?"]   # open state has H1 instead of H3
 ${AI_FAQ_HS_SICHER}              text=sicher >> nth=2
 ${AI_FAQ_HS_YOUR_LOGIN}          //h2[contains(text(),"Ihre Anmeldung")]
 ${AI_FAQ_HS_YOUR_DATA}           //h2[contains(text(),"Datenübermittlungen anzeigen")]
-
+# ─────────────────────────────────────────────────────────────────────────────────
 
 *** Keywords ***
 
@@ -188,10 +191,10 @@ Verify AusweisApp Start Button After Click
 Verify Auth Page FAQ Card "Was Benötige Ich ..."
     [Documentation]    Checks the presence of the "Was benötige ich für die Anmeldung?"
     ...                FAQ card on the auth-info page in its default closed state.
-    Element Is Visible    ${AI_FAQ_WHAT_NEEDED}
+    Element Is Visible    ${AI_FAQ_CARD_NEEDED}
     Click On Card - Was Benötige Ich ...
     # 1. Card is now in open state
-    Element Is Visible    ${AI_FAQ_WHAT_NEEDED_OPEN}
+    Element Is Visible    ${AI_FAQ_CARD_NEEDED_OPEN}
     # 2 & 3. Key terms exist in the now-visible expanded panel
     Element Is Visible    ${AI_FAQ_WN_PERSONALAUSWEIS}
     Element Is Visible    ${AI_FAQ_WN_TITEL_H2}
@@ -200,52 +203,55 @@ Verify Auth Page FAQ Card "Was Benötige Ich ..."
     Element Is Visible    ${AI_FAQ_WN_EXT_LINK_03}
     # 4. URL still on auth-info page
     ${url}=      Get Url
-    ${title}=    Get Title
     Should Contain    ${url}    authentication-info
+    ${title}=    Get Title
+    Should Be Equal As Strings   ${title}    ${AI_CARDS_TAB_TITLES}[NEEDED_TAB_TITLE]
     # 5. Other cards are still rendered
-    Element Is Visible    ${AI_FAQ_AUSWEIS_LOGIN}
+    Element Is Visible    ${AI_FAQ_CARD_REGISTER}
 
 Verify Auth Page FAQ Card "Wie Melde Ich Mich ..."
     [Documentation]    Checks the presence of the "Wie melde ich mich mit der AusweisApp an?"
     ...                FAQ card on the auth-info page in its default closed state.
-    Element Is Visible    ${AI_FAQ_AUSWEIS_LOGIN}
+    Element Is Visible    ${AI_FAQ_CARD_REGISTER}
     Click On Card - Wie Melde Ich Mich An ...
     # 1. Card is now in open state
-    Element Is Visible    ${AI_FAQ_AUSWEIS_LOGIN_OPEN}
+    Element Is Visible    ${AI_FAQ_CARD_REGISTER_OPEN}
     # 2 & 3. Key terms exist in the now-visible expanded panel
     Element Is Visible    ${AI_FAQ_AL_SCHRITT}
     # 4. URL still on auth-info page
     ${url}=      Get Url
-    ${title}=    Get Title
     Should Contain    ${url}    authentication-info
+    ${title}=    Get Title
+    Should Be Equal As Strings   ${title}    ${AI_CARDS_TAB_TITLES}[REGISTER_TAB_TITLE]
     # 5. Other cards are still rendered
-    Element Is Visible    ${AI_FAQ_WHAT_NEEDED}
+    Element Is Visible    ${AI_FAQ_CARD_NEEDED}
 
 Verify Auth Page FAQ Card "Wie Sicher Ist Das Cockpit ..."
     [Documentation]    Checks the presence of the "Wie sicher ist das Datenschutzcockpit?"
     ...                FAQ card on the auth-info page in its default closed state.
-    Element Is Visible    ${AI_FAQ_HOW_SECURE}
+    Element Is Visible    ${AI_FAQ_CARD_SECURE}
     Click On Card - Wie Sicher ist ...
     # 1. Card is now in open state
-    Element Is Visible    ${AI_FAQ_HOW_SECURE_OPEN}
+    Element Is Visible    ${AI_FAQ_CARD_SECURE_OPEN}
     # 2 & 3. Key terms exist in the now-visible expanded panel
     Element Is Visible    ${AI_FAQ_HS_SICHER}
     Element Is Visible    ${AI_FAQ_HS_YOUR_LOGIN}
     Element Is Visible    ${AI_FAQ_HS_YOUR_DATA}
     # 4. URL still on auth-info page
     ${url}=      Get Url
-    ${title}=    Get Title
     Should Contain    ${url}    authentication-info
+    ${title}=    Get Title
+    Should Be Equal As Strings   ${title}    ${AI_CARDS_TAB_TITLES}[SECURE_TAB_TITLE]
     # 5. Other cards are still rendered
-    Element Is Visible    ${AI_FAQ_HOW_SECURE}
-    Element Is Visible    ${AI_FAQ_HOW_SECURE_OPEN}
+    Element Is Visible    ${AI_FAQ_CARD_SECURE}
+    Element Is Visible    ${AI_FAQ_CARD_SECURE_OPEN}
 
 Verify Auth Page FAQ Card Items
     [Documentation]    Checks all three embedded FAQ card buttons are
     ...                rendered in their default closed state.
-    Element Is Visible    ${AI_FAQ_WHAT_NEEDED}
-    Element Is Visible    ${AI_FAQ_AUSWEIS_LOGIN}
-    Element Is Visible    ${AI_FAQ_HOW_SECURE}
+    Element Is Visible    ${AI_FAQ_CARD_NEEDED}
+    Element Is Visible    ${AI_FAQ_CARD_REGISTER}
+    Element Is Visible    ${AI_FAQ_CARD_SECURE}
 
 
 # ── Dialog Navigation ──────────────────────────────────────────────────────────
@@ -268,20 +274,20 @@ Open Gebaerdensprache Dialog From Auth Page
 Click On Card - Was Benötige Ich ...
     [Documentation]    Clicks the "Was benötige ich für die Anmeldung?" card
     ...                button and waits for it to switch to the open state.
-    Click    ${AI_FAQ_WHAT_NEEDED}
-    Wait For Elements State    ${AI_FAQ_WHAT_NEEDED_OPEN}    visible    timeout=${TIMEOUT}
+    Click    ${AI_FAQ_CARD_NEEDED}
+    Wait For Elements State    ${AI_FAQ_CARD_NEEDED_OPEN}    visible    timeout=${TIMEOUT}
 
 Click On Card - Wie Melde Ich Mich An ...
     [Documentation]    Clicks the "Wie melde ich mich mit der AusweisApp an?"
     ...                card button and waits for it to switch to open state.
-    Click    ${AI_FAQ_AUSWEIS_LOGIN}
-    Wait For Elements State    ${AI_FAQ_AUSWEIS_LOGIN_OPEN}    visible    timeout=${TIMEOUT}
+    Click    ${AI_FAQ_CARD_REGISTER}
+    Wait For Elements State    ${AI_FAQ_CARD_REGISTER_OPEN}    visible    timeout=${TIMEOUT}
 
 Click On Card - Wie Sicher ist ...
     [Documentation]    Clicks the "Wie sicher ist das Datenschutzcockpit?"
     ...                card button and waits for it to switch to open state.
-    Click    ${AI_FAQ_HOW_SECURE}
-    Wait For Elements State    ${AI_FAQ_HOW_SECURE_OPEN}    visible    timeout=${TIMEOUT}
+    Click    ${AI_FAQ_CARD_SECURE}
+    Wait For Elements State    ${AI_FAQ_CARD_SECURE_OPEN}    visible    timeout=${TIMEOUT}
 
 
 # ── Aggregate Validation ───────────────────────────────────────────────────────

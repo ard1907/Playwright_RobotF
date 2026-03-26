@@ -163,15 +163,15 @@ TC009 - Full Login Page User Journey
 
     # ── 4. Expand all three FAQ accordions (verify each opens correctly) ───────
     Click On Card - Was Benötige Ich ...
-    Element Is Visible    ${AI_FAQ_WHAT_NEEDED_OPEN}
+    Element Is Visible    ${AI_FAQ_CARD_NEEDED_OPEN}
     Close Currently Open Dialog
 
     Click On Card - Wie Melde Ich Mich An ...
-    Element Is Visible    ${AI_FAQ_AUSWEIS_LOGIN_OPEN}
+    Element Is Visible    ${AI_FAQ_CARD_REGISTER_OPEN}
     Close Currently Open Dialog
 
     Click On Card - Wie Sicher ist ...
-    Element Is Visible    ${AI_FAQ_HOW_SECURE_OPEN}
+    Element Is Visible    ${AI_FAQ_CARD_SECURE_OPEN}
     Close Currently Open Dialog
 
     # ── 5. Confirm page footer navigation is intact ────────────────────────────
