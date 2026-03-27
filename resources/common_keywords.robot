@@ -73,10 +73,13 @@ Element Is Visible
 # ── Dialog Helpers ─────────────────────────────────────────────────────────────
 
 Check If Dialog Is Open
-    [Documentation]    Checks if a dialog/modal is currently open by looking for
-    ...                the presence of a common dialog selector with aria-hidden="false".
-    ${is_open}=         Run Keyword And Return Status    Get Element Count    ${DIALOG_SELECTOR}
-    RETURN              ${is_open}
+    [Documentation]    Returns TRUE if at least one modal/dialog with
+    ...                aria-hidden="false" is currently present; FALSE otherwise.
+    ...                NOTE: Previously used Run Keyword And Return Status which
+    ...                always returned TRUE because Get Element Count never raises.
+    ${count}=    Get Element Count    ${DIALOG_SELECTOR}
+    ${is_open}=  Evaluate    ${count} > 0
+    RETURN       ${is_open}
 
 Close Currently Open Dialog
     [Documentation]    Closes the currently open modal/dialog by clicking the

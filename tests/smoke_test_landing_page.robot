@@ -139,9 +139,10 @@ TC009 - Verify FAQ Card 'Was ist das Datenschutzcockpit' And Validate Content
     ...                the Landing Page and verifies the revealed modal content.
     ...                Assertions:
     ...                  1. Click opens the modal (H1 heading visible)
-    ...                  2. SPA tab title updates to reflect the open card
-    ...                  3. URL remains on the landing page (no navigation)
-    ...                  4. The other FAQ cards are still rendered
+    ...                  2. Distinctive content anchor visible inside modal
+    ...                  3. SPA tab title updates to reflect the open card
+    ...                  4. URL remains on the landing page (no navigation)
+    ...                  5. All three remaining FAQ cards are still rendered
     [Tags]             smoke    landing    faq    accordion
     Verify Landing Page FAQ Card "Was Ist Das Datenschutzcockpit ..."
     Close Currently Open Dialog
@@ -152,9 +153,10 @@ TC010 - Verify FAQ Card 'Was sehe ich im Datenschutzcockpit' And Validate Conten
     ...                on the Landing Page and verifies the revealed modal content.
     ...                Assertions:
     ...                  1. Click opens the modal (H1 heading visible)
-    ...                  2. SPA tab title updates to reflect the open card
-    ...                  3. URL remains on the landing page (no navigation)
-    ...                  4. The other FAQ cards are still rendered
+    ...                  2. Distinctive content anchor visible inside modal
+    ...                  3. SPA tab title updates to reflect the open card
+    ...                  4. URL remains on the landing page (no navigation)
+    ...                  5. All three remaining FAQ cards are still rendered
     [Tags]             smoke    landing    faq    accordion
     Verify Landing Page FAQ Card "Was Sehe Ich Im Datenschutzcockpit ..."
     Close Currently Open Dialog
@@ -165,9 +167,10 @@ TC011 - Verify FAQ Card 'Wer betreibt das Datenschutzcockpit' And Validate Conte
     ...                on the Landing Page and verifies the revealed modal content.
     ...                Assertions:
     ...                  1. Click opens the modal (H1 heading visible)
-    ...                  2. SPA tab title updates to reflect the open card
-    ...                  3. URL remains on the landing page (no navigation)
-    ...                  4. The other FAQ cards are still rendered
+    ...                  2. Distinctive content anchor visible inside modal
+    ...                  3. SPA tab title updates to reflect the open card
+    ...                  4. URL remains on the landing page (no navigation)
+    ...                  5. All three remaining FAQ cards are still rendered
     [Tags]             smoke    landing    faq    accordion
     Verify Landing Page FAQ Card "Wer Betreibt Das Datenschutzcockpit ..."
     Close Currently Open Dialog
@@ -178,9 +181,10 @@ TC012 - Verify FAQ Card 'Weitere Informationen' And Validate Content
     ...                Landing Page and verifies the revealed modal content.
     ...                Assertions:
     ...                  1. Click opens the modal (H1 heading visible)
-    ...                  2. SPA tab title updates to reflect the open card
-    ...                  3. URL remains on the landing page (no navigation)
-    ...                  4. The other FAQ cards are still rendered
+    ...                  2. Distinctive content anchor visible inside modal
+    ...                  3. SPA tab title updates to reflect the open card
+    ...                  4. URL remains on the landing page (no navigation)
+    ...                  5. All three remaining FAQ cards are still rendered
     [Tags]             smoke    landing    faq    accordion
     Verify Landing Page FAQ Card "Weitere Informationen ..."
     Close Currently Open Dialog
