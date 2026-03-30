@@ -14,14 +14,14 @@
 #   TC002  Navigate To Leichte Sprache And Validate
 #   TC003  Navigate To Gebärdensprache And Validate
 #   TC004  Navigate To FAQ And Validate
-#   TC005  Navigate To Impressum And Validate
-#   TC006  Navigate To Datenschutz And Validate
-#   TC007  Navigate To Barrierefreiheit And Validate
-#   TC008  Verify All FAQ Cards Are Rendered On Landing Page
-#   TC009  Verify FAQ Card 'Was ist das Datenschutzcockpit' And Validate Content
-#   TC010  Verify FAQ Card 'Was sehe ich im Datenschutzcockpit' And Validate Content
-#   TC011  Verify FAQ Card 'Wer betreibt das Datenschutzcockpit' And Validate Content
-#   TC012  Verify FAQ Card 'Weitere Informationen' And Validate Content
+#   TC005  Verify All FAQ Cards Are Rendered On Landing Page
+#   TC006  Verify FAQ Card 'Was ist das Datenschutzcockpit' And Validate Content
+#   TC007  Verify FAQ Card 'Was sehe ich im Datenschutzcockpit' And Validate Content
+#   TC008  Verify FAQ Card 'Wer betreibt das Datenschutzcockpit' And Validate Content
+#   TC009  Verify FAQ Card 'Weitere Informationen' And Validate Content
+#   TC010  Navigate To Impressum And Validate
+#   TC011  Navigate To Datenschutz And Validate
+#   TC012  Navigate To Barrierefreiheit And Validate
 #   TC013  Full SPA User Journey (end-to-end smoke)
 # ==============================================================================
 
@@ -93,40 +93,7 @@ TC004 - Navigate To FAQ And Validate
     Validate FAQ Page
     Close FAQ Dialog
 
-
-TC005 - Navigate To Impressum And Validate
-    [Documentation]    Opens the Impressum dialog via the footer button and
-    ...                checks: dialog visibility, page title change, H1, all
-    ...                four H2 section headings, and the three key organisations.
-    [Tags]             smoke    impressum
-    Open Impressum Dialog
-    Validate Impressum Page
-    Close Impressum Dialog
-
-
-TC006 - Navigate To Datenschutz And Validate
-    [Documentation]    Opens the Datenschutzerklärung dialog via the footer and
-    ...                checks: dialog visibility, page title change, H1, four
-    ...                numbered section headings, DSGVO reference, BVA mention,
-    ...                and IDNr reference.
-    [Tags]             smoke    datenschutz
-    Open Datenschutz Dialog
-    Validate Datenschutz Page
-    Close Datenschutz Dialog
-
-
-TC007 - Navigate To Barrierefreiheit And Validate
-    [Documentation]    Opens the Barrierefreiheit dialog via the footer and
-    ...                checks: dialog visibility, page title change, H1, two H2
-    ...                headings, three H3 headings, BITV reference, and contact
-    ...                email presence.
-    [Tags]             smoke    barrierefreiheit
-    Open Barrierefreiheit Dialog
-    Validate Barrierefreiheit Page
-    Close Barrierefreiheit Dialog
-
-
-TC008 - Verify All FAQ Cards Are Rendered On Landing Page
+TC005 - Verify All FAQ Cards Are Rendered On Landing Page
     [Documentation]    Confirms the "Häufige Fragen" section and all four FAQ
     ...                accordion cards are visible in their default closed state
     ...                without opening any of them.
@@ -134,7 +101,7 @@ TC008 - Verify All FAQ Cards Are Rendered On Landing Page
     Verify Landing Page FAQ Cards Are Rendered
 
 
-TC009 - Verify FAQ Card 'Was ist das Datenschutzcockpit' And Validate Content
+TC006 - Verify FAQ Card 'Was ist das Datenschutzcockpit' And Validate Content
     [Documentation]    Clicks the "Was ist das Datenschutzcockpit?" accordion on
     ...                the Landing Page and verifies the revealed modal content.
     ...                Assertions:
@@ -148,7 +115,7 @@ TC009 - Verify FAQ Card 'Was ist das Datenschutzcockpit' And Validate Content
     Close Currently Open Dialog
 
 
-TC010 - Verify FAQ Card 'Was sehe ich im Datenschutzcockpit' And Validate Content
+TC007 - Verify FAQ Card 'Was sehe ich im Datenschutzcockpit' And Validate Content
     [Documentation]    Clicks the "Was sehe ich im Datenschutzcockpit?" accordion
     ...                on the Landing Page and verifies the revealed modal content.
     ...                Assertions:
@@ -162,7 +129,7 @@ TC010 - Verify FAQ Card 'Was sehe ich im Datenschutzcockpit' And Validate Conten
     Close Currently Open Dialog
 
 
-TC011 - Verify FAQ Card 'Wer betreibt das Datenschutzcockpit' And Validate Content
+TC008 - Verify FAQ Card 'Wer betreibt das Datenschutzcockpit' And Validate Content
     [Documentation]    Clicks the "Wer betreibt das Datenschutzcockpit?" accordion
     ...                on the Landing Page and verifies the revealed modal content.
     ...                Assertions:
@@ -176,7 +143,7 @@ TC011 - Verify FAQ Card 'Wer betreibt das Datenschutzcockpit' And Validate Conte
     Close Currently Open Dialog
 
 
-TC012 - Verify FAQ Card 'Weitere Informationen' And Validate Content
+TC009 - Verify FAQ Card 'Weitere Informationen' And Validate Content
     [Documentation]    Clicks the "Weitere Informationen" accordion on the
     ...                Landing Page and verifies the revealed modal content.
     ...                Assertions:
@@ -188,6 +155,38 @@ TC012 - Verify FAQ Card 'Weitere Informationen' And Validate Content
     [Tags]             smoke    landing    faq    accordion
     Verify Landing Page FAQ Card "Weitere Informationen ..."
     Close Currently Open Dialog
+
+
+TC010 - Navigate To Impressum And Validate
+    [Documentation]    Opens the Impressum dialog via the footer button and
+    ...                checks: dialog visibility, page title change, H1, all
+    ...                four H2 section headings, and the three key organisations.
+    [Tags]             smoke    impressum
+    Open Impressum Dialog
+    Validate Impressum Page
+    Close Impressum Dialog
+
+
+TC011 - Navigate To Datenschutz And Validate
+    [Documentation]    Opens the Datenschutzerklärung dialog via the footer and
+    ...                checks: dialog visibility, page title change, H1, four
+    ...                numbered section headings, DSGVO reference, BVA mention,
+    ...                and IDNr reference.
+    [Tags]             smoke    datenschutz
+    Open Datenschutz Dialog
+    Validate Datenschutz Page
+    Close Datenschutz Dialog
+
+
+TC012 - Navigate To Barrierefreiheit And Validate
+    [Documentation]    Opens the Barrierefreiheit dialog via the footer and
+    ...                checks: dialog visibility, page title change, H1, two H2
+    ...                headings, three H3 headings, BITV reference, and contact
+    ...                email presence.
+    [Tags]             smoke    barrierefreiheit
+    Open Barrierefreiheit Dialog
+    Validate Barrierefreiheit Page
+    Close Barrierefreiheit Dialog
 
 
 TC013 - Full SPA User Journey
@@ -226,31 +225,7 @@ TC013 - Full SPA User Journey
     Verify FAQ Card Items
     Close FAQ Dialog
 
-    # ── 5. Open Impressum, spot-check, close ──────────────────────────────────
-    Open Impressum Dialog
-    Verify Impressum Dialog Is Open
-    Verify Impressum H1 Heading
-    Verify Impressum Publisher Section
-    Verify Impressum Key Organizations
-    Close Impressum Dialog
-
-    # ── 6. Open Datenschutz, spot-check, close ────────────────────────────────
-    Open Datenschutz Dialog
-    Verify Datenschutz Dialog Is Open
-    Verify Datenschutz H1 Heading
-    Verify Datenschutz Section 2
-    Verify Datenschutz DSGVO Reference
-    Close Datenschutz Dialog
-
-    # ── 7. Open Barrierefreiheit, spot-check, close ───────────────────────────
-    Open Barrierefreiheit Dialog
-    Verify Barrierefreiheit Dialog Is Open
-    Verify Barrierefreiheit H1 Heading
-    Verify Barrierefreiheit Compatibility Section
-    Verify Barrierefreiheit Feedback Section
-    Close Barrierefreiheit Dialog
-
-    # ── 8. Expand each Landing Page FAQ card, spot-check, close ───────────────
+    # ── 5. Expand each Landing Page FAQ card, spot-check, close ───────────────
     Click On Card - Was Ist Das Datenschutzcockpit
     Element Is Visible    ${LP_FAQ_CARD_WHAT_IS_OPEN}
     Close Currently Open Dialog
@@ -266,6 +241,31 @@ TC013 - Full SPA User Journey
     Click On Card - Weitere Informationen
     Element Is Visible    ${LP_FAQ_CARD_MORE_INFO_OPEN}
     Close Currently Open Dialog
+
+
+    # ── 6. Open Impressum, spot-check, close ──────────────────────────────────
+    Open Impressum Dialog
+    Verify Impressum Dialog Is Open
+    Verify Impressum H1 Heading
+    Verify Impressum Publisher Section
+    Verify Impressum Key Organizations
+    Close Impressum Dialog
+
+    # ── 7. Open Datenschutz, spot-check, close ────────────────────────────────
+    Open Datenschutz Dialog
+    Verify Datenschutz Dialog Is Open
+    Verify Datenschutz H1 Heading
+    Verify Datenschutz Section 2
+    Verify Datenschutz DSGVO Reference
+    Close Datenschutz Dialog
+
+    # ── 8. Open Barrierefreiheit, spot-check, close ───────────────────────────
+    Open Barrierefreiheit Dialog
+    Verify Barrierefreiheit Dialog Is Open
+    Verify Barrierefreiheit H1 Heading
+    Verify Barrierefreiheit Compatibility Section
+    Verify Barrierefreiheit Feedback Section
+    Close Barrierefreiheit Dialog
 
     # Confirm the landing page is still intact after all card interactions
     Verify Landing Page Is Loaded

@@ -159,7 +159,13 @@ TC009 - Full Login Page User Journey
     # ── 1. Verify the auth-info page is healthy ────────────────────────────────
     Validate Authentication Info Page
 
-    # ── 4. Expand all three FAQ accordions (verify each opens correctly) ───────
+    # ── 2. External links – open each in new tab, validate, close ─────────────
+    Open AusweisApp External Tab And Validate
+    Verify Authentication Info Page Is Loaded
+    Open Lesegeraet External Tab And Validate
+    Verify Authentication Info Page Is Loaded
+
+    # ── 3. Expand all three FAQ accordions (verify each opens correctly) ───────
     Click On Card - Was Benötige Ich ...
     Element Is Visible    ${AI_FAQ_CARD_NEEDED_OPEN}
     Close Currently Open Dialog
@@ -172,13 +178,9 @@ TC009 - Full Login Page User Journey
     Element Is Visible    ${AI_FAQ_CARD_SECURE_OPEN}
     Close Currently Open Dialog
 
-    # ── 5. Confirm page footer navigation is intact ────────────────────────────
+    # ── 4. Confirm page footer navigation is intact ────────────────────────────
     Verify Auth Page Footer Navigation
     Verify Auth Page Version Info
 
-    # ── 6. External links – open each in new tab, validate, close ─────────────
-    Open AusweisApp External Tab And Validate
-    Verify Authentication Info Page Is Loaded
-    Open Lesegeraet External Tab And Validate
-    Verify Authentication Info Page Is Loaded
+
 

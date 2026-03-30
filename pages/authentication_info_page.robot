@@ -107,8 +107,8 @@ Login Into Datenschutzcockpit
     ...                and login into Datenschutzcockpit with AusweisApp (Docker).
     Click                    ${AI_AUSWEIS_START_BTN}
     Click                    ${AI_AUSWEIS_START_BTN_ALREADY_INSTALLED}
-    Sleep                    3s       #ARD: Just for Demo purposes. Plse remove in real test run to avoid unnecessary wait time.
-    Wait For Elements State  ${AI_LOGIN_SUCCESS_HEADING}  visible
+    Sleep                    2s       #ARD: Just for Demo purposes. Plse remove in real test run to avoid unnecessary wait time.
+    Element Is Visible       ${AI_LOGIN_SUCCESS_HEADING}
     Sleep                    3s       #ARD: Just for Demo purposes. Plse remove in real test run to avoid unnecessary wait time.
 
 Verify Authentication Info Page Is Loaded
