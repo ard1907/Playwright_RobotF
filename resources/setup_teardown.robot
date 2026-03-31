@@ -19,7 +19,7 @@ Open Application Browser
     ...                the first page and waits for the SPA to fully hydrate.
     [Arguments]        ${url}=${BASE_URL}    ${browser_type}=${BROWSER}    ${headless_bool}=${HEADLESS}   ${slow_mo}=${SLOW_MOTION}
     IF    ${CI}
-        New Browser    ${browser_type}    headless=${headless_bool}
+        New Browser
         New Context                                                       # viewport={'width': ${WIDTH}, 'height': ${HEIGHT}}
     ELSE
         ${slow_mo}=        IF   "${headless_bool}"=="True" or "${slow_mo}"==""    Set Variable   0:00:00.010   ELSE    Set Variable   ${slow_mo}

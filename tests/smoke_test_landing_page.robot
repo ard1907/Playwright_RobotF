@@ -66,6 +66,8 @@ TC002 - Navigate To Leichte Sprache And Validate
     [Tags]             smoke    auth    leichte-sprache    accessibility
     Open Leichte Sprache Dialog
     Validate Leichte Sprache Page
+    Validate Internal Links For Leichte Sprache Dialog
+    Validate External URLs For Leichte Sprache Dialog
     Close Leichte Sprache Dialog
     Verify Landing Page Is Loaded
 
@@ -79,6 +81,7 @@ TC003 - Navigate To Gebärdensprache And Validate
     [Tags]             smoke    auth    gebaerdensprache    accessibility
     Open Gebaerdensprache Dialog
     Validate Gebaerdensprache Page
+    Validate External URLs For Gebaerdensprache Dialog
     Close Gebaerdensprache Dialog
     # Confirm we are back on the landing page
     Verify Landing Page Is Loaded
@@ -112,6 +115,7 @@ TC006 - Verify FAQ Card 'Was ist das Datenschutzcockpit' And Validate Content
     ...                  5. All three remaining FAQ cards are still rendered
     [Tags]             smoke    landing    faq    accordion
     Verify Landing Page FAQ Card "Was Ist Das Datenschutzcockpit ..."
+    Validate External URLs For Card - Was ist das Datenschutzcockpit ...
     Close Currently Open Dialog
 
 
@@ -154,6 +158,7 @@ TC009 - Verify FAQ Card 'Weitere Informationen' And Validate Content
     ...                  5. All three remaining FAQ cards are still rendered
     [Tags]             smoke    landing    faq    accordion
     Verify Landing Page FAQ Card "Weitere Informationen ..."
+    Validate External URLs For Card - Weitere Informationen ...
     Close Currently Open Dialog
 
 

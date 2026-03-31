@@ -23,6 +23,7 @@ Resource    ../resources/common_keywords.robot
 
 # ── Dialog Container ───────────────────────────────────────────────────────────
 ${GS_DIALOG}                 role=dialog
+${GS_TAB_TITLE_GEBAERDENSPRACHE}   Datenschutzcockpit - Gebärdensprache
 
 # ── Dialog Headings ────────────────────────────────────────────────────────────
 # NOTE: Verify actual heading text on first run.
@@ -37,8 +38,12 @@ ${GS_SIGN_LANG_MENTION}      //h2[contains(text(), "Informationen zur Erklärung
 # Checks that a playable video element exists inside the dialog.
 # Fallback: if the video is embedded via an <iframe>, adjust to css=iframe.
 # ${GS_VIDEO_ELEMENT}          css=video
-${GS_VIDEO_ELEMENT}          //a[contains(text(), "Hier geht´s zum Video.")]
 ${GS_SIGN_LANGUAGE_BTN}      role=button[name="Zum Gebärdensprache-Video"]
+${GS_VIDEO_ELEMENT_01}       (//a[contains(text(), "Hier geht´s zum Video.")])[1]
+${GS_VIDEO_ELEMENT_02}       (//a[contains(text(), "Hier geht´s zum Video.")])[2]
+
+&{GS_EXTERNAL_URLS}          Video_DSC=https://dataportlms.web.hamburg.de/ilp/pages/mediacontent.jsf?mediaId=10779559&catalogId=10779436
+...                          Video_Barrierefreiheit=https://dataportlms.web.hamburg.de/ilp/pages/mediacontent.jsf?mediaId=10779579&catalogId=10779436
 
 # ── Close Button ──────────────────────────────────────────────────────────────
 ${GS_CLOSE_BTN}              role=button[name="Menü schließen"]
@@ -51,7 +56,7 @@ ${GS_CLOSE_BTN}              role=button[name="Menü schließen"]
 Verify Gebaerdensprache Dialog Is Open
     [Documentation]    Confirms the Gebärdensprache dialog is active and the
     ...                SPA has updated the page title to include "Gebärdensprache".
-    Verify Page Title Contains    ${TITLE_GEBAERDENSPRACHE}
+    Verify Page Title Contains    ${GS_TAB_TITLE_GEBAERDENSPRACHE}
     Element Is Visible    ${GS_DIALOG}
 
 Verify Gebaerdensprache H1 Heading
@@ -67,13 +72,8 @@ Verify Gebaerdensprache Content Present
 Verify Gebaerdensprache Video Is Present
     [Documentation]    Checks that a <video> element exists in the dialog,
     ...                confirming the sign-language video embed has rendered.
-    ...                NOTE: Adjust selector to css=iframe if embed uses an iframe.
-
-    ${elements}=    Get Elements    ${GS_VIDEO_ELEMENT}
-    Log   ${elements}
-    FOR  ${element}    IN     @{elements}
-        Element Is Visible    ${element}
-    END
+    Element Is Visible    ${GS_VIDEO_ELEMENT_01}
+    Element Is Visible    ${GS_VIDEO_ELEMENT_02}
 
 Verify Gebaerdensprache Close Button Is Present
     [Documentation]    Confirms the universal dialog close button is accessible.
@@ -105,3 +105,12 @@ Validate Gebaerdensprache Page
     Verify Gebaerdensprache Content Present
     Verify Gebaerdensprache Video Is Present
     Verify Gebaerdensprache Close Button Is Present
+
+
+# ── New-Tab External Link Flows ────────────────────────────────────────────────
+Validate External URLs For Gebaerdensprache Dialog
+    [Documentation]    Validates that all external links in the Gebärdensprache dialog have the correct href URLs before clicking.
+    ...                This is a pre-click check to ensure the links point to the expected external resources, without relying on the new tab navigation.
+    # Open Gebaerdensprache Dialog
+    Get Attribute    ${GS_VIDEO_ELEMENT_01}   href   ==   ${GS_EXTERNAL_URLS}[Video_DSC]
+    Get Attribute    ${GS_VIDEO_ELEMENT_02}   href   ==   ${GS_EXTERNAL_URLS}[Video_Barrierefreiheit]

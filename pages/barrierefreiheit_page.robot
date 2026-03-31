@@ -18,20 +18,21 @@ Resource    ../resources/common_keywords.robot
 
 *** Variables ***
 
-# ── Dialog Headings ────────────────────────────────────────────────────────────
-${BARRIER_H1_HEADING}      role=heading[name="Erklärung zur Barrierefreiheit"]
-${BARRIER_H2_COMPAT}       role=heading[name="Vereinbarkeit mit den Anforderungen"]
-${BARRIER_H2_NOT_BARRIER}  role=heading[name="Nicht barrierefreie Inhalte"]
-${BARRIER_H3_CREATION}
-...    role=heading[name="Erstellung dieser Erklärung zur Barrierefreiheit"]
-${BARRIER_H3_FEEDBACK}     role=heading[name="Feedback und Kontaktangaben"]
-${BARRIER_H3_MEDIATION}    role=heading[name="Schlichtungsverfahren"]
+# ── Dialog Barrierefreiheit Headings ────────────────────────────────────────────────────────────
+${BF_H1_HEADING}                       role=heading[name="Erklärung zur Barrierefreiheit"]
+${BF_H2_COMPAT}                        role=heading[name="Vereinbarkeit mit den Anforderungen"]
+${BF_H2_NOT_BARRIER}                   role=heading[name="Nicht barrierefreie Inhalte"]
+${BF_H3_CREATION}                      role=heading[name="Erstellung dieser Erklärung zur Barrierefreiheit"]
+${BF_H3_FEEDBACK}                      role=heading[name="Feedback und Kontaktangaben"]
+${BF_H3_MEDIATION}                     role=heading[name="Schlichtungsverfahren"]
 
-# ── Key Content References ─────────────────────────────────────────────────────
-# BITV = Barrierefreie-Informationstechnik-Verordnung (German accessibility reg.)
-# ${BARRIER_BITV_TEXT}       text=BITV
-# ${BARRIER_CONTACT_EMAIL}   text=datenschutzcockpit@finanzen.bremen.de
-${BARRIER_CONTACT_EMAIL}   (//*[contains(text(), "datenschutzcockpit@finanzen.bremen.de")])[6]
+
+# ── Dialog Barrierefreiheit - Selectors - Key Content References ───────────────────────────────────
+${BF_CONTACT_EMAIL_DSC_01}             (//*[contains(text(), "datenschutzcockpit@finanzen.bremen.de")])[6]
+
+
+# ── Close Button ──────────────────────────────────────────────────────────────
+${BF_CLOSE_BTN}              role=button[name="Menü schließen"]
 
 
 *** Keywords ***
@@ -46,44 +47,44 @@ Verify Barrierefreiheit Dialog Is Open
 
 Verify Barrierefreiheit H1 Heading
     [Documentation]    Checks the "Erklärung zur Barrierefreiheit" H1 heading.
-    Element Is Visible    ${BARRIER_H1_HEADING}
+    Element Is Visible    ${BF_H1_HEADING}
 
 Verify Barrierefreiheit Compatibility Section
     [Documentation]    Checks the "Vereinbarkeit mit den Anforderungen" H2 section
     ...                heading describing BITV compliance status.
-    Element Is Visible    ${BARRIER_H2_COMPAT}
+    Element Is Visible    ${BF_H2_COMPAT}
 
 Verify Barrierefreiheit Non-Accessible Section
     [Documentation]    Checks the "Nicht barrierefreie Inhalte" H2 section heading
     ...                listing known barriers.
-    Element Is Visible    ${BARRIER_H2_NOT_BARRIER}
+    Element Is Visible    ${BF_H2_NOT_BARRIER}
 
 Verify Barrierefreiheit Creation Section
     [Documentation]    Checks the H3 heading about when this statement was created.
-    Element Is Visible    ${BARRIER_H3_CREATION}
+    Element Is Visible    ${BF_H3_CREATION}
 
 Verify Barrierefreiheit Feedback Section
     [Documentation]    Checks the "Feedback und Kontaktangaben" H3 section heading
     ...                with the contact email for reporting barriers.
-    Element Is Visible    ${BARRIER_H3_FEEDBACK}
+    Element Is Visible    ${BF_H3_FEEDBACK}
 
 Verify Barrierefreiheit Mediation Section
     [Documentation]    Checks the "Schlichtungsverfahren" (mediation) H3 section
     ...                heading about escalation for accessibility complaints.
-    Element Is Visible    ${BARRIER_H3_MEDIATION}
+    Element Is Visible    ${BF_H3_MEDIATION}
 
 # Verify Barrierefreiheit BITV Referenced
 #     [Documentation]    Confirms the BITV/WCAG standard is explicitly named in
 #     ...                the dialog text.
-#     Element Is Visible    ${BARRIER_BITV_TEXT}
+#     Element Is Visible    ${BF_BITV_TEXT}
 
 Verify Barrierefreiheit Contact Email
     [Documentation]    Checks that the feedback contact email address is shown.
-    Element Is Visible    ${BARRIER_CONTACT_EMAIL}
+    Element Is Visible    ${BF_CONTACT_EMAIL_DSC_01}
 
 Verify Barrierefreiheit Close Button Is Present
     [Documentation]    Confirms the universal dialog close button is accessible.
-    Element Is Visible    role=button[name="Menü schließen"]
+    Element Is Visible    ${BF_CLOSE_BTN}
 
 
 # ── Dialog Lifecycle ───────────────────────────────────────────────────────────
@@ -108,3 +109,5 @@ Validate Barrierefreiheit Page
     # Verify Barrierefreiheit BITV Referenced
     Verify Barrierefreiheit Contact Email
     Verify Barrierefreiheit Close Button Is Present
+
+

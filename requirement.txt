@@ -1,6 +1,3 @@
-# Playwright
-playwright
-
 # Robot Framework
 robotframework
 robotframework-browser

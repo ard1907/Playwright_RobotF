@@ -23,6 +23,7 @@
 	"d-biehl.robotcode",
 	"vscode-icons-team.vscode-icons",
 	"redhat.vscode-yaml",
-	"esbenp.prettier-vscode"
+	"esbenp.prettier-vscode",
+	"christian-kohler.npm-intellisense"
   ]
 }

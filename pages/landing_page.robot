@@ -21,6 +21,7 @@ ${LP_LOGO_LINK}              role=link[name="Bund.de Datenschutzcockpit Beta Log
 ${LP_EASY_LANGUAGE_BTN}      role=button[name="Das Datenschutzcockpit in Leichter Sprache"]
 ${LP_SIGN_LANGUAGE_BTN}      role=button[name="Zum Gebärdensprache-Video"]
 
+
 # ── Main Content ───────────────────────────────────────────────────────────────
 ${LP_H1_HEADING}             role=heading[name="Behalten Sie Ihre Daten im Blick"]
 ${LP_INTRO_TEXT}             text=Im Datenschutzcockpit sehen Sie
@@ -28,14 +29,23 @@ ${LP_INTRO_TEXT}             text=Im Datenschutzcockpit sehen Sie
 ${LP_LOGIN_BUTTON}           //button[@id="button-anfrage-starten"]
 ${LP_FAQ_SECTION_HEADING}    role=heading[name="Häufige Fragen"]
 
+
+# ── Landing Page External URLs ───────────────────────────────────────────────────────
+&{LP_EXTERNAL_URLs}                  LP_Card_1_Identifikationsnummerngesetz=https://www.buzer.de/Identifikationsnummer-Gesetz.htm
+...                                  LP_Card_1_Registermodernisierungsgesetz=https://www.gesetze-im-internet.de/regmog/index.html#BJNR059100021BJNE000200000
+...                                  LP_Card_4_Identifikationsnummerngesetz=https://www.buzer.de/Identifikationsnummer-Gesetz.htm
+
+
 # ── Footer Navigation ──────────────────────────────────────────────────────────
 ${LP_IMPRESSUM_BTN}          role=button[name="Impressum"]
 ${LP_DATENSCHUTZ_BTN}        role=button[name="Datenschutz"]
 ${LP_BARRIEREFREIHEIT_BTN}   role=button[name="Barrierefreiheit"]
 ${LP_VERSION_TEXT}           text=Datenschutzcockpit Version
 
+
 # ── Floating FAQ Sidebar Button ────────────────────────────────────────────────
 ${LP_FAQ_FLOAT_BUTTON}       role=button[name="FAQ"]
+
 
 # ── Landing Page FAQ Cards (in the "Häufige Fragen" section, not inside FAQ dialog) ──
 # Closed state – accordion buttons visible directly on the landing page.
@@ -43,6 +53,7 @@ ${LP_FAQ_CARD_WHAT_IS}       //h3[text()="Was ist das Datenschutzcockpit?"]
 ${LP_FAQ_CARD_WHAT_SEE}      //h3[text()="Was sehe ich im Datenschutzcockpit?"]
 ${LP_FAQ_CARD_WHO_OPS}       //h3[text()="Wer betreibt das Datenschutzcockpit?"]
 ${LP_FAQ_CARD_MORE_INFO}     (//h3[text()="Weitere Informationen"])[1]
+
 
 # Open state – each card opens as a modal overlay; H1 identifies the active card.
 ${LP_FAQ_CARD_WHAT_IS_OPEN}
@@ -53,6 +64,11 @@ ${LP_FAQ_CARD_WHO_OPS_OPEN}
 ...    //div[@class="modal" and @aria-hidden="false"]//h1[text()="Wer betreibt das Datenschutzcockpit?"]
 ${LP_FAQ_CARD_MORE_INFO_OPEN}
 ...    //div[@class="modal" and @aria-hidden="false"]//h1[text()="Weitere Informationen"]
+
+${LP_CARD_1_EXT_LINK_01}       //p[contains(text(),"dazu: ")]/a[contains(text(),"Identifikationsnummerngesetz")]
+${LP_CARD_1_EXT_LINK_02}       //a[contains(text(),"Registermodernisierungsgesetz")]
+${LP_CARD_4_EXT_LINK_01}       (//a[contains(text(),"Identifikationsnummerngesetz")])[2]
+
 
 # Tab titles – the SPA router updates the document title when a card modal opens.
 &{LP_FAQ_CARDS_TAB_TITLES}
@@ -262,3 +278,20 @@ Validate Landing Page
     Verify Landing Page Footer Navigation
     Verify Landing Page FAQ Float Button
     Verify Landing Page Version Info
+
+
+# ── New-Tab External Link Flows ────────────────────────────────────────────────
+Validate External URLs For Card - Was ist das Datenschutzcockpit ...
+    [Documentation]    Validates that all external links in the "Was ist das Datenschutzcockpit?" FAQ card have the correct href URLs before clicking.
+    ...                This is a pre-click check to ensure the links point to the expected external resources, without relying on the new tab navigation.
+    # Click On Card - Was Ist Das Datenschutzcockpit
+    Get Attribute    ${LP_CARD_1_EXT_LINK_01}   href   ==   ${LP_EXTERNAL_URLs}[LP_Card_1_Identifikationsnummerngesetz]
+    Get Attribute    ${LP_CARD_1_EXT_LINK_02}   href   ==   ${LP_EXTERNAL_URLs}[LP_Card_1_Registermodernisierungsgesetz]
+
+
+Validate External URLs For Card - Weitere Informationen ...
+    [Documentation]    Validates that all external links in the "Weitere Informationen" FAQ card have the correct href URLs before clicking.
+    ...                This is a pre-click check to ensure the links point to the expected external resources, without relying on the new tab navigation.
+    # Click On Card - Weitere Informationen
+    Get Attribute    ${LP_CARD_4_EXT_LINK_01}   href   ==   ${LP_EXTERNAL_URLs}[LP_Card_4_Identifikationsnummerngesetz]
+

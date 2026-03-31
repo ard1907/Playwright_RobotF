@@ -10,9 +10,9 @@
 ${CI}                      ${False}
 ${BASE_URL}                https://datenschutzcockpit.dsc.govkg.de/spa/
 ${BROWSER}                 chromium
-${HEADLESS}                ${FALSE}
+${HEADLESS}                ${False}
 ${TIMEOUT}                 10s
-${SLOW_MOTION}             0:00:01.500
+${SLOW_MOTION}             0:00:01.000
 ${WIDTH}                   1920
 ${HEIGHT}                  1080
 

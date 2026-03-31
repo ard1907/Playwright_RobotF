@@ -75,7 +75,8 @@ TC003 - AusweisApp Link Navigates To External Page
     ...                  -- At least one H1 heading is visible
     ...                After verification the new tab is closed and focus returns.
     [Tags]             smoke    auth    external-link    ausweisapp
-    Open AusweisApp External Tab And Validate
+    # Open AusweisApp External Tab And Validate
+    Validate External URL For AusweisApp
 
 
 TC004 - Kompatibles Lesegerät Link Navigates To External Page
@@ -87,8 +88,8 @@ TC004 - Kompatibles Lesegerät Link Navigates To External Page
     ...                  -- At least one heading is visible
     ...                After verification the new tab is closed and focus returns.
     [Tags]             smoke    auth    external-link    lesegeraet
-    Open Lesegeraet External Tab And Validate
-
+    # Open Lesegeraet External Tab And Validate
+    Validate External URL For Lesegeraet
 
 TC005 - Verify AusweisApp Starten Button Is Accessible
     [Documentation]    Verifies the "AusweisApp starten" button is present,
@@ -118,7 +119,8 @@ TC006 - Verify FAQ Card 'Was benötige ich' And Validate Content
     ...                  5. The other two FAQ cards are still present
     [Tags]             smoke    auth    faq    accordion
     Verify Auth Page FAQ Card "Was Benötige Ich ..."
-    Open External Tab And Validate                        PIN
+    # Open External Tab And Validate                        PIN
+    Validate External URLs For Card - Was Benötige Ich ...
     Close Currently Open Dialog
 
 TC007 - Verify FAQ Card 'Wie melde ich mich' And Validate Content
@@ -132,8 +134,9 @@ TC007 - Verify FAQ Card 'Wie melde ich mich' And Validate Content
     ...                  5. The other two FAQ accordions are still present
     [Tags]             smoke    auth    faq    accordion
     Verify Auth Page FAQ Card "Wie Melde Ich Mich ..."
-    Open External Tab And Validate Just URL                     AusweisAppHome
-    Open External Tab And Validate Just URL                     Personalausweisportal
+    # Open External Tab And Validate Just URL                     AusweisAppHome
+    # Open External Tab And Validate Just URL                     Personalausweisportal
+    Validate External URLs For Card - Wie Melde Ich Mich ...
     Close Currently Open Dialog
 
 TC008 - Verify FAQ Card 'Wie sicher ist das Cockpit' And Validate Content
@@ -160,10 +163,10 @@ TC009 - Full Login Page User Journey
     Validate Authentication Info Page
 
     # ── 2. External links – open each in new tab, validate, close ─────────────
-    Open AusweisApp External Tab And Validate
-    Verify Authentication Info Page Is Loaded
-    Open Lesegeraet External Tab And Validate
-    Verify Authentication Info Page Is Loaded
+    # Open AusweisApp External Tab And Validate
+    # Verify Authentication Info Page Is Loaded
+    # Open Lesegeraet External Tab And Validate
+    # Verify Authentication Info Page Is Loaded
 
     # ── 3. Expand all three FAQ accordions (verify each opens correctly) ───────
     Click On Card - Was Benötige Ich ...

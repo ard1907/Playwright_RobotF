@@ -29,20 +29,34 @@ Resource    ../resources/common_keywords.robot
 ${AI_EASY_LANGUAGE_BTN}        role=button[name="Das Datenschutzcockpit in Leichter Sprache"]
 ${AI_SIGN_LANGUAGE_BTN}        role=button[name="Zum Gebärdensprache-Video"]
 
+
 # ── Logo / Brand ───────────────────────────────────────────────────────────────
 ${AI_LOGO_LINK}                role=link[name="Bund.de Datenschutzcockpit Beta Logo"]
+
 
 # ── Main Content ───────────────────────────────────────────────────────────────
 # NOTE: After first run verify the exact H1 wording on this page.
 # ${AI_H1_HEADING}               role=heading[level=1]
 ${AI_H1_HEADING}               //h1[text()="Anmeldung"]
 
-# ── Login Information Links ───────────────────────────────────────────────────
+# ── Login Page External URLs ───────────────────────────────────────────────────────
+&{AI_EXTERNAL_URLs}                  AusweisApp=https://www.ausweisapp.bund.de/software/downloads/
+...                                  Lesegeraete=https://www.ausweisapp.bund.de/kompatible-kartenleser
+...                                  AI_Card_1_PIN=https://www.personalausweisportal.de/Webs/PA/DE/buergerinnen-und-buerger/online-ausweisen/pin-brief/pin-brief-node.html
+...                                  AI_Card_1_Kartenleser=https://www.ausweisapp.bund.de/kompatible-kartenleser
+...                                  AI_Card_1_Software=https://www.personalausweisportal.de/Webs/PA/DE/buergerinnen-und-buerger/online-ausweisen/software/software-node.html
+...                                  AI_Card_2_Mehr_Infos=https://www.ausweisapp.bund.de/home/
+...                                  AI_Card_2_Mehr_Infos_2=https://www.ausweisapp.bund.de/
+...                                  AI_Card_2_Personalausweis=https://www.personalausweisportal.de/Webs/PA/DE/startseite/startseite-node.html
+
+
+# ── Login Page Information Links ───────────────────────────────────────────────────
 # Both links open in a new browser tab (target="_blank") to external resources.
 # ${AI_LESEGERAET_LINK}          role=link[name="kompatibles Lesegerät"]
 ${AI_LESEGERAET_LINK}          //a[text()="kompatibles Lesegerät"]
 # ${AI_AUSWEIS_APP_LINK}         role=link[name="AusweisApp"]
 ${AI_AUSWEIS_APP_LINK}         //a[text()="AusweisApp"]
+
 
 # ── AusweisApp Start Button ────────────────────────────────────────────────────
 # "AusweisApp starten" initiates the eID authentication flow.
@@ -55,16 +69,19 @@ ${AI_AUSWEIS_START_BTN_ALREADY_INSTALLED}    //div[text()="Bereits installiert"]
 ${AI_POPUP_CLOSE_BTN}                        (//button[@aria-label="Popup schließen"])[2]
 ${AI_LOGIN_SUCCESS_HEADING}                   //h1[text()="Wonach wollen Sie suchen?"]
 
+
 # ── Footer Navigation (same component as landing page) ────────────────────────
 ${AI_IMPRESSUM_BTN}            role=button[name="Impressum"]
 ${AI_DATENSCHUTZ_BTN}          role=button[name="Datenschutz"]
 ${AI_BARRIEREFREIHEIT_BTN}     role=button[name="Barrierefreiheit"]
 ${AI_VERSION_TEXT}             text=Datenschutzcockpit Version
 
+
 # ── Auth Info Cards Variables ─────────────────────────────────────────────────
 &{AI_CARDS_TAB_TITLES}          NEEDED_TAB_TITLE=Datenschutzcockpit - Was benötige ich für die Anmeldung 
 ...                            REGISTER_TAB_TITLE=Datenschutzcockpit - Wie melde ich mich mit der AusweisApp an
 ...                            SECURE_TAB_TITLE=Datenschutzcockpit - Wie sicher ist das Datenschutzcockpit
+
 
 # ── Card: Was benötige ich für die Anmeldung? ─────────────────────────────────
 ${AI_FAQ_CARD_NEEDED}
@@ -78,7 +95,6 @@ ${AI_FAQ_WN_EXT_LINK_02}       //a[contains(text(),"Mehr Informationen zu geeign
 ${AI_FAQ_WN_EXT_LINK_03}       //a[contains(text(),"Mehr Informationen zur Software")]
 
 
-
 # ── Card: Wie melde ich mich mit der AusweisApp an? ────────────────────────────
 ${AI_FAQ_CARD_REGISTER}
 ...    //h3[text()="Wie melde ich mich mit der AusweisApp an?"]               # closed state = default state
@@ -86,6 +102,11 @@ ${AI_FAQ_CARD_REGISTER}
 ${AI_FAQ_CARD_REGISTER_OPEN}
 ...    //div[@class="modal" and @aria-hidden="false"]//h1[text()="Wie melde ich mich mit der AusweisApp an?"]   # open state has H1 instead of H3
 ${AI_FAQ_AL_SCHRITT}           text=Schritt
+
+${AI_FAQ_AL_EXT_LINK_01}       (//a[contains(text(),"Online-Ausweisfunktion")])[1]
+${AI_FAQ_AL_EXT_LINK_02}       (//a[contains(text(),"Online-Ausweisfunktion")])[2]
+${AI_FAQ_AL_EXT_LINK_03}       //a[contains(text(),"Personalausweisportal")]
+
 
 # ── Card: Wie sicher ist das Datenschutzcockpit? ───────────────────────────────
 ${AI_FAQ_CARD_SECURE}
@@ -105,6 +126,7 @@ Login Into Datenschutzcockpit
     ...                for the main H1 heading to be visible, confirming the
     ...                page has loaded and rendered. Then clicks button  "AusweisApp starten"
     ...                and login into Datenschutzcockpit with AusweisApp (Docker).
+    IF   ${CI}               RETURN   #ARD: Just to test Github Actions Workflow in my personal Repository. Plse remove in real DSC Repository.
     Click                    ${AI_AUSWEIS_START_BTN}
     Click                    ${AI_AUSWEIS_START_BTN_ALREADY_INSTALLED}
     Sleep                    2s       #ARD: Just for Demo purposes. Plse remove in real test run to avoid unnecessary wait time.
@@ -355,3 +377,32 @@ Open Lesegeraet External Tab And Validate
     Element Is Visible    ${ASWAPP_DEVICES_H1}
     # ── Return to auth-info page ───────────────────────────────────────────────
     Close Current Tab And Return
+
+Validate External URL For AusweisApp
+    [Documentation]    Validates that the "AusweisApp" in-text link has the correct href URL before clicking.
+    ...                This is a pre-click check to ensure the link points to the expected external resource, 
+    ...                without relying on the new tab navigation.
+    Get Attribute    ${AI_AUSWEIS_APP_LINK}   href   ==   ${AI_EXTERNAL_URLs}[AusweisApp]
+
+Validate External URL For Lesegeraet
+    [Documentation]    Validates that the "kompatibles Lesegerät" in-text link has the correct href URL before clicking.
+    ...                This is a pre-click check to ensure the link points to the expected external resource, 
+    ...                without relying on the new tab navigation.
+    Get Attribute    ${AI_LESEGERAET_LINK}   href   ==    ${AI_EXTERNAL_URLs}[Lesegeraete]
+
+Validate External URLs For Card - Was Benötige Ich ...
+    [Documentation]    Validates that all three external links in the "Was benötige ich für die Anmeldung?" FAQ card have the correct href URLs before clicking.
+    ...                This is a pre-click check to ensure the links point to the expected external resources, without relying on the new tab navigation.
+    # Click On Card - Was Benötige Ich ...
+    Get Attribute    ${AI_FAQ_WN_EXT_LINK_01}   href   ==   ${AI_EXTERNAL_URLs}[AI_Card_1_PIN]
+    Get Attribute    ${AI_FAQ_WN_EXT_LINK_02}   href   ==   ${AI_EXTERNAL_URLs}[AI_Card_1_Kartenleser]
+    Get Attribute    ${AI_FAQ_WN_EXT_LINK_03}   href   ==   ${AI_EXTERNAL_URLs}[AI_Card_1_Software]
+
+Validate External URLs For Card - Wie Melde Ich Mich ...
+    [Documentation]    Validates that all three external links in the "Wie melde ich mich mit der AusweisApp an?" FAQ card have the correct href URLs before clicking.
+    ...                This is a pre-click check to ensure the links point to the expected external resources, without relying on the new tab navigation.
+    # Click On Card - Wie Melde Ich Mich An ...
+    Get Attribute    ${AI_FAQ_AL_EXT_LINK_01}   href   ==   ${AI_EXTERNAL_URLs}[AI_Card_2_Mehr_Infos]
+    Get Attribute    ${AI_FAQ_AL_EXT_LINK_02}   href   ==   ${AI_EXTERNAL_URLs}[AI_Card_2_Mehr_Infos_2]
+    Get Attribute    ${AI_FAQ_AL_EXT_LINK_03}   href   ==   ${AI_EXTERNAL_URLs}[AI_Card_2_Personalausweis]
+     

@@ -36,6 +36,41 @@ ${LS_COCKPIT_MENTION}        (//a[contains(text(), "Das sehen Sie im Daten-Schut
 # ${LS_TERM_MENTION}           text=Leichte Sprache
 ${LS_TERM_MENTION}           (//a[contains(text(), "Leichte Sprache")])[1]
 
+# ── Dialog Leichte Sprache Internal Links ────────────────────────────────────────────────────────
+&{LS_INTERNAL_URLS}                    DasSehenSie=#header-linkTitle1
+...                                    SoMeldenSieSichAn=#header-linkTitle2
+...                                    SoBenutzenSie=#header-linkTitle3
+...                                    ErklaerungZur=#header-linkTitle4
+
+
+# ── Dialog Leichte Sprache External Links ────────────────────────────────────────────────────────
+&{LS_EXTERNAL_URLS}                    MailtoDSC01=mailto:datenschutzcockpit@finanzen.bremen.de
+...                                    LinkMitInfosPersonalAusweis=https://www.personalausweisportal.de/Webs/PA/DE/service/leichte-sprache/das_personalausweisportal/das_personalausweisportal_node.html
+...                                    LinkMitInfosAusweisApp=https://www.ausweisapp.bund.de/leichte-sprache
+...                                    MailtoDSC02=mailto:datenschutzcockpit@finanzen.bremen.de
+...                                    SchlichtungsStelle01=https://www.schlichtungsstelle-bgg.de
+...                                    Telefon=tel:+4930185272805
+...                                    MailtoBGG=mailto:info@schlichtungsstelle-bgg.de
+...                                    SchlichtungsStelle02=https://www.schlichtungsstelle-bgg.de
+
+
+# ── Dialog Leichte Sprache - Selectors - Key Content References ───────────────────────────────────
+${LS_DAS_SEHEN_SIE_ELEMENT}            role=link[name="Das sehen Sie im Daten-Schutz-Cockpit"]
+${LS_SO_MELDEN_SIE_SICH_AN_ELEMENT}    role=link[name="So melden Sie sich an"]
+${LS_SO_BENUTZEN_SIE_ELEMENT}          role=link[name="So benutzen Sie die Start-Seite"]
+${LS_ERKLAERUNG_ZUR_ELEMENT}           role=link[name="Erklärung zur Barriere-Freiheit"]
+
+${LS_CONTACT_EMAIL_DSC_01}             (//*[contains(text(), "datenschutzcockpit@finanzen.bremen.de")])[1]
+${LS_INFO_PERSONALAUSWEIS_ELEMENT}     role=link[name="Link mit Infos zur Online-Ausweis-Funktion"]
+${LS_INFO_AUSWEISAPP_ELEMENT}          role=link[name="Link mit Infos zur AusweisApp"]
+
+${LS_CONTACT_EMAIL_DSC_02}             (//*[contains(text(), "datenschutzcockpit@finanzen.bremen.de")])[2]
+${LS_SCHLICHTUNGSSTELLE_ELEMENT_01}    role=link[name="www.schlichtungsstelle-bgg.de"] >> nth=0
+${LS_TELEFON_ELEMENT}                  role=link[name="030 18 527 2805"]
+${LS_CONTACT_EMAIL_BGG}                (//*[contains(text(), "info@schlichtungsstelle-bgg.de")])[1]
+${LS_SCHLICHTUNGSSTELLE_ELEMENT_02}    role=link[name="www.schlichtungsstelle-bgg.de"] >> nth=1
+
+
 # ── Close Button ──────────────────────────────────────────────────────────────
 ${LS_CLOSE_BTN}              role=button[name="Menü schließen"]
 
@@ -95,3 +130,29 @@ Validate Leichte Sprache Page
     Verify Leichte Sprache Cockpit Mentioned
     # Verify Leichte Sprache Term Present
     Verify Leichte Sprache Close Button Is Present
+
+
+# ── New-Tab External Link Flows ────────────────────────────────────────────────
+Validate External URLs For Leichte Sprache Dialog
+    [Documentation]    Validates that all external links in the Leichte Sprache dialog have the correct href URLs before clicking.
+    ...                This is a pre-click check to ensure the links point to the expected external resources, without relying on the new tab navigation.
+    # Open Leichte Sprache Dialog
+    Get Attribute    ${LS_CONTACT_EMAIL_DSC_01}   href   ==   ${LS_EXTERNAL_URLS}[MailtoDSC01]
+    Get Attribute    ${LS_INFO_PERSONALAUSWEIS_ELEMENT}   href   ==   ${LS_EXTERNAL_URLS}[LinkMitInfosPersonalAusweis]
+    Get Attribute    ${LS_INFO_AUSWEISAPP_ELEMENT}   href   ==   ${LS_EXTERNAL_URLS}[LinkMitInfosAusweisApp]
+    Get Attribute    ${LS_CONTACT_EMAIL_DSC_02}   href   ==   ${LS_EXTERNAL_URLS}[MailtoDSC02]
+    Get Attribute    ${LS_SCHLICHTUNGSSTELLE_ELEMENT_01}   href   ==   ${LS_EXTERNAL_URLS}[SchlichtungsStelle01]
+    Get Attribute    ${LS_TELEFON_ELEMENT}   href   ==   ${LS_EXTERNAL_URLS}[Telefon]
+    Get Attribute    ${LS_CONTACT_EMAIL_BGG}   href   ==   ${LS_EXTERNAL_URLS}[MailtoBGG]
+    Get Attribute    ${LS_SCHLICHTUNGSSTELLE_ELEMENT_02}   href   ==   ${LS_EXTERNAL_URLS}[SchlichtungsStelle02]
+
+
+# ── Internal Link Flows ────────────────────────────────────────────────
+Validate Internal Links For Leichte Sprache Dialog
+    [Documentation]    Validates that all internal links in the Leichte Sprache dialog have the correct href URLs before clicking.
+    ...                This is a pre-click check to ensure the links point to the expected internal resources.
+    # Open Leichte Sprache Dialog
+    Get Attribute    ${LS_DAS_SEHEN_SIE_ELEMENT}   href   ==   ${LS_INTERNAL_URLS}[DasSehenSie]
+    Get Attribute    ${LS_SO_MELDEN_SIE_SICH_AN_ELEMENT}   href   ==   ${LS_INTERNAL_URLS}[SoMeldenSieSichAn]
+    Get Attribute    ${LS_SO_BENUTZEN_SIE_ELEMENT}   href   ==   ${LS_INTERNAL_URLS}[SoBenutzenSie]
+    Get Attribute    ${LS_ERKLAERUNG_ZUR_ELEMENT}   href   ==   ${LS_INTERNAL_URLS}[ErklaerungZur]
