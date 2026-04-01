@@ -20,11 +20,11 @@ Open Application Browser
     [Arguments]        ${url}=${BASE_URL}    ${browser_type}=${BROWSER}    ${headless_bool}=${HEADLESS}   ${slow_mo}=${SLOW_MOTION}
     IF    ${CI}
         New Browser
-        New Context                                                       # viewport={'width': ${WIDTH}, 'height': ${HEIGHT}}
+        New Context    tracing=retain-on-failure   locale=de-DE
     ELSE
-        ${slow_mo}=        IF   "${headless_bool}"=="True" or "${slow_mo}"==""    Set Variable   0:00:00.010   ELSE    Set Variable   ${slow_mo}
+        ${slow_mo}=    IF   "${headless_bool}"=="True" or "${slow_mo}"==""    Set Variable   0:00:00.010   ELSE    Set Variable   ${slow_mo}
         New Browser    browser=${browser_type}    headless=${headless_bool}   slowMo=${slow_mo}    args=["--start-maximized"]
-        New Context    viewport=None  locale=de-DE
+        New Context    tracing=retain-on-failure   locale=de-DE     viewport=None      # viewport={'width': ${WIDTH}, 'height': ${HEIGHT}}
     END
     New Page               ${url}
     Wait For Load State    networkidle

@@ -9,10 +9,11 @@
 # ── Base Configuration ─────────────────────────────────────────────────────────
 ${CI}                      ${False}
 ${BASE_URL}                https://datenschutzcockpit.dsc.govkg.de/spa/
+# ${BASE_URL}                https://datenschutzcockpit.bund.de/spa/       #ARD: Remove for real DSC Repo.
 ${BROWSER}                 chromium
 ${HEADLESS}                ${False}
 ${TIMEOUT}                 10s
-${SLOW_MOTION}             0:00:01.000
+${SLOW_MOTION}             0:00:00.500
 ${WIDTH}                   1920
 ${HEIGHT}                  1080
 

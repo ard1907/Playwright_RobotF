@@ -100,7 +100,7 @@ jobs:
       # ── 9. Upload Playwright traces (always) ──────────────────────────────
       - name: Upload Playwright traces
         uses: actions/upload-artifact@v4
-        if: always()
+        if: always() && hashFiles('browser/traces/**') != ''
         with:
           name: playwright-traces
           path: browser/traces/
