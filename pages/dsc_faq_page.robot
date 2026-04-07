@@ -11,8 +11,8 @@
 
 *** Settings ***
 Library     Browser
-Resource    ../resources/variables.robot
-Resource    ../resources/common_keywords.robot
+Resource    ../resources/dsc_variables.robot
+Resource    ../resources/dsc_shared_keywords.robot
 
 
 *** Variables ***

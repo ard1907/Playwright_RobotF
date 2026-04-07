@@ -7,8 +7,8 @@
 *** Settings ***
 Library     Browser
 Library     String
-Resource    variables.robot
-# Resource    ../pages/landing_page.robot
+Resource    dsc_variables.robot
+
 
 *** Variables ***
 

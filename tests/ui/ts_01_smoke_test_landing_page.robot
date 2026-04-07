@@ -28,17 +28,17 @@
 *** Settings ***
 Library         Browser
 
-Resource        ../resources/variables.robot
-Resource        ../resources/setup_teardown.robot
-Resource        ../resources/common_keywords.robot
+Resource        ../../resources/dsc_variables.robot
+Resource        ../../resources/dsc_setup_teardown.robot
+Resource        ../../resources/dsc_shared_keywords.robot
 
-Resource        ../pages/landing_page.robot
-Resource        ../pages/faq_page.robot
-Resource        ../pages/leichte_sprache_page.robot
-Resource        ../pages/gebaerdensprache_page.robot
-Resource        ../pages/impressum_page.robot
-Resource        ../pages/datenschutz_page.robot
-Resource        ../pages/barrierefreiheit_page.robot
+Resource        ../../pages/dsc_landing_page.robot
+Resource        ../../pages/dsc_faq_page.robot
+Resource        ../../pages/dsc_easy_language_page.robot
+Resource        ../../pages/dsc_sign_language_page.robot
+Resource        ../../pages/dsc_imprint_legal_notice_page.robot
+Resource        ../../pages/dsc_privacy_page.robot
+Resource        ../../pages/dsc_accessibility_page.robot
 
 # Open the browser once; each test starts fresh on the landing page.
 Suite Setup     Open Application Browser

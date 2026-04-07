@@ -8,7 +8,7 @@
 
 *** Settings ***
 Library     Browser
-Resource    variables.robot
+Resource    dsc_variables.robot
 
 
 *** Keywords ***
