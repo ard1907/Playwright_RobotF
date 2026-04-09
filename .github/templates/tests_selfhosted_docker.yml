@@ -33,7 +33,7 @@ jobs:
           docker-compose run --rm robot-tests bash -c "
           apt-get update && apt-get install -y python3-pip curl git
           pip3 install --upgrade pip
-          pip3 install -r requirement.txt
+          pip3 install -r requirements.txt
           rfbrowser init
           npx playwright install --with-deps chromium
           robot \
