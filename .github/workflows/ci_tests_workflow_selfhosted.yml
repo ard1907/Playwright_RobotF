@@ -34,15 +34,7 @@ jobs:
           docker run --rm \
             --network host \
             -v ${{ github.workspace }}/results2:/app/results2 \
-            robot-tests \
-            robot \
-              --variable CI:True \
-              --variable CI_SELF_HOSTED:True \
-              --variable HEADLESS:True \
-              --variable BASE_URL:https://qs-datenschutzcockpit.dsc.govkg.de/spa/ \
-              --variable BROWSER:chromium \
-              --outputdir /app/results2 \
-              tests/
+            robot-tests
 
       # 5️⃣ Container stoppen, auch wenn Tests fehlschlagen
       - name: Stop AusweisApp
