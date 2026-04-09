@@ -17,32 +17,36 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      # Sicherstellen, dass wir im Repository-Root sind
+      - name: Set working directory
+        run: echo "WORKSPACE=${{ github.workspace }}"  # optional, zur Kontrolle
+
       - name: Start AusweisApp
         run: |
-          docker compose -f ./docker2/docker-compose.tests.yml up -d
+          docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml up -d
 
       - name: Run Tests
         run: |
           docker run --rm \
             --network host \
-            -v ${{ github.workspace }}/results:/app/results \
+            -v ${{ github.workspace }}/results2:/app/results2 \
             robot-tests \
             robot \
               --variable CI:True \
               --variable HEADLESS:True \
               --variable BASE_URL:https://datenschutzcockpit.bund.de/spa/ \
               --variable BROWSER:chromium \
-              --outputdir results \
+              --outputdir /app/results2 \
               tests/
 
       - name: Stop AusweisApp
         if: always()
         run: |
-          docker compose -f ./docker2/docker-compose.tests.yml down
+          docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml down
 
       - name: Upload Results
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: results
-          path: results/
+          name: results2
+          path: results2/
