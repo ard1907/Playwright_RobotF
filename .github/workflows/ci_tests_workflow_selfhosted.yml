@@ -19,7 +19,7 @@ jobs:
 
       - name: Start AusweisApp
         run: |
-          docker compose -f Playwright_RobotF_311/docker2/docker-compose.tests.yml up -d
+          docker compose -f ./docker2/docker-compose.tests.yml up -d
 
       - name: Run Tests
         run: |
@@ -38,7 +38,7 @@ jobs:
       - name: Stop AusweisApp
         if: always()
         run: |
-          docker compose -f Playwright_RobotF_311/docker2/docker-compose.tests.yml down
+          docker compose -f ./docker2/docker-compose.tests.yml down
 
       - name: Upload Results
         uses: actions/upload-artifact@v4
