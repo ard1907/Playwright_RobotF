@@ -21,7 +21,8 @@ Thumbs.db
 ########################################
 # Docker
 ########################################
-docker2/
+docker2/docker-compose.runner.yml
+docker2/Emma_Mustermann.json
 
 ########################################
 # Node.js / JavaScript

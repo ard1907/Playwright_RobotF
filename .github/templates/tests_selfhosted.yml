@@ -1,4 +1,4 @@
-name: Robot Framework Tests
+name: Robot Framework Tests (Self-hosted + local VPN)
 
 # ── Triggers ──────────────────────────────────────────────────────────────────
 # Runs on every push/PR to main, develop, or any feature branch that touches
@@ -8,7 +8,6 @@ on:
     branches:
       - main
       - develop
-      - 'add_test_for_login_page'   # your current working branch
       - 'feature/**'
   pull_request:
     branches:
@@ -25,12 +24,45 @@ jobs:
     # Ubuntu is faster, cheaper, and better supported than windows-latest.
     # The Browser Library runs headless Chromium, so the OS does not matter
     # for these tests (the target is a remote website, not localhost).
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       # ── 1. Get the source code ─────────────────────────────────────────────
+      # ── 1. Repo auschecken ─────────────────────────────────────────────
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      # 🐳 Docker starten (AusweisApp)
+      # ── 2. Docker AusweisApp starten ───────────────────────────────────
+      - name: Start AusweisApp via Docker Compose
+        # run: docker-compose down
+        run: docker-compose up -d
+
+      # ⏳ Warten bis Service läuft
+      # ── 3. Warten bis AusweisApp bereit ist (Bash, Windows) ─────
+      - name: Wait for AusweisApp
+        run: |
+          echo "Waiting for AusweisApp..."
+          timeout 60 bash -c 'until curl -f http://127.0.0.1:24727/eID-Client; do sleep 2; done'
+
+      # # ── 3. Warten bis AusweisApp bereit ist (PowerShell, Windows) ─────
+      # - name: Wait for AusweisApp
+      #   shell: powershell
+      #   run: |
+      #     Write-Host "Waiting for AusweisApp..."
+      #     $timeout = 60
+      #     $elapsed = 0
+      #     while ($elapsed -lt $timeout) {
+      #         try {
+      #             Invoke-WebRequest -Uri http://127.0.0.1:24727/eID-Client -UseBasicParsing
+      #             Write-Host "AusweisApp ready"
+      #             break
+      #         } catch {
+      #             Start-Sleep -Seconds 2
+      #             $elapsed += 2
+      #         }
+      #     }
+
 
       # ── 2. Set up Python 3.11 ─────────────────────────────────────────────
       - name: Set up Python 3.11
@@ -65,6 +97,7 @@ jobs:
         run: rfbrowser init
 
       # ── 6. Install system dependencies for Chromium on Ubuntu ─────────────
+      # ARD: Punkt 6 könnte NICHT nötig sein, da Punkt 5. dies eigentlich alles schon macht
       # Ubuntu runners are minimal. Chromium needs several shared libraries.
       # playwright install --with-deps handles this automatically.
       - name: Install Chromium system dependencies
@@ -76,15 +109,15 @@ jobs:
       # --outputdir results      → all Robot output goes to the results/ folder
       - name: Run Robot Framework tests
         run: |
-          robot \
-            --variable CI:True \
-            --variable HEADLESS:True \
-            --variable BASE_URL:https://datenschutzcockpit.bund.de/spa/ \
-            --variable BROWSER:chromium \
-            --outputdir results \
-            --report results/report.html \
-            --log results/log.html \
-            --xunit results/xunit.xml \
+          robot ^
+            --variable CI:True ^
+            --variable HEADLESS:True ^
+            --variable BASE_URL:https://datenschutzcockpit.dsc.govkg.de/spa/ ^
+            --variable BROWSER:chromium ^
+            --outputdir results ^
+            --report results/report.html ^
+            --log results/log.html ^
+            --xunit results/xunit.xml ^
             tests/
 
       # ── 8. Upload test results (always, even on failure) ──────────────────

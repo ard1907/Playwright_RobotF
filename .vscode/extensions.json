@@ -9,6 +9,7 @@
 	"docker.docker",
 	"github.vscode-github-actions",
 	"eamodio.gitlens",
+	"donjayamanne.githistory",
 	"github.vscode-pull-request-github",
 	"github.copilot-chat",
 	"ms-toolsai.jupyter",

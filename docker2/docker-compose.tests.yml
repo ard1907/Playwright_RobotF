@@ -1,0 +1,51 @@
+version: "3.8"
+
+services:
+
+  # AusweisApp SDK im Automatic Mode (headless, Developer-Mode, eingebettete Testkarte)
+  # Browser navigiert zu http://127.0.0.1:24727/eID-Client?tcTokenURL=...
+  # Der SDK authentifiziert vollautomatisch ohne weiteres Python-Skript.
+  ausweisapp-sdk:
+    container_name: ausweisapp-sdk
+
+    build:
+      context: ./Playwright_RobotF_311/docker2
+      dockerfile: ausweisapp-sdk.Dockerfile
+    ports:
+      - "127.0.0.1:24727:24727"
+
+    restart: "no"
+    # restart: unless-stopped
+
+    # # For Github Actions self-hosted runner: GitHub Actions waits untils Ausweisapp container is up.
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:24727/eID-Client"]
+      interval: 5s
+      timeout: 3s
+      retries: 10       
+
+
+  robot-tests:
+    build:
+      context: ./Playwright_RobotF_311/docker2
+      dockerfile: robot_tests.Dockerfile
+    depends_on:                           # stellt sicher, dass "ausweisapp-sdk" gestartet ist, bevor die Tests beginnen
+      ausweisapp-sdk:
+        condition: service_healthy
+
+    environment:
+      - CI=True
+      - HEADLESS=True
+      - BASE_URL=https://datenschutzcockpit.bund.de/spa/
+      - BROWSER=chromium
+
+    # network_mode: "host"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+    # network_mode: "host" funktioniert nicht perfekt auf Windows
+    # Alternative:
+    # extra_hosts:
+    # - "host.docker.internal:host-gateway"
+    # Und im Test:
+    # http://host.docker.internal:24727

@@ -1,0 +1,20 @@
+# Große Dateien vermeiden
+*.mp4
+
+# Git ignorieren
+../.git
+
+# Sensible Daten
+../.env
+
+../.playwright-mcp
+../.vscode
+../browser
+../results
+../screenshots
+# ../test_data
+../test_examples
+../venv
+../.gitigore
+../*.html
+../*.xml

@@ -1,0 +1,136 @@
+name: Robot Framework Tests (Self-hosted + local VPN)
+
+# ── Triggers ──────────────────────────────────────────────────────────────────
+# Runs on every push/PR to main, develop, or any feature branch that touches
+# test files or the workflow itself.
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'feature/**'
+  pull_request:
+    branches:
+      - main
+      - develop
+  schedule:
+    # Run tests daily at 9 AM UTC (only on main)
+    - cron: '0 9 * * *'
+  workflow_dispatch:                # allow manual run from GitHub UI
+
+# ── Jobs ──────────────────────────────────────────────────────────────────────
+jobs:
+  test:
+    # Ubuntu is faster, cheaper, and better supported than windows-latest.
+    # The Browser Library runs headless Chromium, so the OS does not matter
+    # for these tests (the target is a remote website, not localhost).
+    runs-on: self-hosted
+
+    steps:
+      # ── 1. Get the source code ─────────────────────────────────────────────
+      # ── 1. Repo auschecken ─────────────────────────────────────────────
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+
+      # 🐳 Docker starten (AusweisApp)
+      # ── 2. Docker AusweisApp starten ───────────────────────────────────
+      - name: Start AusweisApp via Docker Compose
+        # run: docker-compose -f docker/docker-compose.yml down
+        # working-directory: docker    #ARD: Oder so setzen, dann ist -f nicht nötig
+        run: docker-compose -f docker/docker-compose.yml up -d
+
+
+      # ⏳ Warten bis Service läuft
+      # # ── 3. Warten bis AusweisApp bereit ist (Bash, Windows) ─────
+      # - name: Wait for AusweisApp
+      #   run: |
+      #     echo "Waiting for AusweisApp..."
+      #     timeout 60 bash -c 'until curl -f http://127.0.0.1:24727/eID-Client; do sleep 2; done'
+
+      # ── 3. Warten bis AusweisApp bereit ist (PowerShell, Windows) ─────
+      - name: Wait for AusweisApp
+        shell: powershell
+        run: |
+          Write-Host "Waiting for AusweisApp..."
+          $timeout = 60
+          $elapsed = 0
+          while ($elapsed -lt $timeout) {
+              try {
+                  Invoke-WebRequest -Uri http://127.0.0.1:24727/eID-Client -UseBasicParsing
+                  Write-Host "AusweisApp ready"
+                  break
+              } catch {
+                  Start-Sleep -Seconds 2
+                  $elapsed += 2
+              }
+          }
+
+
+      # ── 4. Python & Browser Library (lokal installiert, daher keine Neuinstallation) ──
+      - name: Activate Python venv & Check Python
+        shell: powershell
+        run: |
+          $venvPath = "C:\DEV\GitHubRepo_ard1907\Playwright_RobotF_311\venv\Scripts\Activate.ps1"
+          . $venvPath
+          python --version
+          rfbrowser --version
+
+
+      # ── 5. Run all tests (headless + CI mode) ─────────────────────────────
+      # --variable CI:True      → uses the IF ${CI} branch in setup_teardown.robot
+      # --variable HEADLESS:True → forces headless mode (no physical screen in CI)
+      # --outputdir results      → all Robot output goes to the results/ folder
+      - name: Run Robot Framework tests
+        run: |
+          robot \
+            --variable CI:True ^
+            --variable HEADLESS:True ^
+            --variable BASE_URL:https://datenschutzcockpit.dsc.govkg.de/spa/ ^
+            --variable BROWSER:chromium ^
+            --outputdir results ^
+            --report results/report.html ^
+            --log results/log.html ^
+            --xunit results/xunit.xml ^
+            tests/
+
+
+      # ── 6. Upload test results (always, even on failure) ──────────────────
+      # Use @v4 — v3 is deprecated and shows a warning in every run.
+      - name: Upload Robot Framework results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: robot-test-results
+          path: results/
+          retention-days: 30
+
+
+      # ── 7. Upload Playwright traces (always) ──────────────────────────────
+      - name: Upload Playwright traces
+        uses: actions/upload-artifact@v4
+        if: always() && hashFiles('browser/traces/**') != ''
+        with:
+          name: playwright-traces
+          path: browser/traces/
+          retention-days: 7
+
+
+      # # ── 8. Docker Cleanup ─────────────────────────────────────────────
+      # - name: Stop Docker containers
+      #   if: always()
+      #   run: docker-compose down
+
+
+      # # ── 9. Comment on PR with a test summary ────────────────────────────
+      # - name: Comment on PR with test summary
+      #   if: github.event_name == 'pull_request' && always()
+      #   uses: actions/github-script@v7
+      #   with:
+      #     script: |
+      #       github.rest.issues.createComment({
+      #         issue_number: context.issue.number,
+      #         owner: context.repo.owner,
+      #         repo: context.repo.repo,
+      #         body: '## Robot Framework Test Results\n\nTests have finished. Download the **robot-test-results** artifact above to view `report.html` and `log.html`.'
+      #       });
