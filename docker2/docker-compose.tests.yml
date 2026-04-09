@@ -18,10 +18,13 @@ services:
 
     # # For Github Actions self-hosted runner: GitHub Actions waits untils Ausweisapp container is up.
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:24727/eID-Client"]
-      interval: 5s
-      timeout: 3s
-      retries: 10       
+      # test: ["CMD", "curl", "-f", "http://localhost:24727/eID-Client"]
+      # test: ["CMD", "curl", "-f", "http://localhost:24727"]
+      disable: true
+      # test: ["CMD-SHELL", "echo > /dev/tcp/localhost/24727"]
+      # interval: 5s
+      # timeout: 3s
+      # retries: 10       
 
 
   robot-tests:
