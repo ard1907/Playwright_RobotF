@@ -35,7 +35,10 @@ services:
     environment:
       - CI=True
       - HEADLESS=True
-      - BASE_URL=https://datenschutzcockpit.bund.de/spa/
+      # For self-hosted runner: BASE_URL muss auf die URL zeigen, unter der die Tests die AusweisApp erreichen können. ????
+      # - BASE_URL=http://host.docker.internal:24727/eID-Client?tcTokenURL=...  ???  Keine Ahnung, war Copilot Vorschlag.
+      # ARD: wenn in GA / workflow definiert, vielleicht die folgende Zeile gar nicht nötig ???
+      # - BASE_URL=https://qs-datenschutzcockpit.dsc.govkg.de/spa/
       - BROWSER=chromium
 
     # network_mode: "host"

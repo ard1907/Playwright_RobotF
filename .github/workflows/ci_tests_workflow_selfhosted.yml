@@ -14,17 +14,21 @@ jobs:
     runs-on: [self-hosted, linux]
 
     steps:
+      # 1️⃣ Repository auschecken
       - name: Checkout
         uses: actions/checkout@v4
 
-      # Sicherstellen, dass wir im Repository-Root sind
+      # 2️⃣ Optional: Prüfen, dass wir im Repository-Root-Verzeichnis sind
       - name: Set working directory
         run: echo "WORKSPACE=${{ github.workspace }}"  # optional, zur Kontrolle
 
+      # 3️⃣ AusweisApp Container starten (Docker Compose + Bake)
       - name: Start AusweisApp
         run: |
+          COMPOSE_BAKE=true \
           docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml up -d
 
+      # 4️⃣ Robot Framework Tests ausführen
       - name: Run Tests
         run: |
           docker run --rm \
@@ -33,17 +37,21 @@ jobs:
             robot-tests \
             robot \
               --variable CI:True \
+              --variable CI_SELF_HOSTED:True \
               --variable HEADLESS:True \
-              --variable BASE_URL:https://datenschutzcockpit.bund.de/spa/ \
+              --variable BASE_URL:https://qs-datenschutzcockpit.dsc.govkg.de/spa/ \
               --variable BROWSER:chromium \
               --outputdir /app/results2 \
               tests/
 
+      # 5️⃣ Container stoppen, auch wenn Tests fehlschlagen
       - name: Stop AusweisApp
         if: always()
         run: |
+          COMPOSE_BAKE=true \
           docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml down
 
+      # 6️⃣ Testergebnisse hochladen
       - name: Upload Results
         uses: actions/upload-artifact@v4
         if: always()

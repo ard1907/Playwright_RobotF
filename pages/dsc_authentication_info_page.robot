@@ -126,7 +126,7 @@ Login Into Datenschutzcockpit
     ...                for the main H1 heading to be visible, confirming the
     ...                page has loaded and rendered. Then clicks button  "AusweisApp starten"
     ...                and login into Datenschutzcockpit with AusweisApp (Docker).
-    IF   ${CI}               RETURN   #ARD: Just to test Github Actions Workflow in my personal Repository. Plse remove in real DSC Repository.
+    IF   ${CI} and not ${CI_SELF_HOSTED}              RETURN   #ARD: Just to test Github Actions Workflow in my personal Repository. Plse remove in real DSC Repository.
     Click                    ${AI_AUSWEIS_START_BTN}
     Click                    ${AI_AUSWEIS_START_BTN_ALREADY_INSTALLED}
     Sleep                    2s       #ARD: Just for Demo purposes. Plse remove in real test run to avoid unnecessary wait time.

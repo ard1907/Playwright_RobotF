@@ -32,7 +32,7 @@ ${RA_H1_LOGOUT_HEADING_3}    //h1[text()="Behalten Sie Ihre Daten im Blick"]
 
 Logout From Datenschutzcockpit
     [Documentation]    Logs out of the Datenschutzcockpit if currently logged in.
-    IF   ${CI}               RETURN   #ARD: Just to test Github Actions Workflow in my personal Repository. Plse remove in real DSC Repository.
+    IF   ${CI} and not ${CI_SELF_HOSTED}              RETURN   #ARD: Just to test Github Actions Workflow in my personal Repository. Plse remove in real DSC Repository.
     Click                    ${RA_LOGOUT_BUTTON_1}
     Wait For Elements State  ${RA_H1_LOGOUT_HEADING_1}  visible
     Click                    ${RA_LOGOUT_BUTTON_2}
