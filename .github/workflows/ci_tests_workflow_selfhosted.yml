@@ -27,14 +27,12 @@ jobs:
         run: |
           COMPOSE_BAKE=true \
           docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml up -d
+        # docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml up --build -d    #ARD: build explizit anstoßen.
 
       # 4️⃣ Robot Framework Tests ausführen
       - name: Run Tests
         run: |
-          docker run --rm \
-            --network host \
-            -v ${{ github.workspace }}/results2:/app/results2 \
-            robot-tests
+          docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml up --build --abort-on-container-exit robot-tests
 
       # 5️⃣ Container stoppen, auch wenn Tests fehlschlagen
       - name: Stop AusweisApp

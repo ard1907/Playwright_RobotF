@@ -34,6 +34,10 @@ ${TITLE_AUTH_INFO}          Datenschutzcockpit - Anmeldung
 ${TITLE_LEICHTE_SPRACHE}    Datenschutzcockpit - Leichte Sprache
 ${TITLE_GEBAERDENSPRACHE}   Datenschutzcockpit - Gebärdensprache
 
+# AusweisApp SDK URL (override via env in CI or compose):
+# Set environment variable AUSWEISAPP_URL to e.g. http://ausweisapp-sdk:24727
+${AUSWEISAPP_URL}          ${ENV:AUSWEISAPP_URL}
+
 # ── External Links ────────────────────────────────────────────────────────────
 ${ASWAPP_DWLD_TITLE}         AusweisApp: Download der AusweisApp
 ${ASWAPP_DWLD_URL}           https://www.ausweisapp.bund.de/download

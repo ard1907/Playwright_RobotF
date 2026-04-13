@@ -5,13 +5,13 @@ services:
   # Browser navigiert zu http://127.0.0.1:24727/eID-Client?tcTokenURL=...
   # Der SDK authentifiziert vollautomatisch ohne weiteres Python-Skript.
   ausweisapp-sdk:
-    container_name: ausweisapp-sdk
+    container_name: ausweisapp-sdk-v2
 
     build:
       context: ..
       dockerfile: docker2/ausweisapp-sdk.Dockerfile
     ports:
-      - "127.0.0.1:24727:24727"
+      - "24727:24727"
 
     restart: "no"
     # restart: unless-stopped
@@ -20,20 +20,23 @@ services:
     healthcheck:
       # test: ["CMD", "curl", "-f", "http://localhost:24727/eID-Client"]
       # test: ["CMD", "curl", "-f", "http://localhost:24727"]
-      disable: true
-      # test: ["CMD-SHELL", "echo > /dev/tcp/localhost/24727"]
+      # disable: true
+      test: ["CMD-SHELL", "echo > /dev/tcp/localhost/24727"]
       # interval: 5s
       # timeout: 3s
       # retries: 10       
 
 
   robot-tests:
+    container_name: robot-tests-v2
     build:
       context: ..
       dockerfile: docker2/robot_tests.Dockerfile
-    depends_on:                           # stellt sicher, dass "ausweisapp-sdk" gestartet ist, bevor die Tests beginnen
-      ausweisapp-sdk:
-        condition: service_healthy
+    # depends_on:                           # stellt sicher, dass "ausweisapp-sdk" gestartet ist, bevor die Tests beginnen
+    depends_on: 
+      - ausweisapp-sdk                          # stellt sicher, dass "ausweisapp-sdk" gestartet ist, bevor die Tests beginnen
+      # ausweisapp-sdk:
+      #   # condition: service_healthy
 
     environment:
       - CI=True
@@ -43,10 +46,14 @@ services:
       # ARD: wenn in GA / workflow definiert, vielleicht die folgende Zeile gar nicht nötig ???
       # - BASE_URL=https://qs-datenschutzcockpit.dsc.govkg.de/spa/
       - BROWSER=chromium
+      - AUSWEISAPP_URL=http://ausweisapp-sdk:24727
 
     # network_mode: "host"
     extra_hosts:
       - "host.docker.internal:host-gateway"
+
+    volumes:
+      - ./results2:/app/results2
 
     # network_mode: "host" funktioniert nicht perfekt auf Windows
     # Alternative:
