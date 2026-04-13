@@ -19,6 +19,7 @@
 
 *** Settings ***
 Library     Browser
+Library     OperatingSystem
 Resource    ../resources/dsc_variables.robot
 Resource    ../resources/dsc_shared_keywords.robot
 
@@ -126,10 +127,15 @@ Login Into Datenschutzcockpit
     ...                for the main H1 heading to be visible, confirming the
     ...                page has loaded and rendered. Then clicks button  "AusweisApp starten"
     ...                and login into Datenschutzcockpit with AusweisApp (Docker).
+    # If running in CI but not on a self-hosted environment, skip the AusweisApp login steps since the SDK service is not available.
     IF   ${CI} and not ${CI_SELF_HOSTED}              RETURN   #ARD: Just to test Github Actions Workflow in my personal Repository. Plse remove in real DSC Repository.
-    # Ensure AusweisApp links opened by the SPA are redirected to the SDK service
-    ${_ausw_url}=    Set Variable    ${AUSWEISAPP_URL}
-    Run Keyword If    '${_ausw_url}' != ''    Execute Javascript    window.open = (function(orig){return function(url,name,features){ try{ url = url.replace('http://127.0.0.1:24727','${_ausw_url}'); }catch(e){} return orig.apply(this, [url,name,features]); }; })(window.open);
+    # If running in CI and on a self-hosted environment, ensure AusweisApp links opened by the SPA are redirected to the SDK service
+    ${_ausw_url}=    Get Environment Variable    AUSWEISAPP_URL    ${EMPTY}
+    IF   ${CI} and ${CI_SELF_HOSTED}
+        ${script}=    Set Variable    window.open = (function(orig){return function(url,name,features){ try{ url = url.replace('http://127.0.0.1:24727','${_ausw_url}'); }catch(e){} return orig.apply(this, [url,name,features]); }; })(window.open);
+        Evaluate JavaScript    ${script}
+    END
+
     Click                    ${AI_AUSWEIS_START_BTN}
     Click                    ${AI_AUSWEIS_START_BTN_ALREADY_INSTALLED}
     Sleep                    2s       #ARD: Just for Demo purposes. Plse remove in real test run to avoid unnecessary wait time.
