@@ -132,8 +132,7 @@ Login Into Datenschutzcockpit
     # If running in CI and on a self-hosted environment, ensure AusweisApp links opened by the SPA are redirected to the SDK service
     ${_ausw_url}=    Get Environment Variable    AUSWEISAPP_URL    ${EMPTY}
     IF   ${CI} and ${CI_SELF_HOSTED}
-        ${script}=    Set Variable    window.open = (function(orig){return function(url,name,features){ try{ url = url.replace('http://127.0.0.1:24727','${_ausw_url}'); }catch(e){} return orig.apply(this, [url,name,features]); }; })(window.open);
-        Evaluate JavaScript    ${script}
+        Evaluate JavaScript    ${None}    () => { window.open = (function(orig) { return function(url, name, features) { try { url = url.replace('http://127.0.0.1:24727', '${_ausw_url}'); } catch (error) {} return orig.apply(this, [url, name, features]); }; })(window.open); }
     END
 
     Click                    ${AI_AUSWEIS_START_BTN}

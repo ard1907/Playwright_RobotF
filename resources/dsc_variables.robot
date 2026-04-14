@@ -36,7 +36,7 @@ ${TITLE_GEBAERDENSPRACHE}   Datenschutzcockpit - Gebärdensprache
 
 # AusweisApp SDK URL (override via env in CI or compose):
 # Set environment variable AUSWEISAPP_URL to e.g. http://ausweisapp-sdk:24727
-# ${AUSWEISAPP_URL}          ${ENV:AUSWEISAPP_URL}
+${AUSWEISAPP_URL}          %{AUSWEISAPP_URL=http://localhost:24727}
 
 # ── External Links ────────────────────────────────────────────────────────────
 ${ASWAPP_DWLD_TITLE}         AusweisApp: Download der AusweisApp
