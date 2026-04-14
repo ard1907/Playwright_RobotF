@@ -14,6 +14,9 @@ jobs:
   test:
     runs-on: [self-hosted, linux]
 
+    env:
+      COMPOSE_BAKE: true
+
     defaults:
       run:
         shell: bash
@@ -30,18 +33,18 @@ jobs:
       # 3️⃣ Nur den AusweisApp-Container starten
       - name: Start AusweisApp
         run: |
-          docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml up -d --build ausweisapp-sdk
+          docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml up -d --build --remove-orphans ausweisapp-sdk
 
       # 4️⃣ Robot Framework Tests im Docker-Container ausführen
       - name: Run Tests in Docker
         run: |
-          docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml up --build --abort-on-container-exit --exit-code-from robot-tests robot-tests
+          docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml up --build --remove-orphans --abort-on-container-exit --exit-code-from robot-tests robot-tests
 
       # 5️⃣ Container stoppen, auch wenn Tests fehlschlagen
       - name: Stop AusweisApp
         if: always()
         run: |
-          docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml down
+          docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml down --remove-orphans
 
       # 6️⃣ Testergebnisse hochladen
       - name: Upload Results

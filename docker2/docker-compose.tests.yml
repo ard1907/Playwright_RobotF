@@ -33,6 +33,7 @@ services:
       - AUSWEISAPP_URL=http://127.0.0.1:24727
 
     network_mode: "host"
+    user: root
 
     volumes:
       - ../results2:/app/results2

@@ -16,6 +16,7 @@ jobs:
 
     env:
       AUSWEISAPP_URL: http://127.0.0.1:24727
+      COMPOSE_BAKE: true
 
     defaults:
       run:
@@ -31,7 +32,7 @@ jobs:
             echo 'ausweisapp-sdk-1 is already running; leaving it untouched.'
           else
             echo 'ausweisapp-sdk-1 is not running; starting ausweisapp-sdk-v2.'
-            docker compose -f docker2/docker-compose.tests_02.yml up -d ausweisapp-sdk
+            docker compose -f docker2/docker-compose.tests_02.yml up -d --build --remove-orphans ausweisapp-sdk
           fi
 
       - name: Wait for AusweisApp SDK port
