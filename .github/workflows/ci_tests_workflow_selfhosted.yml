@@ -53,7 +53,7 @@ jobs:
       - name: Copy test results from container
         if: always()
         run: |
-          container_id=$(docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml ps -q robot-tests)
+          container_id=$(docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml ps -aq robot-tests)
           if [ -n "$container_id" ]; then
             docker cp "$container_id":/app/results2/. results2/ || true
           fi
