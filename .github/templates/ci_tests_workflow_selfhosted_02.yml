@@ -1,0 +1,75 @@
+name: Robot Framework (Self-hosted Local)
+# Self-hosted Runner (als Container) und Ausweisapp-sdk (als Container)
+# Robot Framework Tests laufen direkt auf dem Host (lokal) und nicht in einem Container
+on:
+  push:
+    branches:
+      - main
+      - develop
+      - 'feature/**'
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: [self-hosted, linux, docker]
+
+    env:
+      AUSWEISAPP_URL: http://127.0.0.1:24727
+
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Check and start AusweisApp SDK if needed
+        run: |
+          if docker ps --format '{{.Names}}' | grep -Fxq 'ausweisapp-sdk-1'; then
+            echo 'ausweisapp-sdk-1 is already running; leaving it untouched.'
+          else
+            echo 'ausweisapp-sdk-1 is not running; starting ausweisapp-sdk-v2.'
+            docker compose -f docker2/docker-compose.tests_02.yml up -d ausweisapp-sdk
+          fi
+
+      - name: Wait for AusweisApp SDK port
+        run: |
+          for attempt in $(seq 1 60); do
+            if (exec 3<>/dev/tcp/127.0.0.1/24727) >/dev/null 2>&1; then
+              echo 'AusweisApp SDK is reachable.'
+              exit 0
+            fi
+
+            sleep 2
+          done
+
+          echo 'AusweisApp SDK did not become reachable in time.'
+          exit 1
+
+      - name: Run Robot Framework tests locally
+        run: |
+          mkdir -p results2
+          robot \
+            --variable CI:True \
+            --variable CI_SELF_HOSTED:True \
+            --variable HEADLESS:True \
+            --variable BASE_URL:https://datenschutzcockpit.dsc.govkg.de/spa/ \
+            --variable BROWSER:chromium \
+            --outputdir results2 \
+            --report report.html \
+            --log log.html \
+            --xunit xunit.xml \
+            tests/
+
+      - name: Upload Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: results2
+          path: |
+            results2/log.html
+            results2/output.xml
+            results2/report.html
+            results2/xunit.xml

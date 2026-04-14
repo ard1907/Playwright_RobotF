@@ -1,0 +1,12 @@
+services:
+  ausweisapp-sdk:
+    container_name: ausweisapp-sdk-v2
+
+    build:
+      context: ..
+      dockerfile: docker2/ausweisapp-sdk.Dockerfile
+
+    ports:
+      - "24727:24727"
+
+    restart: "no"

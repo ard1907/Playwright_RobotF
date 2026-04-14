@@ -16,17 +16,6 @@ services:
     restart: "no"
     # restart: unless-stopped
 
-    # # For Github Actions self-hosted runner: GitHub Actions waits untils Ausweisapp container is up.
-    # healthcheck:
-      # test: ["CMD", "curl", "-f", "http://localhost:24727/eID-Client"]
-      # test: ["CMD", "curl", "-f", "http://localhost:24727"]
-      # disable: true
-      # test: ["CMD-SHELL", "echo > /dev/tcp/localhost/24727"]
-      # interval: 5s
-      # timeout: 3s
-      # retries: 10
-
-
   robot-tests:
     container_name: robot-tests-v2
     build:
@@ -34,28 +23,16 @@ services:
       dockerfile: docker2/robot_tests.Dockerfile
     depends_on:
       - ausweisapp-sdk
-        # condition: service_healthy    # wartet bis AusweisApp tatsächlich erreichbar ist
 
     environment:
       - CI=True
       - HEADLESS=True
-      # For self-hosted runner: BASE_URL muss auf die URL zeigen, unter der die Tests die AusweisApp erreichen können. ????
-      # - BASE_URL=http://host.docker.internal:24727/eID-Client?tcTokenURL=...  ???  Keine Ahnung, war Copilot Vorschlag.
-      # ARD: wenn in GA / workflow definiert, vielleicht die folgende Zeile gar nicht nötig ???
-      # - BASE_URL=https://qs-datenschutzcockpit.dsc.govkg.de/spa/
       - BROWSER=chromium
-      - AUSWEISAPP_URL=http://ausweisapp-sdk:24727
+      # The browser flow still targets 127.0.0.1 in the eID redirect chain.
+      # With host networking, that loopback address resolves to the host.
+      - AUSWEISAPP_URL=http://127.0.0.1:24727
 
-    # network_mode: "host"
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
+    network_mode: "host"
 
     volumes:
-      - ./results2:/app/results2
-
-    # network_mode: "host" funktioniert nicht perfekt auf Windows
-    # Alternative:
-    # extra_hosts:
-    # - "host.docker.internal:host-gateway"
-    # Und im Test:
-    # http://host.docker.internal:24727
+      - ../results2:/app/results2

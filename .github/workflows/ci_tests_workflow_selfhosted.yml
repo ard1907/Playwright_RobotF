@@ -1,17 +1,22 @@
 name: Robot Framework (Self-hosted)
-
+# Self-hosted Runner (als Container) und Ausweisapp-sdk (als Container) und 
+# Robot Framework Tests (als Container) auf demselben Host, Kommunikation über localhost
 on:
   push:
     branches:
       - main
       - develop
-      - 'feature/**'        # your current working branch    
+      - 'feature/**'
   pull_request:
   workflow_dispatch:
 
 jobs:
   test:
     runs-on: [self-hosted, linux]
+
+    defaults:
+      run:
+        shell: bash
 
     steps:
       # 1️⃣ Repository auschecken
@@ -22,23 +27,20 @@ jobs:
       - name: Set working directory
         run: echo "WORKSPACE=${{ github.workspace }}"  # optional, zur Kontrolle
 
-      # 3️⃣ AusweisApp Container starten (Docker Compose + Bake)
+      # 3️⃣ Nur den AusweisApp-Container starten
       - name: Start AusweisApp
         run: |
-          COMPOSE_BAKE=true \
-          docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml up -d
-        # docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml up --build -d    #ARD: build explizit anstoßen.
+          docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml up -d --build ausweisapp-sdk
 
-      # 4️⃣ Robot Framework Tests ausführen
-      - name: Run Tests
+      # 4️⃣ Robot Framework Tests im Docker-Container ausführen
+      - name: Run Tests in Docker
         run: |
-          docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml up --build --abort-on-container-exit robot-tests
+          docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml up --build --abort-on-container-exit --exit-code-from robot-tests robot-tests
 
       # 5️⃣ Container stoppen, auch wenn Tests fehlschlagen
       - name: Stop AusweisApp
         if: always()
         run: |
-          COMPOSE_BAKE=true \
           docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml down
 
       # 6️⃣ Testergebnisse hochladen
@@ -47,4 +49,8 @@ jobs:
         if: always()
         with:
           name: results2
-          path: results2/
+          path: |
+            results2/log.html
+            results2/output.xml
+            results2/report.html
+            results2/xunit.xml
