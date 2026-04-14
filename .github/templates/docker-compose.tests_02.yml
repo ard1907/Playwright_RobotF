@@ -2,8 +2,6 @@ name: docker2-tests-02
 
 services:
   ausweisapp-sdk:
-    container_name: ausweisapp-sdk-v2
-
     build:
       context: ..
       dockerfile: docker2/ausweisapp-sdk.Dockerfile

@@ -7,8 +7,6 @@ services:
   # Browser navigiert zu http://127.0.0.1:24727/eID-Client?tcTokenURL=...
   # Der SDK authentifiziert vollautomatisch ohne weiteres Python-Skript.
   ausweisapp-sdk:
-    container_name: ausweisapp-sdk-v2
-
     build:
       context: ..
       dockerfile: docker2/ausweisapp-sdk.Dockerfile
@@ -19,7 +17,6 @@ services:
     # restart: unless-stopped
 
   robot-tests:
-    container_name: robot-tests-v2
     build:
       context: ..
       dockerfile: docker2/robot_tests.Dockerfile

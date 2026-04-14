@@ -26,14 +26,9 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Check and start AusweisApp SDK if needed
+      - name: Start AusweisApp SDK
         run: |
-          if docker ps --format '{{.Names}}' | grep -Fxq 'ausweisapp-sdk-v2'; then
-            echo 'ausweisapp-sdk-v2 is already running; leaving it untouched.'
-          else
-            echo 'ausweisapp-sdk-v2 is not running; starting ausweisapp-sdk-v2.'
-            docker compose -f docker2/docker-compose.tests_02.yml up -d --build --remove-orphans ausweisapp-sdk
-          fi
+          docker compose -f docker2/docker-compose.tests_02.yml up -d --build --remove-orphans ausweisapp-sdk
 
       - name: Wait for AusweisApp SDK port
         run: |
