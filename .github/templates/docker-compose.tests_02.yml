@@ -1,3 +1,5 @@
+name: docker2-tests-02
+
 services:
   ausweisapp-sdk:
     container_name: ausweisapp-sdk-v2

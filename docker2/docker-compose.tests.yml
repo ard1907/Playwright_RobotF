@@ -1,4 +1,6 @@
 
+name: docker2-tests
+
 services:
 
   # AusweisApp SDK im Automatic Mode (headless, Developer-Mode, eingebettete Testkarte)
