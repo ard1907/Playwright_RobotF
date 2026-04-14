@@ -30,6 +30,10 @@ jobs:
       - name: Set working directory
         run: echo "WORKSPACE=${{ github.workspace }}"  # optional, zur Kontrolle
 
+      # 2️⃣b Zielordner für die Testresultate anlegen
+      - name: Prepare results directory
+        run: mkdir -p results2
+
       # 3️⃣ Alte Container-Reste entfernen, damit keine Namens- oder Portkonflikte bleiben
       - name: Cleanup legacy containers
         run: |
@@ -45,6 +49,15 @@ jobs:
         run: |
           docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml up --build --remove-orphans --abort-on-container-exit --exit-code-from robot-tests robot-tests
 
+      # 5️⃣b Ergebnisse aus dem Container in den Workspace kopieren, falls der Bind-Mount nicht greift
+      - name: Copy test results from container
+        if: always()
+        run: |
+          container_id=$(docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml ps -q robot-tests)
+          if [ -n "$container_id" ]; then
+            docker cp "$container_id":/app/results2/. results2/ || true
+          fi
+
       # 6️⃣ Container stoppen, auch wenn Tests fehlschlagen
       - name: Stop AusweisApp
         if: always()
@@ -56,7 +69,7 @@ jobs:
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: results2
+          name: robot-test-results-selfhosted
           path: |
             results2/log.html
             results2/output.xml
