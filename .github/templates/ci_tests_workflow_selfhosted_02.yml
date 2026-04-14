@@ -26,6 +26,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      - name: Cleanup legacy containers
+        run: |
+          docker rm -f ausweisapp-sdk-v2 robot-tests-v2 >/dev/null 2>&1 || true
+
       - name: Start AusweisApp SDK
         run: |
           docker compose -f docker2/docker-compose.tests_02.yml up -d --build --remove-orphans ausweisapp-sdk

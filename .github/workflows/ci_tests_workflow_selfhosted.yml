@@ -30,23 +30,28 @@ jobs:
       - name: Set working directory
         run: echo "WORKSPACE=${{ github.workspace }}"  # optional, zur Kontrolle
 
-      # 3️⃣ Nur den AusweisApp-Container starten
+      # 3️⃣ Alte Container-Reste entfernen, damit keine Namens- oder Portkonflikte bleiben
+      - name: Cleanup legacy containers
+        run: |
+          docker rm -f ausweisapp-sdk-v2 robot-tests-v2 >/dev/null 2>&1 || true
+
+      # 4️⃣ Nur den AusweisApp-Container starten
       - name: Start AusweisApp
         run: |
           docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml up -d --build --remove-orphans ausweisapp-sdk
 
-      # 4️⃣ Robot Framework Tests im Docker-Container ausführen
+      # 5️⃣ Robot Framework Tests im Docker-Container ausführen
       - name: Run Tests in Docker
         run: |
           docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml up --build --remove-orphans --abort-on-container-exit --exit-code-from robot-tests robot-tests
 
-      # 5️⃣ Container stoppen, auch wenn Tests fehlschlagen
+      # 6️⃣ Container stoppen, auch wenn Tests fehlschlagen
       - name: Stop AusweisApp
         if: always()
         run: |
           docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml down --remove-orphans
 
-      # 6️⃣ Testergebnisse hochladen
+      # 7️⃣ Testergebnisse hochladen
       - name: Upload Results
         uses: actions/upload-artifact@v4
         if: always()
