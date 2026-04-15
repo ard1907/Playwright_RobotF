@@ -1,8 +1,8 @@
 name: Robot Framework (Self-hosted)
 # Self-hosted Runner (als Container) und Ausweisapp-sdk (als Container) und 
 # Robot Framework Tests (als Container) auf demselben Host, Kommunikation über localhost
-# Ergebnisse: 'docker cp' → Runner-Container-Workspace → /host-results2 (Windows-Ordner via Volume-Mount).
-# Voraussetzung: docker-compose.runner.yml bindet results2-Windows-Ordner als /host-results2 ein.
+# Ergebnisse: 'docker cp' aus robot-tests-Container in den Runner-Workspace (für Artifact-Upload).
+# Lokal kopieren: scripts\get-results.ps1 ausführen (docker cp vom Windows-Host aus).
 on:
   push:
     branches:
@@ -37,12 +37,7 @@ jobs:
         run: mkdir -p ${{ github.workspace }}/results2
 
       - name: Clean previous results
-        run: |
-          find ${{ github.workspace }}/results2 -mindepth 1 -maxdepth 1 -exec rm -rf {} + 2>/dev/null || true
-          # Auch den gemounteten Windows-Ordner bereinigen (falls /host-results2 verfügbar)
-          if [ -d /host-results2 ]; then
-            find /host-results2 -mindepth 1 -maxdepth 1 -exec rm -rf {} + 2>/dev/null || true
-          fi
+        run: find ${{ github.workspace }}/results2 -mindepth 1 -maxdepth 1 -exec rm -rf {} + 2>/dev/null || true
 
       # 3️⃣ Alte Container-Reste entfernen, damit keine Namens- oder Portkonflikte bleiben
       - name: Cleanup legacy containers
@@ -69,19 +64,6 @@ jobs:
             docker cp "$container_id":/app/results2/. ${{ github.workspace }}/results2/
           else
             echo "Warnung: Container 'robot-tests' nicht gefunden."
-          fi
-
-      # 5️⃣c Ergebnisse zusätzlich in den lokalen Windows-Workspace kopieren.
-      # Voraussetzung: docker-compose.runner.yml bindet results2-Windows-Ordner als /host-results2 ein.
-      - name: Copy test results to local Windows workspace
-        if: always()
-        run: |
-          if [ -d /host-results2 ]; then
-            echo "Kopiere Ergebnisse nach /host-results2 (Windows results2) ..."
-            cp -r ${{ github.workspace }}/results2/. /host-results2/
-            echo "Ergebnisse erfolgreich in den lokalen Windows-Ordner kopiert."
-          else
-            echo "Hinweis: /host-results2 nicht verfügbar – Volume-Mount in docker-compose.runner.yml prüfen."
           fi
 
       # 6️⃣ Container stoppen, auch wenn Tests fehlschlagen
