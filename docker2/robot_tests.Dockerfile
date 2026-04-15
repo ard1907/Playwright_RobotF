@@ -87,11 +87,13 @@ RUN mkdir -p /app/results2 \
 
 USER robot
 
+# QS-Umgebung: https://qs-datenschutzcockpit.dsc.govkg.de/spa/
+# QS-Stable-Umgebung: https://datenschutzcockpit.dsc.govkg.de/spa/
 CMD ["robot", \
      "-v", "CI:True", \
      "-v", "CI_SELF_HOSTED:True", \
      "-v", "HEADLESS:True", \
-     "-v", "BASE_URL:https://qs-datenschutzcockpit.dsc.govkg.de/spa/", \
+     "-v", "BASE_URL:https://datenschutzcockpit.dsc.govkg.de/spa/", \
      "-v", "BROWSER:chromium", \
      "--outputdir", "/app/results2", \
     "--report", "/app/results2/report.html", \

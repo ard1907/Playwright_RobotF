@@ -1,8 +1,7 @@
 name: Robot Framework (Self-hosted)
 # Self-hosted Runner (als Container) und Ausweisapp-sdk (als Container) und 
 # Robot Framework Tests (als Container) auf demselben Host, Kommunikation über localhost
-# Ergebnisse: 'docker cp' → Runner-Container-Workspace → /host-results2 (Windows-Ordner via Volume-Mount).
-# Voraussetzung: docker-compose.runner.yml bindet results2-Windows-Ordner als /host-results2 ein.
+# Kopiert aber leider nicht in den lokalen "results2" Ordner!
 on:
   push:
     branches:
@@ -34,14 +33,12 @@ jobs:
 
       # 2️⃣b Ergebnisordner sicher anlegen und alte Resultate entfernen
       - name: Prepare results directory
-        run: mkdir -p ${{ github.workspace }}/results2
+        run: mkdir -p results2
 
       - name: Clean previous results
         run: |
-          find ${{ github.workspace }}/results2 -mindepth 1 -maxdepth 1 -exec rm -rf {} + 2>/dev/null || true
-          # Auch den gemounteten Windows-Ordner bereinigen (falls /host-results2 verfügbar)
-          if [ -d /host-results2 ]; then
-            find /host-results2 -mindepth 1 -maxdepth 1 -exec rm -rf {} + 2>/dev/null || true
+          if [ -d results2 ]; then
+            find results2 -mindepth 1 -maxdepth 1 -exec rm -rf {} +
           fi
 
       # 3️⃣ Alte Container-Reste entfernen, damit keine Namens- oder Portkonflikte bleiben
@@ -59,29 +56,13 @@ jobs:
         run: |
           docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml up --build --remove-orphans --abort-on-container-exit --exit-code-from robot-tests robot-tests
 
-      # 5️⃣b Ergebnisse per 'docker cp' aus dem Container in den Runner-Workspace kopieren.
+      # 5️⃣b Ergebnisse aus dem Container in den Workspace kopieren, falls der Bind-Mount nicht greift
       - name: Copy test results from container
         if: always()
         run: |
           container_id=$(docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml ps -aq robot-tests)
           if [ -n "$container_id" ]; then
-            echo "Kopiere Testergebnisse aus Container $container_id ..."
-            docker cp "$container_id":/app/results2/. ${{ github.workspace }}/results2/
-          else
-            echo "Warnung: Container 'robot-tests' nicht gefunden."
-          fi
-
-      # 5️⃣c Ergebnisse zusätzlich in den lokalen Windows-Workspace kopieren.
-      # Voraussetzung: docker-compose.runner.yml bindet results2-Windows-Ordner als /host-results2 ein.
-      - name: Copy test results to local Windows workspace
-        if: always()
-        run: |
-          if [ -d /host-results2 ]; then
-            echo "Kopiere Ergebnisse nach /host-results2 (Windows results2) ..."
-            cp -r ${{ github.workspace }}/results2/. /host-results2/
-            echo "Ergebnisse erfolgreich in den lokalen Windows-Ordner kopiert."
-          else
-            echo "Hinweis: /host-results2 nicht verfügbar – Volume-Mount in docker-compose.runner.yml prüfen."
+            docker cp "$container_id":/app/results2/. results2/ || true
           fi
 
       # 6️⃣ Container stoppen, auch wenn Tests fehlschlagen
