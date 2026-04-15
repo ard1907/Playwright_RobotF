@@ -34,5 +34,8 @@ services:
     network_mode: "host"
     user: root
 
-    volumes:
-      - ../results2:/app/results2
+    # HINWEIS: Ein Bind-Mount funktioniert im DooD-Setup (Docker-out-of-Docker) nicht,
+    # da das Runner-Workspace-Verzeichnis nur im Runner-Container existiert, nicht auf dem
+    # Docker-Host. Ergebnisse werden stattdessen per 'docker cp' in den Workflow kopiert.
+    # volumes:
+    #   - ../results2:/app/results2

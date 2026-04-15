@@ -1,7 +1,7 @@
 name: Robot Framework (Self-hosted)
 # Self-hosted Runner (als Container) und Ausweisapp-sdk (als Container) und 
 # Robot Framework Tests (als Container) auf demselben Host, Kommunikation über localhost
-# Kopiert aber leider nicht in den lokalen "results2" Ordner!
+# Ergebnisse werden per 'docker cp' in den lokalen "results2" Ordner kopiert (kein Bind-Mount, da DooD).
 on:
   push:
     branches:
@@ -33,13 +33,10 @@ jobs:
 
       # 2️⃣b Ergebnisordner sicher anlegen und alte Resultate entfernen
       - name: Prepare results directory
-        run: mkdir -p results2
+        run: mkdir -p ${{ github.workspace }}/results2
 
       - name: Clean previous results
-        run: |
-          if [ -d results2 ]; then
-            find results2 -mindepth 1 -maxdepth 1 -exec rm -rf {} +
-          fi
+        run: find ${{ github.workspace }}/results2 -mindepth 1 -maxdepth 1 -exec rm -rf {} +
 
       # 3️⃣ Alte Container-Reste entfernen, damit keine Namens- oder Portkonflikte bleiben
       - name: Cleanup legacy containers
@@ -56,13 +53,19 @@ jobs:
         run: |
           docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml up --build --remove-orphans --abort-on-container-exit --exit-code-from robot-tests robot-tests
 
-      # 5️⃣b Ergebnisse aus dem Container in den Workspace kopieren, falls der Bind-Mount nicht greift
+      # 5️⃣b Ergebnisse aus dem Container per 'docker cp' in den Workspace kopieren.
+      # Hinweis: Ein Bind-Mount greift nicht im DooD-Setup (Runner läuft selbst als Container
+      # – der Docker-Daemon sieht den Runner-Workspace-Pfad nicht auf dem Host).
       - name: Copy test results from container
         if: always()
         run: |
           container_id=$(docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml ps -aq robot-tests)
           if [ -n "$container_id" ]; then
-            docker cp "$container_id":/app/results2/. results2/ || true
+            echo "Kopiere Testergebnisse aus Container $container_id ..."
+            docker cp "$container_id":/app/results2/. ${{ github.workspace }}/results2/
+            echo "Testergebnisse erfolgreich in ${{ github.workspace }}/results2/ kopiert."
+          else
+            echo "Warnung: Container 'robot-tests' nicht gefunden – keine Ergebnisse zum Kopieren."
           fi
 
       # 6️⃣ Container stoppen, auch wenn Tests fehlschlagen
