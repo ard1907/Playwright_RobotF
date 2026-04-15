@@ -88,9 +88,9 @@ jobs:
             --variable BASE_URL:https://datenschutzcockpit.bund.de/spa/ \
             --variable BROWSER:chromium \
             --outputdir results \
-            --report results/report.html \
-            --log results/log.html \
-            --xunit results/xunit.xml \
+            --report report.html \
+            --log log.html \
+            --xunit xunit.xml \
             tests/
 
       # ── 9. Upload test results (always, even on failure) ──────────────────

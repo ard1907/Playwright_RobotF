@@ -30,7 +30,10 @@ jobs:
       - name: Set working directory
         run: echo "WORKSPACE=${{ github.workspace }}"  # optional, zur Kontrolle
 
-      # 2️⃣b Alte Resultate aus dem vorherigen Lauf entfernen
+      # 2️⃣b Ergebnisordner sicher anlegen und alte Resultate entfernen
+      - name: Prepare results directory
+        run: mkdir -p results2
+
       - name: Clean previous results
         run: |
           if [ -d results2 ]; then
