@@ -1,6 +1,7 @@
 name: Robot Framework (Self-hosted)
 # Self-hosted Runner (als Container) und Ausweisapp-sdk (als Container) und 
 # Robot Framework Tests (als Container) auf demselben Host, Kommunikation über localhost
+# Kopiert aber leider nicht in den lokalen "results2" Ordner!
 on:
   push:
     branches:
@@ -16,7 +17,6 @@ jobs:
 
     env:
       COMPOSE_BAKE: true
-      RESULTS_DIR: ${{ github.workspace }}/results2
 
     defaults:
       run:
@@ -33,9 +33,13 @@ jobs:
 
       # 2️⃣b Ergebnisordner sicher anlegen und alte Resultate entfernen
       - name: Prepare results directory
+        run: mkdir -p results2
+
+      - name: Clean previous results
         run: |
-          mkdir -p "$RESULTS_DIR"
-          find "$RESULTS_DIR" -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+          if [ -d results2 ]; then
+            find results2 -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+          fi
 
       # 3️⃣ Alte Container-Reste entfernen, damit keine Namens- oder Portkonflikte bleiben
       - name: Cleanup legacy containers
@@ -58,7 +62,7 @@ jobs:
         run: |
           container_id=$(docker compose -f ${{ github.workspace }}/docker2/docker-compose.tests.yml ps -aq robot-tests)
           if [ -n "$container_id" ]; then
-            docker cp "$container_id":/app/results2/. "$RESULTS_DIR"/ || true
+            docker cp "$container_id":/app/results2/. results2/ || true
           fi
 
       # 6️⃣ Container stoppen, auch wenn Tests fehlschlagen
@@ -74,7 +78,7 @@ jobs:
         with:
           name: robot-test-results-selfhosted
           path: |
-            ${{ env.RESULTS_DIR }}/log.html
-            ${{ env.RESULTS_DIR }}/output.xml
-            ${{ env.RESULTS_DIR }}/report.html
-            ${{ env.RESULTS_DIR }}/xunit.xml
+            results2/log.html
+            results2/output.xml
+            results2/report.html
+            results2/xunit.xml
