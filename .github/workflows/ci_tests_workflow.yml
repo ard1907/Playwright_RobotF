@@ -69,7 +69,14 @@ jobs:
       - name: Install Chromium system dependencies
         run: npx playwright install --with-deps chromium
 
-      # ── 7. Run all tests (headless + CI mode) ─────────────────────────────
+      # ── 7. Remove results from previous runs ─────────────────────────────
+      - name: Clean previous results
+        run: |
+          if [ -d results ]; then
+            find results -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+          fi
+
+      # ── 8. Run all tests (headless + CI mode) ─────────────────────────────
       # --variable CI:True      → uses the IF ${CI} branch in setup_teardown.robot
       # --variable HEADLESS:True → forces headless mode (no physical screen in CI)
       # --outputdir results      → all Robot output goes to the results/ folder
@@ -86,7 +93,7 @@ jobs:
             --xunit results/xunit.xml \
             tests/
 
-      # ── 8. Upload test results (always, even on failure) ──────────────────
+      # ── 9. Upload test results (always, even on failure) ──────────────────
       # Use @v4 — v3 is deprecated and shows a warning in every run.
       - name: Upload Robot Framework results
         uses: actions/upload-artifact@v4

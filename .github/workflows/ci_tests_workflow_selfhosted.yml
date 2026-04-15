@@ -30,9 +30,12 @@ jobs:
       - name: Set working directory
         run: echo "WORKSPACE=${{ github.workspace }}"  # optional, zur Kontrolle
 
-      # 2️⃣b Zielordner für die Testresultate anlegen
-      - name: Prepare results directory
-        run: mkdir -p results2
+      # 2️⃣b Alte Resultate aus dem vorherigen Lauf entfernen
+      - name: Clean previous results
+        run: |
+          if [ -d results2 ]; then
+            find results2 -mindepth 1 -maxdepth 1 -exec rm -rf {} +
+          fi
 
       # 3️⃣ Alte Container-Reste entfernen, damit keine Namens- oder Portkonflikte bleiben
       - name: Cleanup legacy containers

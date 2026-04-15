@@ -94,4 +94,7 @@ CMD ["robot", \
      "-v", "BASE_URL:https://qs-datenschutzcockpit.dsc.govkg.de/spa/", \
      "-v", "BROWSER:chromium", \
      "--outputdir", "/app/results2", \
+    "--report", "/app/results2/report.html", \
+    "--log", "/app/results2/log.html", \
+    "--xunit", "/app/results2/xunit.xml", \
      "tests/"]
