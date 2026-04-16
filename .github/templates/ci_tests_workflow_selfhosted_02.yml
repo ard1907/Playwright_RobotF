@@ -1,4 +1,9 @@
 name: Robot Framework (Self-hosted Local)
+
+# Security patch: limit the default GitHub token to read-only access.
+permissions:
+  contents: read
+
 # Self-hosted Runner (als Container) und Ausweisapp-sdk (als Container)
 # Robot Framework Tests laufen direkt auf dem Host (lokal) und nicht in einem Container
 on:
@@ -7,7 +12,8 @@ on:
       - main
       - develop
       - 'feature/**'
-  pull_request:
+  # Security patch: disable pull_request on the self-hosted runner to avoid running untrusted code there.
+  # pull_request:
   workflow_dispatch:
 
 jobs:
@@ -25,6 +31,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          # Security patch: do not persist the checkout token in git config.
+          persist-credentials: false
 
       - name: Cleanup legacy containers
         run: |

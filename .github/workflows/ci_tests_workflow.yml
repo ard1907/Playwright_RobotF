@@ -1,5 +1,9 @@
 name: Robot Framework Tests
 
+# Security patch: limit the default GitHub token to read-only access.
+permissions:
+  contents: read
+
 # ── Triggers ──────────────────────────────────────────────────────────────────
 # Runs on every push/PR to main, develop, or any feature branch that touches
 # test files or the workflow itself.
@@ -30,6 +34,9 @@ jobs:
       # ── 1. Get the source code ─────────────────────────────────────────────
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          # Security patch: do not persist the checkout token in git config.
+          persist-credentials: false
 
       # ── 2. Set up Python 3.11 ─────────────────────────────────────────────
       - name: Set up Python 3.11

@@ -32,7 +32,8 @@ services:
       - AUSWEISAPP_URL=http://127.0.0.1:24727
 
     network_mode: "host"
-    user: root
+    # Security patch: run the test container as the non-root user created in the image.
+    user: robot
 
     # HINWEIS: Der Bind-Mount schreibt in den Docker Desktop Moby-VM-Pfad, NICHT in den
     # Runner-Container und nicht in den Windows-Workspace. Daher ist er hier deaktiviert.
