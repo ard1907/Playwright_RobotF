@@ -83,10 +83,4 @@ jobs:
             results2/output.xml
             results2/report.html
             results2/xunit.xml
-
-      # Optional: Run local helper script to copy results from container to local machine "results2" (if present)
-      - name: Run local get-results.sh
-        if: always()
-        run: |
-          chmod +x ${{ github.workspace }}/scripts/get-results.sh || true
-          bash ${{ github.workspace }}/scripts/get-results.sh            
+          
