@@ -19,11 +19,21 @@ Open Application Browser
     ...                the first page and waits for the SPA to fully hydrate.
     [Arguments]        ${url}=${BASE_URL}    ${browser_type}=${BROWSER}    ${headless_bool}=${HEADLESS}   ${slow_mo}=${SLOW_MOTION}
     IF    ${CI}
-        New Browser
+        IF    "${CHROMIUM_EXECUTABLE}" != ""
+            # Security patch: use a locally installed Chromium binary in self-hosted containers.
+            New Browser    executablePath=${CHROMIUM_EXECUTABLE}
+        ELSE
+            New Browser
+        END
         New Context    tracing=retain-on-failure   locale=de-DE
     ELSE
         ${slow_mo}=    IF   "${headless_bool}"=="True" or "${slow_mo}"==""    Set Variable   0:00:00.010   ELSE    Set Variable   ${slow_mo}
-        New Browser    browser=${browser_type}    headless=${headless_bool}   slowMo=${slow_mo}    args=["--start-maximized"]
+        IF    "${CHROMIUM_EXECUTABLE}" != ""
+            # Security patch: use a locally installed Chromium binary when provided.
+            New Browser    browser=${browser_type}    headless=${headless_bool}   slowMo=${slow_mo}    args=["--start-maximized"]    executablePath=${CHROMIUM_EXECUTABLE}
+        ELSE
+            New Browser    browser=${browser_type}    headless=${headless_bool}   slowMo=${slow_mo}    args=["--start-maximized"]
+        END
         New Context    tracing=retain-on-failure   locale=de-DE     viewport=None      # viewport={'width': ${WIDTH}, 'height': ${HEIGHT}}
     END
     New Page               ${url}
