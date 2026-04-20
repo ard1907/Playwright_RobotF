@@ -19,26 +19,26 @@ Open Application Browser
     ...                the first page and waits for the SPA to fully hydrate.
     [Arguments]        ${url}=${BASE_URL}    ${browser_type}=${BROWSER}    ${headless_bool}=${HEADLESS}   ${slow_mo}=${SLOW_MOTION}
     IF    ${CI}
-        IF    "${CHROMIUM_EXECUTABLE}" != ""
-            # Security patch: use a locally installed Chromium binary in self-hosted containers.
-            New Browser    executablePath=${CHROMIUM_EXECUTABLE}
-        ELSE
-            New Browser
-        END
+        Open Chromium Browser
         New Context    tracing=retain-on-failure   locale=de-DE
     ELSE
         ${slow_mo}=    IF   "${headless_bool}"=="True" or "${slow_mo}"==""    Set Variable   0:00:00.010   ELSE    Set Variable   ${slow_mo}
-        IF    "${CHROMIUM_EXECUTABLE}" != ""
-            # Security patch: use a locally installed Chromium binary when provided.
-            New Browser    browser=${browser_type}    headless=${headless_bool}   slowMo=${slow_mo}    args=["--start-maximized"]    executablePath=${CHROMIUM_EXECUTABLE}
-        ELSE
-            New Browser    browser=${browser_type}    headless=${headless_bool}   slowMo=${slow_mo}    args=["--start-maximized"]
-        END
+        Open Chromium Browser    ${browser_type}    ${headless_bool}    ${slow_mo}
         New Context    tracing=retain-on-failure   locale=de-DE     viewport=None      # viewport={'width': ${WIDTH}, 'height': ${HEIGHT}}
     END
     New Page               ${url}
     Wait For Load State    networkidle
     ${url}=            Get Url
+
+Open Chromium Browser
+    [Documentation]    Opens Chromium with an optional local executable path.
+    [Arguments]        ${browser_type}=${BROWSER}    ${headless_bool}=${HEADLESS}    ${slow_mo}=${SLOW_MOTION}
+    IF    "${CHROMIUM_EXECUTABLE}" != ""
+        # Security patch for selfhosted (!) CI workflow with Docker containers: use a locally installed Chromium binary in Docker container.
+        New Browser    browser=${browser_type}    headless=${headless_bool}    slowMo=${slow_mo}    args=["--start-maximized"]    executablePath=${CHROMIUM_EXECUTABLE}
+    ELSE
+        New Browser    browser=${browser_type}    headless=${headless_bool}    slowMo=${slow_mo}    args=["--start-maximized"]
+    END
 
 Open Application Browser OLD
     [Documentation]    Starts a new Chromium (or configured) browser process,
