@@ -9,7 +9,7 @@
 # ── Base Configuration ─────────────────────────────────────────────────────────
 ${CI}                      ${False}
 ${CI_SELF_HOSTED}          ${False}
-${BASE_URL}                https://datenschutzcockpit.dsc.govkg.de/spa/
+${BASE_URL}                https://qs-datenschutzcockpit.dsc.govkg.de/spa/
 # ${BASE_URL}                https://datenschutzcockpit.bund.de/spa/       #ARD: Remove for real DSC Repo.
 ${BROWSER}                 chromium
 ${HEADLESS}                ${False}

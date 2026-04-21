@@ -64,7 +64,7 @@ jobs:
             --variable CI:True \
             --variable CI_SELF_HOSTED:True \
             --variable HEADLESS:True \
-            --variable BASE_URL:https://datenschutzcockpit.dsc.govkg.de/spa/ \
+            --variable BASE_URL:https://qs-datenschutzcockpit.dsc.govkg.de/spa/ \
             --variable BROWSER:chromium \
             --outputdir results2 \
             --report report.html \

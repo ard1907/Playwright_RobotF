@@ -1,7 +1,7 @@
 # ==============================================================================
 # landing_page.robot  –  Page Object for the SPA Landing / Start Page
 #
-# URL   : https://datenschutzcockpit.dsc.govkg.de/spa/
+# URL   : https://qs-datenschutzcockpit.dsc.govkg.de/spa/
 # Title : Datenschutzcockpit - Startseite
 #
 # Selectors are derived from live ARIA / accessibility tree inspection.

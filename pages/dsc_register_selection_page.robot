@@ -1,7 +1,7 @@
 # ==============================================================================
 # dsc_registerauswahl_page.robot  –  Page Object for the Registerauswahl Page
 #
-# URL   : https://datenschutzcockpit.dsc.govkg.de/spa/cockpit/register-auswahl
+# URL   : https://qs-datenschutzcockpit.dsc.govkg.de/spa/cockpit/register-auswahl
 # Title : Datenschutzcockpit - Registerauswahl
 #
 # This page ...

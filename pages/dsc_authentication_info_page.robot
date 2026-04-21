@@ -1,7 +1,7 @@
 # ==============================================================================
 # authentication_info_page.robot  –  Page Object for the Authentication Info Page
 #
-# URL   : https://datenschutzcockpit.dsc.govkg.de/spa/authentication-info
+# URL   : https://qs-datenschutzcockpit.dsc.govkg.de/spa/authentication-info
 # Title : Datenschutzcockpit - Anmeldung
 #
 # This page explains the eID login process: which hardware/software is needed

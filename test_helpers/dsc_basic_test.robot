@@ -3,7 +3,7 @@
 #
 # Purpose : Small, readable entry point for newcomers
 # Pattern : Single-file suite with local variables, keywords, and tests
-# Target  : https://datenschutzcockpit.dsc.govkg.de/spa/
+# Target  : https://qs-datenschutzcockpit.dsc.govkg.de/spa/
 # ============================================================================
 
 *** Settings ***
@@ -16,7 +16,7 @@ Test Setup      Navigate To Landing Page
 
 *** Variables ***
 
-${BASE_URL}                https://datenschutzcockpit.dsc.govkg.de/spa/
+${BASE_URL}                https://qs-datenschutzcockpit.dsc.govkg.de/spa/
 ${BROWSER}                 chromium
 ${HEADLESS}                ${False}
 ${TIMEOUT}                 10s

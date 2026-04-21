@@ -1,7 +1,7 @@
 # ==============================================================================
 # smoke_tests.robot  –  Main Smoke Test Suite
 #
-# Target  : https://datenschutzcockpit.dsc.govkg.de/spa/
+# Target  : https://qs-datenschutzcockpit.dsc.govkg.de/spa/
 # Pattern : Page Object Model (POM) + shared resources
 #
 # Suite Setup     → Open browser once for the whole suite
