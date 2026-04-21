@@ -29,7 +29,20 @@ ${BF_H3_MEDIATION}                     role=heading[name="Schlichtungsverfahren"
 
 # ── Dialog Barrierefreiheit - Selectors - Key Content References ───────────────────────────────────
 ${BF_CONTACT_EMAIL_DSC_01}             (//*[contains(text(), "datenschutzcockpit@finanzen.bremen.de")])[6]
+# BITV conformance statement (paragraph text)
+${BF_BITV_TEXT}                        //p[contains(text(), "nicht mit der BITV vereinbar")]
 
+
+# ── Dialog Barrierefreiheit - External Links ──────────────────────────────────────
+&{BF_EXTERNAL_URLS}                    BGG_Phone=tel:030185272805
+...                                    BGG_Email=mailto:info@schlichtungsstelle-bgg.de
+...                                    BGG_Website=https://www.schlichtungsstelle-bgg.de
+...                                    DSC_Email=mailto:datenschutzcockpit@finanzen.bremen.de
+
+${BF_BGG_PHONE}                        role=link[name="030 18 527 2805"]
+${BF_BGG_EMAIL}                        role=link[name="info@schlichtungsstelle-bgg.de"]
+${BF_BGG_WEBSITE}                      role=link[name="www.schlichtungsstelle-bgg.de"]
+${BF_DSC_EMAIL}                        role=link[name="datenschutzcockpit@finanzen.bremen.de"]
 
 # ── Close Button ──────────────────────────────────────────────────────────────
 ${BF_CLOSE_BTN}              role=button[name="Menü schließen"]
@@ -82,6 +95,11 @@ Verify Barrierefreiheit Contact Email
     [Documentation]    Checks that the feedback contact email address is shown.
     Element Is Visible    ${BF_CONTACT_EMAIL_DSC_01}
 
+Verify Barrierefreiheit BITV Referenced
+    [Documentation]    Confirms the BITV standard is explicitly referenced in
+    ...                the compatibility statement paragraph of the dialog.
+    Element Is Visible    ${BF_BITV_TEXT}
+
 Verify Barrierefreiheit Close Button Is Present
     [Documentation]    Confirms the universal dialog close button is accessible.
     Element Is Visible    ${BF_CLOSE_BTN}
@@ -106,8 +124,21 @@ Validate Barrierefreiheit Page
     Verify Barrierefreiheit Creation Section
     Verify Barrierefreiheit Feedback Section
     Verify Barrierefreiheit Mediation Section
-    # Verify Barrierefreiheit BITV Referenced
+    Verify Barrierefreiheit BITV Referenced
     Verify Barrierefreiheit Contact Email
     Verify Barrierefreiheit Close Button Is Present
+
+
+# ── External Link Validation ──────────────────────────────────────────────
+
+Validate External URLs For Barrierefreiheit Dialog
+    [Documentation]    Validates that all external links in the Barrierefreiheit
+    ...                dialog carry the correct href values before clicking.
+    ...                Covers: DSC feedback email, BGG phone, BGG email, and
+    ...                BGG website link.
+    Get Attribute    ${BF_DSC_EMAIL}      href    ==    ${BF_EXTERNAL_URLS}[DSC_Email]
+    Get Attribute    ${BF_BGG_PHONE}      href    ==    ${BF_EXTERNAL_URLS}[BGG_Phone]
+    Get Attribute    ${BF_BGG_EMAIL}      href    ==    ${BF_EXTERNAL_URLS}[BGG_Email]
+    Get Attribute    ${BF_BGG_WEBSITE}    href    ==    ${BF_EXTERNAL_URLS}[BGG_Website]
 
 

@@ -31,6 +31,9 @@ ${DS_H2_SECTION_3}
 ${DS_H2_SECTION_9}
 ...    role=heading[name="9. Betroffenenrechte"]
 
+${DS_H2_SECTION_4}
+...    role=heading[name="4. Welche personenbezogenen Daten werden verarbeitet und aus welcher Quelle stammen sie?"]
+
 # ── Key Regulatory / Content References ───────────────────────────────────────
 ${DS_DSGVO_INTRO}      text=Datenschutz-Grundverordnung
 ${DS_BVA_TEXT}         (//p[text()="Bundesverwaltungsamt"])[3]    # text=Bundesverwaltungsamt
@@ -70,6 +73,10 @@ Verify Datenschutz Section 9
     [Documentation]    Checks section 9: data subject rights (Betroffenenrechte).
     Element Is Visible    ${DS_H2_SECTION_9}
 
+Verify Datenschutz Section 4
+    [Documentation]    Checks section 4: personal data processed and their source.
+    Element Is Visible    ${DS_H2_SECTION_4}
+
 Verify Datenschutz DSGVO Reference
     [Documentation]    Confirms the DSGVO (Datenschutz-Grundverordnung) is
     ...                explicitly referenced in the dialog content.
@@ -106,6 +113,7 @@ Validate Datenschutz Page
     Verify Datenschutz Section 1
     Verify Datenschutz Section 2
     Verify Datenschutz Section 3
+    Verify Datenschutz Section 4
     Verify Datenschutz Section 9
     Verify Datenschutz DSGVO Reference
     Verify Datenschutz BVA Mentioned

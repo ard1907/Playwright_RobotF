@@ -78,6 +78,26 @@ ${LP_CARD_4_EXT_LINK_01}       (//a[contains(text(),"Identifikationsnummerngeset
 ...    MORE_INFO=Datenschutzcockpit - Weitere Informationen
 
 
+# ── Landing Page FAQ Card Content Assertions ──────────────────────────────────
+# Open modal – H2 section headings inside "Was sehe ich im Datenschutzcockpit?" card.
+${LP_FAQ_CARD_WHAT_SEE_H2_INFO}
+...    role=heading[name="Diese Informationen sehen Sie:"]
+${LP_FAQ_CARD_WHAT_SEE_H2_FUTURE}
+...    role=heading[name="Diese Informationen können Sie zukünftig sehen:"]
+
+# Open modal – content references inside "Wer betreibt das Datenschutzcockpit?" card.
+${LP_FAQ_CARD_WHO_OPS_BVA_MENTION}
+...    //div[@class="modal" and @aria-hidden="false"]//p[contains(text(), "Bundesverwaltungsamt")]
+${LP_FAQ_CARD_WHO_OPS_DATAPORT}
+...    //div[@class="modal" and @aria-hidden="false"]//p[contains(text(), "Dataport")]
+
+# Open modal – H2 section headings inside "Weitere Informationen" card.
+${LP_FAQ_CARD_MORE_INFO_H2_IDNR}
+...    role=heading[name="Was ist die Identifikationsnummer?"]
+${LP_FAQ_CARD_MORE_INFO_H2_BENEFIT}
+...    role=heading[name="Welche Vorteile bietet die IDNr?"]
+
+
 *** Keywords ***
 
 # ── Individual Assertions ──────────────────────────────────────────────────────
@@ -133,6 +153,20 @@ Verify Landing Page Version Info
     [Documentation]    Checks that the application version string is present in
     ...                the footer. Matches partially to avoid version coupling.
     Element Is Visible    ${LP_VERSION_TEXT}
+
+Verify Landing Page Header Accessibility Buttons
+    [Documentation]    Confirms the logo link and both header accessibility
+    ...                buttons are visible and enabled on the landing page:
+    ...                  • Bund.de Datenschutzcockpit Beta Logo (link)
+    ...                  • Das Datenschutzcockpit in Leichter Sprache (button)
+    ...                  • Zum Gebärdensprache-Video (button)
+    Element Is Visible    ${LP_LOGO_LINK}
+    Element Is Visible    ${LP_EASY_LANGUAGE_BTN}
+    Element Is Visible    ${LP_SIGN_LANGUAGE_BTN}
+    ${ls_states}=    Get Element States    ${LP_EASY_LANGUAGE_BTN}
+    Should Contain    ${ls_states}    enabled
+    ${gs_states}=    Get Element States    ${LP_SIGN_LANGUAGE_BTN}
+    Should Contain    ${gs_states}    enabled
 
 
 # ── Dialog Navigation (opens dialogs from this page) ──────────────────────────
@@ -212,7 +246,8 @@ Verify Landing Page FAQ Card "Was Ist Das Datenschutzcockpit ..."
 Verify Landing Page FAQ Card "Was Sehe Ich Im Datenschutzcockpit ..."
     [Documentation]    Opens the "Was sehe ich im Datenschutzcockpit?" card and
     ...                verifies: modal heading visible, SPA tab title updated,
-    ...                URL unchanged, and the other three cards still rendered.
+    ...                URL unchanged, both content H2 section headings present,
+    ...                and the other three cards still rendered.
     Element Is Visible    ${LP_FAQ_CARD_WHAT_SEE}
     Click On Card - Was Sehe Ich Im Datenschutzcockpit
     # 1. Card is now in open (modal) state
@@ -223,14 +258,18 @@ Verify Landing Page FAQ Card "Was Sehe Ich Im Datenschutzcockpit ..."
     # 3. URL has not left the landing page
     ${url}=    Get Url
     Should Be Equal As Strings    ${url}    ${BASE_URL}
-    # 4. Other FAQ cards remain rendered
+    # 4. Key content H2 section headings are visible inside the modal
+    Element Is Visible    ${LP_FAQ_CARD_WHAT_SEE_H2_INFO}
+    Element Is Visible    ${LP_FAQ_CARD_WHAT_SEE_H2_FUTURE}
+    # 5. Other FAQ cards remain rendered
     Element Is Visible    ${LP_FAQ_CARD_WHAT_IS}
     Element Is Visible    ${LP_FAQ_CARD_WHO_OPS}
 
 Verify Landing Page FAQ Card "Wer Betreibt Das Datenschutzcockpit ..."
     [Documentation]    Opens the "Wer betreibt das Datenschutzcockpit?" card and
     ...                verifies: modal heading visible, SPA tab title updated,
-    ...                URL unchanged, and the other three cards still rendered.
+    ...                URL unchanged, BVA and Dataport mentioned in content,
+    ...                and the other three cards still rendered.
     Element Is Visible    ${LP_FAQ_CARD_WHO_OPS}
     Click On Card - Wer Betreibt Das Datenschutzcockpit
     # 1. Card is now in open (modal) state
@@ -241,14 +280,18 @@ Verify Landing Page FAQ Card "Wer Betreibt Das Datenschutzcockpit ..."
     # 3. URL has not left the landing page
     ${url}=    Get Url
     Should Be Equal As Strings    ${url}    ${BASE_URL}
-    # 4. Other FAQ cards remain rendered
+    # 4. Key content references are visible inside the modal
+    Element Is Visible    ${LP_FAQ_CARD_WHO_OPS_BVA_MENTION}
+    Element Is Visible    ${LP_FAQ_CARD_WHO_OPS_DATAPORT}
+    # 5. Other FAQ cards remain rendered
     Element Is Visible    ${LP_FAQ_CARD_WHAT_IS}
     Element Is Visible    ${LP_FAQ_CARD_WHAT_SEE}
 
 Verify Landing Page FAQ Card "Weitere Informationen ..."
     [Documentation]    Opens the "Weitere Informationen" card and verifies:
     ...                modal heading visible, SPA tab title updated, URL
-    ...                unchanged, and the other three cards still rendered.
+    ...                unchanged, both H2 content section headings present,
+    ...                and the other three cards still rendered.
     Element Is Visible    ${LP_FAQ_CARD_MORE_INFO}
     Click On Card - Weitere Informationen
     # 1. Card is now in open (modal) state
@@ -259,7 +302,10 @@ Verify Landing Page FAQ Card "Weitere Informationen ..."
     # 3. URL has not left the landing page
     ${url}=    Get Url
     Should Be Equal As Strings    ${url}    ${BASE_URL}
-    # 4. Other FAQ cards remain rendered
+    # 4. Key content H2 section headings are visible inside the modal
+    Element Is Visible    ${LP_FAQ_CARD_MORE_INFO_H2_IDNR}
+    Element Is Visible    ${LP_FAQ_CARD_MORE_INFO_H2_BENEFIT}
+    # 5. Other FAQ cards remain rendered
     Element Is Visible    ${LP_FAQ_CARD_WHAT_IS}
     Element Is Visible    ${LP_FAQ_CARD_WHAT_SEE}
 
@@ -270,6 +316,7 @@ Validate Landing Page
     [Documentation]    Master keyword – runs all Landing Page smoke assertions.
     ...                Call this from the test suite for a full page health-check.
     Verify Landing Page Is Loaded
+    Verify Landing Page Header Accessibility Buttons
     Verify Landing Page H1 Heading
     Verify Landing Page Intro Text
     Verify Landing Page CTA Button

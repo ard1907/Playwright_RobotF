@@ -42,6 +42,9 @@ ${GS_SIGN_LANGUAGE_BTN}      role=button[name="Zum Gebärdensprache-Video"]
 ${GS_VIDEO_ELEMENT_01}       (//a[contains(text(), "Hier geht´s zum Video.")])[1]
 ${GS_VIDEO_ELEMENT_02}       (//a[contains(text(), "Hier geht´s zum Video.")])[2]
 
+${GS_H2_DSC_SECTION}         //h2[normalize-space()="Was ist das Datenschutzcockpit?"]
+${GS_H2_NAVIGATION}          role=heading[name="Bedienung und Navigation des Datenschutzcockpits"]
+
 &{GS_EXTERNAL_URLS}          Video_DSC=https://dataportlms.web.hamburg.de/ilp/pages/mediacontent.jsf?mediaId=10779559&catalogId=10779436
 ...                          Video_Barrierefreiheit=https://dataportlms.web.hamburg.de/ilp/pages/mediacontent.jsf?mediaId=10779579&catalogId=10779436
 
@@ -86,6 +89,18 @@ Verify Gebaerdensprache Video Is Present
     Element Is Visible    ${GS_VIDEO_ELEMENT_01}
     Element Is Visible    ${GS_VIDEO_ELEMENT_02}
 
+Verify Gebaerdensprache DSC Section
+    [Documentation]    Checks that the "Was ist das Datenschutzcockpit?" H2
+    ...                section heading is rendered inside the dialog.
+    Element Is Visible    ${GS_H2_DSC_SECTION}
+
+Verify Gebaerdensprache Navigation Section
+    [Documentation]    Checks that the "Bedienung und Navigation des
+    ...                Datenschutzcockpits" H2 section heading is rendered
+    ...                inside the dialog (video for this section is announced
+    ...                as coming soon).
+    Element Is Visible    ${GS_H2_NAVIGATION}
+
 Verify Gebaerdensprache Close Button Is Present
     [Documentation]    Confirms the universal dialog close button is accessible.
     Element Is Visible    ${GS_CLOSE_BTN}
@@ -110,9 +125,12 @@ Close Gebaerdensprache Dialog
 Validate Gebaerdensprache Page
     [Documentation]    Master keyword – runs all Gebärdensprache dialog smoke
     ...                assertions: title update, dialog visible, H1, content
-    ...                reference, video element, and close button.
+    ...                reference, all three H2 section headings, video element,
+    ...                and close button.
     Verify Gebaerdensprache Dialog Is Open
     Verify Gebaerdensprache H1 Heading
+    Verify Gebaerdensprache DSC Section
+    Verify Gebaerdensprache Navigation Section
     Verify Gebaerdensprache Content Present
     Verify Gebaerdensprache Video Is Present
     Verify Gebaerdensprache Close Button Is Present

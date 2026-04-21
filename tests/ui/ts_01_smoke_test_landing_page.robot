@@ -11,18 +11,19 @@
 # Test Cases
 # ----------
 #   TC001  Validate Landing Page
-#   TC002  Navigate To Leichte Sprache And Validate
-#   TC003  Navigate To Gebärdensprache And Validate
-#   TC004  Navigate To FAQ And Validate
-#   TC005  Verify All FAQ Cards Are Rendered On Landing Page
-#   TC006  Verify FAQ Card 'Was ist das Datenschutzcockpit' And Validate Content
-#   TC007  Verify FAQ Card 'Was sehe ich im Datenschutzcockpit' And Validate Content
-#   TC008  Verify FAQ Card 'Wer betreibt das Datenschutzcockpit' And Validate Content
-#   TC009  Verify FAQ Card 'Weitere Informationen' And Validate Content
-#   TC010  Navigate To Impressum And Validate
-#   TC011  Navigate To Datenschutz And Validate
-#   TC012  Navigate To Barrierefreiheit And Validate
-#   TC013  Full SPA User Journey (end-to-end smoke)
+#   TC002  Verify Header Accessibility Buttons Are Present On Landing Page
+#   TC003  Navigate To Leichte Sprache And Validate
+#   TC004  Navigate To Gebärdensprache And Validate
+#   TC005  Navigate To FAQ And Validate
+#   TC006  Verify All FAQ Cards Are Rendered On Landing Page
+#   TC007  Verify FAQ Card 'Was ist das Datenschutzcockpit' And Validate Content
+#   TC008  Verify FAQ Card 'Was sehe ich im Datenschutzcockpit' And Validate Content
+#   TC009  Verify FAQ Card 'Wer betreibt das Datenschutzcockpit' And Validate Content
+#   TC010  Verify FAQ Card 'Weitere Informationen' And Validate Content
+#   TC011  Navigate To Impressum And Validate
+#   TC012  Navigate To Datenschutz And Validate
+#   TC013  Navigate To Barrierefreiheit And Validate
+#   TC014  Full SPA User Journey (end-to-end smoke)
 # ==============================================================================
 
 *** Settings ***
@@ -57,7 +58,18 @@ TC001 - Validate Landing Page
     Validate Landing Page
 
 
-TC002 - Navigate To Leichte Sprache And Validate
+TC002 - Verify Header Accessibility Buttons Are Present On Landing Page
+    [Documentation]    Confirms that the logo link and both shared-header
+    ...                accessibility buttons are visible and enabled on the
+    ...                landing page:
+    ...                  • Bund.de Datenschutzcockpit Beta Logo (link)
+    ...                  • Das Datenschutzcockpit in Leichter Sprache (button)
+    ...                  • Zum Gebärdensprache-Video (button)
+    [Tags]             smoke    landing    accessibility
+    Verify Landing Page Header Accessibility Buttons
+
+
+TC003 - Navigate To Leichte Sprache And Validate
     [Documentation]    Clicks the "Das Datenschutzcockpit in Leichter Sprache"
     ...                header button, confirms the dialog opens, and runs all
     ...                Leichte Sprache assertions: title change, dialog visibility,
@@ -72,7 +84,7 @@ TC002 - Navigate To Leichte Sprache And Validate
     Verify Landing Page Is Loaded
 
 
-TC003 - Navigate To Gebärdensprache And Validate
+TC004 - Navigate To Gebärdensprache And Validate
     [Documentation]    Clicks the "Zum Gebärdensprache-Video" header button,
     ...                confirms the dialog opens, and runs all Gebärdensprache
     ...                assertions: title change, dialog visibility, H1 heading,
@@ -87,7 +99,7 @@ TC003 - Navigate To Gebärdensprache And Validate
     Verify Landing Page Is Loaded
 
 
-TC004 - Navigate To FAQ And Validate
+TC005 - Navigate To FAQ And Validate
     [Documentation]    Opens the FAQ dialog via the floating FAQ button and
     ...                checks: dialog visibility, page title change, H1, both
     ...                H2 section headings, and all seven accordion entries.
@@ -96,7 +108,7 @@ TC004 - Navigate To FAQ And Validate
     Validate FAQ Page
     Close FAQ Dialog
 
-TC005 - Verify All FAQ Cards Are Rendered On Landing Page
+TC006 - Verify All FAQ Cards Are Rendered On Landing Page
     [Documentation]    Confirms the "Häufige Fragen" section and all four FAQ
     ...                accordion cards are visible in their default closed state
     ...                without opening any of them.
@@ -104,7 +116,7 @@ TC005 - Verify All FAQ Cards Are Rendered On Landing Page
     Verify Landing Page FAQ Cards Are Rendered
 
 
-TC006 - Verify FAQ Card 'Was ist das Datenschutzcockpit' And Validate Content
+TC007 - Verify FAQ Card 'Was ist das Datenschutzcockpit' And Validate Content
     [Documentation]    Clicks the "Was ist das Datenschutzcockpit?" accordion on
     ...                the Landing Page and verifies the revealed modal content.
     ...                Assertions:
@@ -119,35 +131,37 @@ TC006 - Verify FAQ Card 'Was ist das Datenschutzcockpit' And Validate Content
     Close Currently Open Dialog
 
 
-TC007 - Verify FAQ Card 'Was sehe ich im Datenschutzcockpit' And Validate Content
+TC008 - Verify FAQ Card 'Was sehe ich im Datenschutzcockpit' And Validate Content
     [Documentation]    Clicks the "Was sehe ich im Datenschutzcockpit?" accordion
     ...                on the Landing Page and verifies the revealed modal content.
     ...                Assertions:
     ...                  1. Click opens the modal (H1 heading visible)
-    ...                  2. Distinctive content anchor visible inside modal
-    ...                  3. SPA tab title updates to reflect the open card
-    ...                  4. URL remains on the landing page (no navigation)
-    ...                  5. All three remaining FAQ cards are still rendered
+    ...                  2. H2 section heading "Diese Informationen sehen Sie:" visible
+    ...                  3. H2 section heading "Diese Informationen können Sie zukünftig sehen:" visible
+    ...                  4. SPA tab title updates to reflect the open card
+    ...                  5. URL remains on the landing page (no navigation)
+    ...                  6. All three remaining FAQ cards are still rendered
     [Tags]             smoke    landing    faq    accordion
     Verify Landing Page FAQ Card "Was Sehe Ich Im Datenschutzcockpit ..."
     Close Currently Open Dialog
 
 
-TC008 - Verify FAQ Card 'Wer betreibt das Datenschutzcockpit' And Validate Content
+TC009 - Verify FAQ Card 'Wer betreibt das Datenschutzcockpit' And Validate Content
     [Documentation]    Clicks the "Wer betreibt das Datenschutzcockpit?" accordion
     ...                on the Landing Page and verifies the revealed modal content.
     ...                Assertions:
     ...                  1. Click opens the modal (H1 heading visible)
-    ...                  2. Distinctive content anchor visible inside modal
-    ...                  3. SPA tab title updates to reflect the open card
-    ...                  4. URL remains on the landing page (no navigation)
-    ...                  5. All three remaining FAQ cards are still rendered
+    ...                  2. Bundesverwaltungsamt (BVA) mentioned in expanded content
+    ...                  3. Dataport mentioned in expanded content
+    ...                  4. SPA tab title updates to reflect the open card
+    ...                  5. URL remains on the landing page (no navigation)
+    ...                  6. All three remaining FAQ cards are still rendered
     [Tags]             smoke    landing    faq    accordion
     Verify Landing Page FAQ Card "Wer Betreibt Das Datenschutzcockpit ..."
     Close Currently Open Dialog
 
 
-TC009 - Verify FAQ Card 'Weitere Informationen' And Validate Content
+TC010 - Verify FAQ Card 'Weitere Informationen' And Validate Content
     [Documentation]    Clicks the "Weitere Informationen" accordion on the
     ...                Landing Page and verifies the revealed modal content.
     ...                Assertions:
@@ -162,17 +176,19 @@ TC009 - Verify FAQ Card 'Weitere Informationen' And Validate Content
     Close Currently Open Dialog
 
 
-TC010 - Navigate To Impressum And Validate
+TC011 - Navigate To Impressum And Validate
     [Documentation]    Opens the Impressum dialog via the footer button and
     ...                checks: dialog visibility, page title change, H1, all
-    ...                four H2 section headings, and the three key organisations.
+    ...                four H2 section headings, the three key organisations,
+    ...                and all four email link href values.
     [Tags]             smoke    impressum
     Open Impressum Dialog
     Validate Impressum Page
+    Validate External URLs For Impressum Dialog
     Close Impressum Dialog
 
 
-TC011 - Navigate To Datenschutz And Validate
+TC012 - Navigate To Datenschutz And Validate
     [Documentation]    Opens the Datenschutzerklärung dialog via the footer and
     ...                checks: dialog visibility, page title change, H1, four
     ...                numbered section headings, DSGVO reference, BVA mention,
@@ -183,18 +199,19 @@ TC011 - Navigate To Datenschutz And Validate
     Close Datenschutz Dialog
 
 
-TC012 - Navigate To Barrierefreiheit And Validate
+TC013 - Navigate To Barrierefreiheit And Validate
     [Documentation]    Opens the Barrierefreiheit dialog via the footer and
     ...                checks: dialog visibility, page title change, H1, two H2
-    ...                headings, three H3 headings, BITV reference, and contact
-    ...                email presence.
+    ...                headings, three H3 headings, BITV reference, contact
+    ...                email presence, and all external link href values.
     [Tags]             smoke    barrierefreiheit
     Open Barrierefreiheit Dialog
     Validate Barrierefreiheit Page
+    Validate External URLs For Barrierefreiheit Dialog
     Close Barrierefreiheit Dialog
 
 
-TC013 - Full SPA User Journey
+TC014 - Full SPA User Journey
     [Documentation]    End-to-end smoke run that simulates a real user journey
     ...                through all SPA views in sequence.  Each dialog is opened,
     ...                spot-checked, and closed before the next one is opened –
@@ -274,3 +291,6 @@ TC013 - Full SPA User Journey
 
     # Confirm the landing page is still intact after all card interactions
     Verify Landing Page Is Loaded
+
+
+

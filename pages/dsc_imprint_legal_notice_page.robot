@@ -35,6 +35,18 @@ ${IMP_DATAPORT_TEXT}     text=Dataport AöR
 ${IMP_CLOSE_BUTTON}      (//button[@data-testid="closeModalBtn"])[11]
 
 
+# ── Impressum Email Links ───────────────────────────────────────────────
+&{IMP_EXTERNAL_URLS}     BVA_Email=mailto:poststelle@bva.bund.de
+...                      DSC_Email=mailto:datenschutzcockpit@finanzen.bremen.de
+...                      BVA_DSB_Email=mailto:datenschutzbeauftragter@bva.bund.de
+...                      BFDI_Email=mailto:poststelle@bfdi.bund.de
+
+${IMP_BVA_EMAIL}         role=link[name="poststelle@bva.bund.de"]
+${IMP_DSC_EMAIL}         role=link[name="datenschutzcockpit@finanzen.bremen.de"]
+${IMP_BVA_DSB_EMAIL}     role=link[name="datenschutzbeauftragter@bva.bund.de"]
+${IMP_BFDI_EMAIL}        role=link[name="poststelle@bfdi.bund.de"]
+
+
 *** Keywords ***
 
 # ── Individual Assertions ──────────────────────────────────────────────────────
@@ -102,3 +114,15 @@ Validate Impressum Page
     Verify Impressum Hosting Section
     Verify Impressum Key Organizations
     Verify Impressum Close Button Is Present
+
+# ── Email Link Validation ─────────────────────────────────────────────────
+
+Validate External URLs For Impressum Dialog
+    [Documentation]    Validates that all email links in the Impressum dialog
+    ...                carry the correct mailto href values before clicking.
+    ...                Covers: BVA contact, DSC content, BVA data-protection
+    ...                officer, and Federal Commissioner for Data Protection.
+    Get Attribute    ${IMP_BVA_EMAIL}       href    ==    ${IMP_EXTERNAL_URLS}[BVA_Email]
+    Get Attribute    ${IMP_DSC_EMAIL}       href    ==    ${IMP_EXTERNAL_URLS}[DSC_Email]
+    Get Attribute    ${IMP_BVA_DSB_EMAIL}   href    ==    ${IMP_EXTERNAL_URLS}[BVA_DSB_Email]
+    Get Attribute    ${IMP_BFDI_EMAIL}      href    ==    ${IMP_EXTERNAL_URLS}[BFDI_Email]
