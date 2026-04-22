@@ -77,6 +77,9 @@ ${AI_DATENSCHUTZ_BTN}          role=button[name="Datenschutz"]
 ${AI_BARRIEREFREIHEIT_BTN}     role=button[name="Barrierefreiheit"]
 ${AI_VERSION_TEXT}             text=Datenschutzcockpit Version
 
+# ── Floating FAQ Sidebar Button ────────────────────────────────────────────────
+${AI_FAQ_FLOAT_BUTTON}         role=button[name="FAQ"]
+
 
 # ── Auth Info Cards Variables ─────────────────────────────────────────────────
 &{AI_CARDS_TAB_TITLES}          NEEDED_TAB_TITLE=Datenschutzcockpit - Was benötige ich für die Anmeldung 
@@ -117,6 +120,7 @@ ${AI_FAQ_CARD_SECURE_OPEN}
 ${AI_FAQ_HS_SICHER}              text=sicher >> nth=2
 ${AI_FAQ_HS_YOUR_LOGIN}          //h2[contains(text(),"Ihre Anmeldung")]
 ${AI_FAQ_HS_YOUR_DATA}           //h2[contains(text(),"Datenübermittlungen anzeigen")]
+${AI_FAQ_HS_YOUR_LOGOUT}         //h2[contains(text(),"Ihre Abmeldung")]
 # ─────────────────────────────────────────────────────────────────────────────────
 
 *** Keywords ***
@@ -157,24 +161,47 @@ Verify Auth Page Logo
     Element Is Visible    ${AI_LOGO_LINK}
 
 Verify Auth Page Header Accessibility Buttons
-    [Documentation]    Checks that both accessibility buttons in the shared
-    ...                SPA header are visible on this page:
-    ...                  • Das Datenschutzcockpit in Leichter Sprache
-    ...                  • Zum Gebärdensprache-Video
+    [Documentation]    Checks that the logo link and both accessibility buttons
+    ...                in the shared SPA header are visible and enabled on this page:
+    ...                  • Bund.de Datenschutzcockpit Beta Logo (link)
+    ...                  • Das Datenschutzcockpit in Leichter Sprache (button)
+    ...                  • Zum Gebärdensprache-Video (button)
+    Element Is Visible    ${AI_LOGO_LINK}
+    ${logo_states}=    Get Element States    ${AI_LOGO_LINK}
+    Should Contain    ${logo_states}    enabled
     Element Is Visible    ${AI_EASY_LANGUAGE_BTN}
+    ${ls_states}=    Get Element States    ${AI_EASY_LANGUAGE_BTN}
+    Should Contain    ${ls_states}    enabled
     Element Is Visible    ${AI_SIGN_LANGUAGE_BTN}
+    ${gs_states}=    Get Element States    ${AI_SIGN_LANGUAGE_BTN}
+    Should Contain    ${gs_states}    enabled
 
 Verify Auth Page Footer Navigation
-    [Documentation]    Verifies all three footer navigation buttons are visible,
-    ...                consistent with all SPA routes sharing the same footer.
+    [Documentation]    Verifies all three footer navigation buttons are visible
+    ...                and enabled, consistent with all SPA routes sharing the
+    ...                same footer.
     Element Is Visible    ${AI_IMPRESSUM_BTN}
+    ${imp_states}=    Get Element States    ${AI_IMPRESSUM_BTN}
+    Should Contain    ${imp_states}    enabled
     Element Is Visible    ${AI_DATENSCHUTZ_BTN}
+    ${dat_states}=    Get Element States    ${AI_DATENSCHUTZ_BTN}
+    Should Contain    ${dat_states}    enabled
     Element Is Visible    ${AI_BARRIEREFREIHEIT_BTN}
+    ${bar_states}=    Get Element States    ${AI_BARRIEREFREIHEIT_BTN}
+    Should Contain    ${bar_states}    enabled
 
 Verify Auth Page Version Info
     [Documentation]    Checks that the application version string is present in
     ...                the footer, confirming the correct asset bundle loaded.
     Element Is Visible    ${AI_VERSION_TEXT}
+
+Verify Auth Page FAQ Float Button
+    [Documentation]    Checks that the floating FAQ button is visible and enabled
+    ...                on the auth-info page, consistent with all SPA routes that
+    ...                share the same floating action bar.
+    Element Is Visible    ${AI_FAQ_FLOAT_BUTTON}
+    ${faq_states}=    Get Element States    ${AI_FAQ_FLOAT_BUTTON}
+    Should Contain    ${faq_states}    enabled
 
 Verify AusweisApp Link Is Present
     [Documentation]    Checks the "AusweisApp" in-text link is visible on the page
@@ -269,13 +296,14 @@ Verify Auth Page FAQ Card "Wie Sicher Ist Das Cockpit ..."
     Element Is Visible    ${AI_FAQ_HS_SICHER}
     Element Is Visible    ${AI_FAQ_HS_YOUR_LOGIN}
     Element Is Visible    ${AI_FAQ_HS_YOUR_DATA}
+    Element Is Visible    ${AI_FAQ_HS_YOUR_LOGOUT}
     # 4. URL still on auth-info page
     ${url}=      Get Url
     Should Contain    ${url}    authentication-info
     ${title}=    Get Title
     Should Be Equal As Strings   ${title}    ${AI_CARDS_TAB_TITLES}[SECURE_TAB_TITLE]
     # 5. Other cards are still rendered
-    Element Is Visible    ${AI_FAQ_CARD_SECURE}
+    Element Is Visible    ${AI_FAQ_CARD_REGISTER}
     Element Is Visible    ${AI_FAQ_CARD_NEEDED}
 
 Verify Auth Page FAQ Card Items
@@ -326,12 +354,14 @@ Click On Card - Wie Sicher ist ...
 
 Validate Authentication Info Page
     [Documentation]    Master keyword – runs all auth-info page smoke assertions.
-    ...                Covers: title, H1, logo, header buttons, external links,
-    ...                AusweisApp starten button, footer, version, and FAQ items.
+    ...                Covers: title, H1, logo, header buttons, FAQ float button,
+    ...                external links, AusweisApp starten button, footer, version,
+    ...                and FAQ items.
     Verify Authentication Info Page Is Loaded
     Verify Auth Page H1 Heading
     Verify Auth Page Logo
     Verify Auth Page Header Accessibility Buttons
+    Verify Auth Page FAQ Float Button
     Verify Auth Page Footer Navigation
     Verify Auth Page Version Info
     Verify AusweisApp Link Is Present

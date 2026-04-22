@@ -11,7 +11,7 @@
 # Test Cases
 # ----------
 #   TC001  Validate Authentication Info Page
-#   TC002  Verify Header Accessibility Buttons Are Present
+#   TC002  Verify Header Accessibility And Navigation Buttons Are Present
 #   TC003  AusweisApp Link Navigates To External Page
 #   TC004  Kompatibles Lesegerät Link Navigates To External Page
 #   TC005  Verify AusweisApp Starten Button Is Accessible
@@ -51,18 +51,21 @@ TC001 - Validate Authentication Info Page
     Validate Authentication Info Page
 
 
-TC002 - Verify Header Accessibility Buttons Are Present
-    [Documentation]    Confirms that both shared-header accessibility buttons are
-    ...                visible and enabled on the auth-info route:
-    ...                  • Das Datenschutzcockpit in Leichter Sprache
-    ...                  • Zum Gebärdensprache-Video
+TC002 - Verify Header Accessibility And Navigation Buttons Are Present
+    [Documentation]    Confirms that the logo link, both shared-header accessibility
+    ...                buttons, the floating FAQ button, and all three footer
+    ...                navigation buttons are visible and enabled on the auth-info route:
+    ...                  • Bund.de Datenschutzcockpit Beta Logo (link)
+    ...                  • Das Datenschutzcockpit in Leichter Sprache (button)
+    ...                  • Zum Gebärdensprache-Video (button)
+    ...                  • FAQ (floating button)
+    ...                  • Impressum (footer button)
+    ...                  • Datenschutz (footer button)
+    ...                  • Barrierefreiheit (footer button)
     [Tags]             smoke    auth    accessibility
     Verify Auth Page Header Accessibility Buttons
-    # Confirm the buttons are enabled (not just present)
-    ${ls_states}=    Get Element States    ${AI_EASY_LANGUAGE_BTN}
-    Should Contain    ${ls_states}    enabled
-    ${gs_states}=    Get Element States    ${AI_SIGN_LANGUAGE_BTN}
-    Should Contain    ${gs_states}    enabled
+    Verify Auth Page FAQ Float Button
+    Verify Auth Page Footer Navigation
 
 
 TC003 - AusweisApp Link Navigates To External Page
@@ -145,9 +148,11 @@ TC008 - Verify FAQ Card 'Wie sicher ist das Cockpit' And Validate Content
     ...                Assertions:
     ...                  1. Click on card switches to "geöffnet" (open) state
     ...                  2. The word "sicher" is visible in expanded content
-    ...                  3. "Datenschutzcockpit" is referenced in expanded content
-    ...                  4. Page URL has not changed (still on auth-info)
-    ...                  5. The other two FAQ accordions are still present
+    ...                  3. H2 "Ihre Anmeldung" section heading is visible
+    ...                  4. H2 "Datenübermittlungen anzeigen" section heading is visible
+    ...                  5. H2 "Ihre Abmeldung" section heading is visible
+    ...                  6. Page URL has not changed (still on auth-info)
+    ...                  7. The other two FAQ accordions are still present
     [Tags]             smoke    auth    faq    accordion
     Verify Auth Page FAQ Card "Wie Sicher Ist Das Cockpit ..."
     Close Currently Open Dialog
@@ -181,7 +186,8 @@ TC009 - Full Login Page User Journey
     Element Is Visible    ${AI_FAQ_CARD_SECURE_OPEN}
     Close Currently Open Dialog
 
-    # ── 4. Confirm page footer navigation is intact ────────────────────────────
+    # ── 4. Confirm page navigation elements are intact ───────────────────────────────────
+    Verify Auth Page FAQ Float Button
     Verify Auth Page Footer Navigation
     Verify Auth Page Version Info
 
