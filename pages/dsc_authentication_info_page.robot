@@ -62,11 +62,11 @@ ${AI_AUSWEIS_APP_LINK}         //a[text()="AusweisApp"]
 # ── AusweisApp Start Button ────────────────────────────────────────────────────
 # "AusweisApp starten" initiates the eID authentication flow.
 # We verify presence and accessibility only – we do NOT trigger the eID flow.
-# NOTE: If this element is rendered as a <a> tag, change role to "link".
-${AI_AUSWEIS_START_BTN}                      role=button[name="AusweisApp starten"]
+# Use the stable data-testid from the live page to avoid role-selector timing issues.
+${AI_AUSWEIS_START_BTN}                      data-testid=anmeldungAusweisBtn
 ${AI_AUSWEIS_START_BTN_TITLE}                id=authentication-title
 ${AI_AUSWEIS_START_BTN_INSTALL}              //div[text()="Installation"]
-${AI_AUSWEIS_START_BTN_ALREADY_INSTALLED}    //div[text()="Bereits installiert"]
+${AI_AUSWEIS_START_BTN_ALREADY_INSTALLED}    data-testid=redirectToNPABtn
 ${AI_POPUP_CLOSE_BTN}                        (//button[@aria-label="Popup schließen"])[2]
 ${AI_LOGIN_SUCCESS_HEADING}                   //h1[text()="Wonach wollen Sie suchen?"]
 
@@ -133,6 +133,10 @@ Login Into Datenschutzcockpit
     ...                and login into Datenschutzcockpit with AusweisApp (Docker).
     # If running in CI but not on a self-hosted environment, skip the AusweisApp login steps since the SDK service is not available.
     IF   ${CI} and not ${CI_SELF_HOSTED}              RETURN   #ARD: Just to test Github Actions Workflow in my personal Repository. Plse remove in real DSC Repository.
+    ${url}=            Get Url
+    IF    "authentication-info" not in """${url}"""
+        Navigate To Authentication Info Page
+    END
     # If running in CI and on a self-hosted environment, ensure AusweisApp links opened by the SPA are redirected to the SDK service
     ${_ausw_url}=    Get Environment Variable    AUSWEISAPP_URL    ${EMPTY}
     IF   ${CI} and ${CI_SELF_HOSTED}

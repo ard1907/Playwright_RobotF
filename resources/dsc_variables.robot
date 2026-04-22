@@ -39,6 +39,13 @@ ${TITLE_GEBAERDENSPRACHE}   Datenschutzcockpit - Gebärdensprache
 # Set environment variable AUSWEISAPP_URL to e.g. http://ausweisapp-sdk:24727
 ${AUSWEISAPP_URL}          %{AUSWEISAPP_URL=http://localhost:24727}
 
+# ── App Version ───────────────────────────────────────────────────────────────
+${APP_VERSION}              2.17.8
+
+# ── Register Auswahl / Cockpit ─────────────────────────────────────────────────
+${REGISTER_AUSWAHL_URL}     ${BASE_URL}cockpit/register-auswahl
+${TITLE_REGISTER_AUSWAHL}   Datenschutzcockpit - Registerauswahl
+
 # ── External Links ────────────────────────────────────────────────────────────
 ${ASWAPP_DWLD_TITLE}         AusweisApp: Download der AusweisApp
 ${ASWAPP_DWLD_URL}           https://www.ausweisapp.bund.de/download

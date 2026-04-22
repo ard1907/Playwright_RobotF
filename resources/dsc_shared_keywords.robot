@@ -50,7 +50,22 @@ Navigate To Authentication Info Page
         ${title}=           Get Title
     END
 
+Navigate To Register Auswahl Page
+    [Documentation]    Navigates to the Register Auswahl page in the cockpit area.
+    ...                Requires an active, authenticated session.
+    ...                On non-self-hosted CI the step is skipped because the
+    ...                AusweisApp SDK is not available and no login took place.
+    IF   ${CI} and not ${CI_SELF_HOSTED}    RETURN    #ARD: No AusweisApp SDK on standard CI. Remove in real DSC Repository.
+    ${url}=             Get Url
+    IF    "register-auswahl" not in """${url}"""
+        Go To               ${REGISTER_AUSWAHL_URL}
+    END
     
+    Wait For Load State    networkidle
+    ${url}=             Get Url
+    Should Contain      ${url}    register-auswahl
+
+
 # ── Generic Assertions ─────────────────────────────────────────────────────────
 
 Verify Page Title Contains
@@ -68,6 +83,18 @@ Element Is Visible
     [Arguments]    ${selector}
     Wait For Elements State    ${selector}    visible    timeout=${TIMEOUT}
     ${ele_state}=    Get Element States    ${selector}
+
+Verify Application Version String Is Correct
+    [Documentation]    Verifies that the application version string in the page
+    ...                footer is visible and matches the expected version number
+    ...                defined by ${APP_VERSION} in dsc_variables.robot.
+    ...                Assertions:
+    ...                  1. Full version text "Datenschutzcockpit Version X.Y.Z" is visible
+    ...                  2. Visible text contains the expected version number
+    ${full_version}=    Set Variable    Datenschutzcockpit Version ${APP_VERSION}
+    Element Is Visible    text=${full_version}
+    ${actual_text}=    Get Text    text=Datenschutzcockpit Version
+    Should Contain    ${actual_text}    ${APP_VERSION}
 
 
 # ── Dialog Helpers ─────────────────────────────────────────────────────────────
