@@ -23,7 +23,7 @@ Thumbs.db
 ########################################
 docker2/docker-compose.runner.yml
 # docker2/Emma_Mustermann.json
-docker3/
+## docker3 removed - folder deleted
 
 ########################################
 # Node.js / JavaScript
