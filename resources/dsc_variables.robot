@@ -13,7 +13,7 @@ ${BASE_URL}                https://qs-datenschutzcockpit.dsc.govkg.de/spa/
 # ${BASE_URL}                https://datenschutzcockpit.bund.de/spa/       #ARD: Remove for real DSC Repo.
 ${BROWSER}                 chromium
 ${HEADLESS}                ${False}
-${CHROMIUM_EXECUTABLE}     %{CHROMIUM_EXECUTABLE=""}
+${CHROMIUM_EXECUTABLE}     %{CHROMIUM_EXECUTABLE=}
 ${TIMEOUT}                 10s
 ${SLOW_MOTION}             0:00:00.500
 ${WIDTH}                   1920
