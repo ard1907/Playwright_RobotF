@@ -54,7 +54,7 @@ ${RA_ALLE_REGISTER_ABWAEHLEN_BTN}    role=button[name="Alle Register abwählen"]
 # At least one register list item (each contains an h3 card heading).
 ${RA_REGISTER_FIRST_ITEM}         (//ul//li[.//h3])[1]
 ${RA_REGISTER_ALL_ITEMS}          (//ul//li[.//h3])
-${RA_MEHR_ZUM_REGISTER_BUTTONS}   //u[contains(normalize-space(.),"Mehr zum Register lesen)]
+${RA_MEHR_ZUM_REGISTER_BUTTONS}   //u[contains(normalize-space(.),"Mehr zum Register lesen")]
 ${RA_REQUEST_START_BTN}           //button[normalize-space(.)="Anfrage starten"]
 # View toggle: grid (default, active) and list view buttons.
 ${RA_VIEW_GRID_BTN}               //div[contains(@class,"registerFinderBtn") and contains(@class,"active")]
