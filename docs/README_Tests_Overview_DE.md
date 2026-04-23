@@ -96,8 +96,8 @@ Dieses Dokument fasst die Robot Framework Testsuiten, Testfälle sowie die wicht
       - Prüft die maskierte IDNr-Anzeige und den Anzeigen-Button.
     - TC013 — Verify Session Timer Counts Down
       - Liest den Session-Timer zweimal und validiert die Zustandsänderung.
-    - TC014 — Verify Register Cards Expose More-Info Buttons
-      - Prüft `Mehr zum Register` oder nutzt einen kontrollierten Content-Fallback, falls die Umgebung keinen expliziten Button rendert.
+    - TC014 — Verify Register Cards Count And More-Info Buttons
+      - Prüft, dass Registerkarten und `Mehr zum Register lesen`-Buttons in passender Anzahl vorhanden sind.
     - TC015 — Reload Keeps Registerauswahl Stable
       - Lädt die Seite neu und validiert, dass Kerninhalte stabil sichtbar bleiben.
 

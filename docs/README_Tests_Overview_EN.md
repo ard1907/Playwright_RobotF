@@ -96,8 +96,8 @@ This document summarizes Robot Framework test suites, test cases, and key page-o
       - Checks the masked IDNr display and the reveal button.
     - TC013 — Verify Session Timer Counts Down
       - Reads the session timer twice and validates a state change.
-    - TC014 — Verify Register Cards Expose More-Info Buttons
-      - Checks `Mehr zum Register` or uses a controlled content fallback when the environment does not render an explicit button.
+    - TC014 — Verify Register Cards Count And More-Info Buttons
+      - Checks that register cards and `Mehr zum Register lesen` buttons are present in matching counts.
     - TC015 — Reload Keeps Registerauswahl Stable
       - Reloads the page and validates that core content remains stable.
 

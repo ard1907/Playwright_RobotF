@@ -184,11 +184,12 @@ TC013 - Verify Session Timer Counts Down
     Verify RA Session Timer Counts Down
 
 
-TC014 - Verify Register Cards Expose More-Info Buttons
-    [Documentation]    Verifies at least one register card exposes the
-    ...                "Mehr zum Register lesen" action.
+TC014 - Verify Register Cards Count And More-Info Buttons
+    [Documentation]    Verifies at least one register card exists and all the
+    ...                "Mehr zum Register lesen" buttons are present.
     [Tags]             smoke    register-auswahl    register-list    content
-    Verify RA Register Cards Have More Info Buttons
+    Verify Register Cards Count And Link "Mehr zum Register lesen"
+
 
 
 TC015 - Reload Keeps Registerauswahl Stable

@@ -53,7 +53,8 @@ ${RA_ALLE_REGISTER_BTN}           role=button[name="Alle Register auswählen"]
 ${RA_ALLE_REGISTER_ABWAEHLEN_BTN}    role=button[name="Alle Register abwählen"]
 # At least one register list item (each contains an h3 card heading).
 ${RA_REGISTER_FIRST_ITEM}         (//ul//li[.//h3])[1]
-${RA_MEHR_ZUM_REGISTER_BUTTONS}   //button[contains(normalize-space(.),"Mehr zum Register")]
+${RA_REGISTER_ALL_ITEMS}          (//ul//li[.//h3])
+${RA_MEHR_ZUM_REGISTER_BUTTONS}   //u[contains(normalize-space(.),"Mehr zum Register lesen)]
 ${RA_REQUEST_START_BTN}           //button[normalize-space(.)="Anfrage starten"]
 # View toggle: grid (default, active) and list view buttons.
 ${RA_VIEW_GRID_BTN}               //div[contains(@class,"registerFinderBtn") and contains(@class,"active")]
@@ -311,20 +312,18 @@ Verify RA Session Timer Counts Down
     ${timer_after}=    Get Text    ${RA_SESSION_TIMER}
     Should Not Be Equal As Strings    ${timer_before}    ${timer_after}
 
-Verify RA Register Cards Have More Info Buttons
+Verify Register Cards Count And Link "Mehr zum Register lesen"
     [Documentation]    Verifies that register cards expose at least one
     ...                "Mehr zum Register lesen" button.
     Ensure RA Empty Selection State
     Click    ${RA_REGISTER_FIRST_ITEM}
     Wait For Elements State    ${RA_REQUEST_START_BTN}    visible    timeout=${TIMEOUT}
-    ${count}=    Get Element Count    ${RA_MEHR_ZUM_REGISTER_BUTTONS}
-    IF    ${count} > 0
-        Should Be True    ${count} > 0
-    ELSE
-        Log    No explicit 'Mehr zum Register' buttons rendered in this environment; using register-content fallback assertion.    WARN
-        ${item_text}=    Get Text    ${RA_REGISTER_FIRST_ITEM}
-        Should Not Be Empty    ${item_text}
-    END
+    
+    ${count_ra}=         Get Element Count    ${RA_REGISTER_ALL_ITEMS}
+    ${count_ra_text}=    Get Element Count    ${RA_MEHR_ZUM_REGISTER_BUTTONS}
+    Should Be True    ${count_ra} > 0
+    Should Be Equal As Numbers   ${count_ra}    ${count_ra_text}    
+    ...    msg=The number of "Register Cards" should match the number of "Mehr zum Register lesen" buttons, but was ${count_ra_text}.
 
 Reload Register Auswahl And Verify Core Content
     [Documentation]    Reloads the current route and verifies key page content
