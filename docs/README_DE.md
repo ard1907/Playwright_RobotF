@@ -3,6 +3,7 @@
 Robot-Framework- und Playwright-basierte End-to-End-Smoke-Tests für die Datenschutzcockpit-SPA.
 
 Dieses Repository konzentriert sich auf automatisierte UI-Prüfungen der Startseite, der Anmelde-/Info-Seite, von Dialogen, FAQ-Inhalten, Impressum, Datenschutzerklärung, Barrierefreiheit, externen Links sowie ausgewählten Login- und Logout-Flows.
+Zusätzlich umfasst es inzwischen eine eigene Smoke-Suite für die Registerauswahl im authentifizierten Cockpit-Bereich.
 
 ## Inhalt dieses Repositories
 
@@ -24,6 +25,7 @@ Die Suiten decken derzeit ab:
 - die Dialoge für Leichte Sprache und Gebärdensprache
 - Impressum, Datenschutzerklärung und Barrierefreiheit
 - externe Links zu AusweisApp und kompatiblen Lesegerät-Seiten
+- die Registerauswahl-Seite nach erfolgreichem Login inklusive Auswahl-, Dialog-, FAQ-, Timer- und Reload-Verhalten
 - einen sicheren Cookie-Erfassungs-Flow und zugehörige Login-Helpers
 
 Eine dateiweise Übersicht der Suiten und Keywords findest du in `README_Tests_Overview_DE.md`.
@@ -81,6 +83,7 @@ Eine einzelne Suite starten, wenn nur ein Bereich geprüft werden soll:
 ```bash
 robot tests/ui/ts_01_smoke_test_landing_page.robot
 robot tests/ui/ts_02_smoke_test_auth_info_page.robot
+robot tests/ui/ts_03_smoke_test_register_selection.robot
 ```
 
 Die kleineren Suiten in `test_helpers/` sind nützlich für fokussierte Prüfungen und Debugging.
@@ -88,6 +91,7 @@ Die kleineren Suiten in `test_helpers/` sind nützlich für fokussierte Prüfung
 ### Ausführung über Tags
 
 Die Suiten verwenden Tags wie `smoke`, `landing`, `auth`, `faq`, `accessibility`, `accordion`, `external-link`, `e2e` und `cookies`. Mit der Tag-Filterung von Robot Framework lässt sich ein gezielter Lauf starten.
+Für die Registerauswahl kommen zusätzlich Tags wie `register-auswahl`, `interaction`, `selection`, `toggle`, `dialog`, `security`, `session`, `timer` und `reload` hinzu.
 
 ## Docker- und CI-Optionen
 
@@ -111,6 +115,8 @@ Nach einem Lauf schreibt Robot Framework die Standard-Reports und Logs, zum Beis
 - `report.html`
 - `log.html`
 - `output.xml`
+
+Wenn Artefakte bewusst im Unterordner `results/` abgelegt werden sollen, kann der Lauf mit `robot --outputdir results ...` gestartet werden.
 
 Die Verzeichnisse `results/` und `results2/` enthalten gespeicherte Artefakte früherer Läufe und eignen sich für Debugging oder Vergleiche.
 

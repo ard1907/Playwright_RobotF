@@ -1,17 +1,46 @@
 # ==============================================================================
 # setup_teardown.robot
 # Centralised browser lifecycle keywords.
-# Suite Setup  → Open Application Browser
-# Suite Teardown → Close Application Browser
-# Test Setup   → Navigate To Landing Page  (defined in common_keywords.robot)
+# Standard suites:
+#   Suite Setup     → Open Application Browser
+#   Suite Teardown  → Close Application Browser
+# AusweisApp-dependent suites:
+#   Suite Setup     → Open Browser And Login For AusweisApp Suite    ${AUTH_INFO_URL}
+#   Suite Teardown  → Close Browser After AusweisApp Suite
+# Test Setup   → route-specific navigation (defined in common_keywords.robot)
 # ==============================================================================
 
 *** Settings ***
 Library     Browser
 Resource    dsc_variables.robot
+Resource    dsc_shared_keywords.robot
 
 
 *** Keywords ***
+
+Open Browser And Login For AusweisApp Suite
+    [Documentation]    Central suite setup for AusweisApp-dependent suites.
+    ...                Evaluates the standard-CI guard exactly once, skips the
+    ...                whole suite when the SDK is unavailable, and otherwise
+    ...                opens the browser plus login flow.
+    ...                Recommended suite usage for future cockpit suites:
+    ...                Suite Setup     Open Browser And Login For AusweisApp Suite    ${AUTH_INFO_URL}
+    ...                Suite Teardown  Close Browser After AusweisApp Suite
+    ...                Disable the temporary skip centrally by commenting out
+    ...                the Skip If line in this keyword.
+    [Arguments]        ${url}=${AUTH_INFO_URL}
+    ${suite_can_run}=    Evaluate    (not ${CI}) or ${CI_SELF_HOSTED}
+    Set Suite Variable    ${AUSWEISAPP_SUITE_CAN_RUN}    ${suite_can_run}
+    Skip If    not ${AUSWEISAPP_SUITE_CAN_RUN}    No AusweisApp SDK on standard CI. Remove or comment out this central suite guard in the real DSC environment.
+    Open Application Browser    ${url}
+    Login Into Datenschutzcockpit
+
+Close Browser After AusweisApp Suite
+    [Documentation]    Central suite teardown for AusweisApp-dependent suites.
+    ...                Logs out only when the suite actually ran, then closes
+    ...                all browsers.
+    Run Keyword If    ${AUSWEISAPP_SUITE_CAN_RUN}    Logout From Datenschutzcockpit
+    Close Application Browser
 
 Open Application Browser
     [Documentation]    Starts a new Chromium (or configured) browser process,

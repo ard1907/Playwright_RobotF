@@ -1,5 +1,5 @@
 # Test Overview — Playwright_RobotF project
-Generated: 2026-04-22
+Generated: 2026-04-23
 
 ## Purpose
 This document summarizes Robot Framework test suites, test cases, and key page-object / resource keywords in the repository. It is intended to help a new reader quickly understand what the automated tests cover and where to find the implementation.
@@ -65,13 +65,49 @@ This document summarizes Robot Framework test suites, test cases, and key page-o
     - TC009 — Full Login Page User Journey
       - End-to-end run focused on auth-info interactions and FAQ/card flows.
 
+- `tests/ui/ts_03_smoke_test_register_selection.robot`
+  - Suite Setup: `Open Browser And Login For AusweisApp Suite ${AUTH_INFO_URL}`
+  - Test Setup: `Navigate To Register Auswahl Page`
+  - Suite Teardown: `Close Browser After AusweisApp Suite`
+  - Test Cases:
+    - TC001 — Validate Register Selection Page
+      - Verifies core register-selection elements: title, H1/H2, IDNr display, session timer, logout button, and intro text.
+    - TC002 — Verify Header Accessibility And Navigation Buttons Are Present
+      - Checks header buttons, floating FAQ, footer navigation, and version string.
+    - TC003 — Verify Register List Elements Are Rendered
+      - Validates the register-list default state, toggle controls, and empty-state hints.
+    - TC004 — Verify Intro Content Links Are Present
+      - Checks the two intro references to Datenschutzcockpit content.
+    - TC005 — Verify Feedback Button Is Present
+      - Validates the cockpit-specific feedback button.
+    - TC006 — Select Single Register Enables Request Start
+      - Selects one register and verifies that `Anfrage starten` becomes visible and enabled.
+    - TC007 — Toggle Single Register Returns Empty State
+      - Removes the selection again and validates the return to the empty state.
+    - TC008 — Toggle All Registers Select And Deselect
+      - Checks the global select-all / deselect-all register flow.
+    - TC009 — Intro Dialog 'Was sehe ich' Opens And Closes
+      - Opens the intro dialog when the environment renders the reference as clickable; otherwise uses a controlled warning fallback.
+    - TC010 — Intro Dialog 'Was ist das DSC' Opens And Closes
+      - Opens the second intro dialog with the same guard/fallback behavior.
+    - TC011 — Floating FAQ Dialog Opens And Closes
+      - Opens the cockpit FAQ overlay and validates title/close behavior.
+    - TC012 — Verify IDNr Is Masked By Default
+      - Checks the masked IDNr display and the reveal button.
+    - TC013 — Verify Session Timer Counts Down
+      - Reads the session timer twice and validates a state change.
+    - TC014 — Verify Register Cards Expose More-Info Buttons
+      - Checks `Mehr zum Register` or uses a controlled content fallback when the environment does not render an explicit button.
+    - TC015 — Reload Keeps Registerauswahl Stable
+      - Reloads the page and validates that core content remains stable.
+
 - `test_helpers/dsc_basic_test.robot`
   - Suite Setup: `Open Application Browser`
   - Test Setup: `Navigate To Landing Page`
   - Suite Teardown: `Close Application Browser`
   - Test Cases:
     - TC001 — Validate Landing Page
-      - A compact suite that validates primary landing page elements (title, H1, CTA, basic checks).
+            - A compact suite that validates primary landing page elements (title, H1, CTA, basic checks).
     - TC002 — Navigate To Leichte Sprache And Validate
       - Opens Leichte Sprache dialog and runs the related validation keywords.
 
@@ -105,15 +141,17 @@ These provide page-level selectors and keywords. Use these files to update selec
 - `pages/dsc_sign_language_page.robot`
   - Master keyword: `Validate Gebaerdensprache Page` — verifies video presence and headings.
 - `pages/dsc_register_selection_page.robot`
-  - Contains logout helpers used by some suites: `Logout From Datenschutzcockpit`.
+  - Contains register-selection assertions, selection/toggle keywords, FAQ/intro dialog checks, IDNr/timer checks, and logout helpers.
 
 ---
 
 ## 3) Shared resources (resources/)
 - `resources/dsc_setup_teardown.robot`
   - Provides `Open Application Browser`, `Open Chromium Browser`, `Close Application Browser` — central browser lifecycle helpers.
+  - Provides `Open Browser And Login For AusweisApp Suite` and `Close Browser After AusweisApp Suite` — the reusable setup/teardown pair for future AusweisApp-dependent suites such as cockpit flows.
 - `resources/dsc_shared_keywords.robot`
-  - Utility keywords used across suites: `Navigate To Landing Page`, `Navigate To Authentication Info Page`, `Verify Page Title Contains`, `Element Is Visible`, `Close Currently Open Dialog`, `Open External Tab And Validate`, and dialog/tab helpers.
+  - Utility keywords used across suites: `Navigate To Landing Page`, `Navigate To Authentication Info Page`, `Navigate To Register Auswahl Page`, `Verify Page Title Contains`, `Element Is Visible`, `Close Currently Open Dialog`, `Open External Tab And Validate`, and dialog/tab helpers.
+  - Contains `Skip Current Test If AusweisApp Environment Is Missing` for isolated login-dependent tests that should skip on standard CI without skipping a whole suite.
 - `resources/dsc_variables.robot`
   - Variables: `${BASE_URL}`, `${AUTH_INFO_URL}`, `${BROWSER}`, `${HEADLESS}`, `${TIMEOUT}`, `${TITLE_*}` strings, `${AUSWEISAPP_URL}` env override. Controls runtime behavior and expected titles.
 
@@ -123,14 +161,20 @@ These provide page-level selectors and keywords. Use these files to update selec
 - Top-level smoke suites are in `tests/ui/` and helper suites in `test_helpers/`.
 - Each suite imports `resources/dsc_*` and `pages/*` — page objects encapsulate selectors and assertions.
 - Look for `Validate ...` master keywords inside `pages/*.robot` to see exactly what assertions are performed.
-- Use tags (e.g., `smoke`, `landing`, `auth`, `faq`, `accessibility`, `cookies`) to filter test runs.
+- Use tags (e.g., `smoke`, `landing`, `auth`, `faq`, `accessibility`, `cookies`, `register-auswahl`, `interaction`, `selection`, `toggle`, `dialog`, `security`, `session`, `timer`, `reload`) to filter test runs.
 
 ---
 
 ## 5) Notes & Recommendations
 - Pattern: Page Object Model — update selectors only in `pages/*.robot` and shared logic in `resources/*.robot`.
 - Adding tests: create page keywords, add a suite in `tests/ui/` or `test_helpers/`, import resources/pages and call the `Validate ...` master keywords.
+- For future AusweisApp-dependent suites such as `ts_04`, prefer this template instead of duplicating CI guards in tests or page objects:
+  - `Suite Setup     Open Browser And Login For AusweisApp Suite    ${AUTH_INFO_URL}`
+  - `Suite Teardown  Close Browser After AusweisApp Suite`
+  - `Test Setup      <route-specific navigation keyword>`
+- The temporary standard-CI skip is centrally switchable: comment out the `Skip If` line in `resources/dsc_setup_teardown.robot` for suite-wide behavior and in `resources/dsc_shared_keywords.robot` for isolated test-level login guards.
 - When updating external-link assertions, prefer `Open External Tab And Validate` helper to keep consistency.
+- For stable cockpit tests in `ts_03`, load the target route fresh per test so UI state is not inherited from the previous case.
 
 ---
 
@@ -140,6 +184,3 @@ These provide page-level selectors and keywords. Use these files to update selec
 - Shared resources and variables: `resources/`
 
 ---
-
-
-

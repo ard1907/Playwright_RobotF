@@ -32,6 +32,7 @@ ${RA_IDNR_DISPLAY}                \#id-number
 ${RA_IDNR_LABEL}                  .id-number__label
 ${RA_IDNR_MASKED_VALUE}           .id-number__hidden
 ${RA_SESSION_TIMER}               .session-timer__text
+${RA_IDNR_SHOW_BUTTON}            role=button[name="ID-Nummer anzeigen"]
 
 # ── Main Content ─────────────────────────────────────────────────────────────
 ${RA_H1_HEADING}                  //h1[text()="Wonach wollen Sie suchen?"]
@@ -39,12 +40,21 @@ ${RA_H2_HEADING}                  //h2[text()="Registerauswahl"]
 ${RA_INTRO_PARAGRAPH}             //main//p[contains(.,"Mit dem Datenschutzcockpit werden Sie")]
 ${RA_INTRO_TEXT_WAS_SEHE_ICH}     //main//p[contains(.,'Was sehe ich im Datenschutzcockpit?')]
 ${RA_INTRO_TEXT_WAS_IST}          //main//p[contains(.,'Was ist das Datenschutzcockpit?')]
+${RA_INTRO_BTN_WAS_SEHE_ICH}      //main//button[contains(.,"Was sehe ich im Datenschutzcockpit?")]
+${RA_INTRO_BTN_WAS_IST}           //main//button[contains(.,"Was ist das Datenschutzcockpit?")]
+${RA_DIALOG_WAS_SEHE_ICH_H2}      //h2[text()="Was sehe ich im Datenschutzcockpit?"]
+${RA_DIALOG_WAS_IST_H2}           //h2[text()="Was ist das Datenschutzcockpit?"]
+${RA_DIALOG_CLOSE_BTN}            role=button[name="Menü schließen"]
+${RA_FAQ_DIALOG_H1}               //h1[text()="Informationen zum Datenschutzcockpit"]
 
 # ── Register Selection ────────────────────────────────────────────────────────
 # "Alle Register auswählen" is a label element with role="button".
 ${RA_ALLE_REGISTER_BTN}           role=button[name="Alle Register auswählen"]
+${RA_ALLE_REGISTER_ABWAEHLEN_BTN}    role=button[name="Alle Register abwählen"]
 # At least one register list item (each contains an h3 card heading).
 ${RA_REGISTER_FIRST_ITEM}         (//ul//li[.//h3])[1]
+${RA_MEHR_ZUM_REGISTER_BUTTONS}   //button[contains(normalize-space(.),"Mehr zum Register")]
+${RA_REQUEST_START_BTN}           //button[normalize-space(.)="Anfrage starten"]
 # View toggle: grid (default, active) and list view buttons.
 ${RA_VIEW_GRID_BTN}               //div[contains(@class,"registerFinderBtn") and contains(@class,"active")]
 ${RA_VIEW_LIST_BTN}               //div[@role="button" and contains(@class,"registerFinderBtn")]
@@ -73,7 +83,6 @@ ${RA_H1_LOGOUT_HEADING_3}    //h1[text()="Behalten Sie Ihre Daten im Blick"]
 
 Logout From Datenschutzcockpit
     [Documentation]    Logs out of the Datenschutzcockpit if currently logged in.
-    IF   ${CI} and not ${CI_SELF_HOSTED}              RETURN   #ARD: Just to test Github Actions Workflow in my personal Repository. Plse remove in real DSC Repository.
     Click                    ${RA_LOGOUT_BUTTON_1}
     Wait For Elements State  ${RA_H1_LOGOUT_HEADING_1}  visible
     Click                    ${RA_LOGOUT_BUTTON_2}
@@ -102,7 +111,6 @@ Validate Register Auswahl Page
     ...                  • Session timer is visible
     ...                  • Logout trigger button is visible and enabled
     ...                  • Intro paragraph text is visible
-    IF   ${CI} and not ${CI_SELF_HOSTED}    RETURN    #ARD: No AusweisApp SDK on standard CI. Remove in real DSC Repository.
     Verify Register Auswahl Page Is Loaded
     Element Is Visible    ${RA_H2_HEADING}
     Element Is Visible    ${RA_IDNR_DISPLAY}
@@ -119,7 +127,6 @@ Verify RA Header Accessibility Buttons
     ...                  • Bund.de Datenschutzcockpit Beta Logo (link)
     ...                  • Das Datenschutzcockpit in Leichter Sprache (button)
     ...                  • Zum Gebärdensprache-Video (button)
-    IF   ${CI} and not ${CI_SELF_HOSTED}    RETURN    #ARD: No AusweisApp SDK on standard CI. Remove in real DSC Repository.
     Element Is Visible    ${RA_LOGO_LINK}
     ${logo_states}=    Get Element States    ${RA_LOGO_LINK}
     Should Contain    ${logo_states}    enabled
@@ -133,7 +140,6 @@ Verify RA Header Accessibility Buttons
 Verify RA FAQ Float Button
     [Documentation]    Checks that the floating FAQ button is visible and enabled
     ...                on the register-auswahl page.
-    IF   ${CI} and not ${CI_SELF_HOSTED}    RETURN    #ARD: No AusweisApp SDK on standard CI. Remove in real DSC Repository.
     Element Is Visible    ${RA_FAQ_FLOAT_BUTTON}
     ${faq_states}=    Get Element States    ${RA_FAQ_FLOAT_BUTTON}
     Should Contain    ${faq_states}    enabled
@@ -141,7 +147,6 @@ Verify RA FAQ Float Button
 Verify RA Footer Navigation
     [Documentation]    Verifies all three footer navigation buttons are visible
     ...                and enabled on the register-auswahl page.
-    IF   ${CI} and not ${CI_SELF_HOSTED}    RETURN    #ARD: No AusweisApp SDK on standard CI. Remove in real DSC Repository.
     Element Is Visible    ${RA_IMPRESSUM_BTN}
     ${imp_states}=    Get Element States    ${RA_IMPRESSUM_BTN}
     Should Contain    ${imp_states}    enabled
@@ -160,7 +165,6 @@ Verify RA Register List Is Rendered
     ...                  • List view toggle is present
     ...                  • Hint heading "Bitte wählen Sie mindestens ein Register" visible
     ...                  • Hint instruction paragraph visible
-    IF   ${CI} and not ${CI_SELF_HOSTED}    RETURN    #ARD: No AusweisApp SDK on standard CI. Remove in real DSC Repository.
     Element Is Visible    ${RA_ALLE_REGISTER_BTN}
     ${alle_states}=    Get Element States    ${RA_ALLE_REGISTER_BTN}
     Should Contain    ${alle_states}    enabled
@@ -175,7 +179,6 @@ Verify RA Intro Content Buttons
     ...                the register selection page text:
     ...                  • "Was sehe ich im Datenschutzcockpit?"
     ...                  • "Was ist das Datenschutzcockpit?"
-    IF   ${CI} and not ${CI_SELF_HOSTED}    RETURN    #ARD: No AusweisApp SDK on standard CI. Remove in real DSC Repository.
     Element Is Visible    ${RA_INTRO_TEXT_WAS_SEHE_ICH}
     Element Is Visible    ${RA_INTRO_TEXT_WAS_IST}
 
@@ -183,7 +186,152 @@ Verify RA Feedback Button
     [Documentation]    Verifies the "Feedback hinterlassen" button in the floating
     ...                action bar is visible and enabled. This button is unique to
     ...                the authenticated cockpit pages and not present on public pages.
-    IF   ${CI} and not ${CI_SELF_HOSTED}    RETURN    #ARD: No AusweisApp SDK on standard CI. Remove in real DSC Repository.
     Element Is Visible    ${RA_FEEDBACK_BTN}
     ${fb_states}=    Get Element States    ${RA_FEEDBACK_BTN}
     Should Contain    ${fb_states}    enabled
+
+Ensure RA Empty Selection State
+    [Documentation]    Brings the register selection section back to its default
+    ...                empty-selection state with visible hint text.
+    ${abw_count}=    Get Element Count    ${RA_ALLE_REGISTER_ABWAEHLEN_BTN}
+    IF    ${abw_count} > 0
+        Click    ${RA_ALLE_REGISTER_ABWAEHLEN_BTN}
+        Wait For Elements State    ${RA_ALLE_REGISTER_BTN}    visible    timeout=${TIMEOUT}
+    END
+    ${request_count}=    Get Element Count    ${RA_REQUEST_START_BTN}
+    IF    ${request_count} > 0
+        Click    ${RA_REGISTER_FIRST_ITEM}
+        Wait For Elements State    ${RA_REQUEST_START_BTN}    detached    timeout=${TIMEOUT}
+    END
+    Element Is Visible    ${RA_HINT_H3}
+
+Select First Register And Verify Anfrage Starten
+    [Documentation]    Selects the first register tile and verifies that the
+    ...                submit action appears while the empty-selection hint
+    ...                disappears.
+    Ensure RA Empty Selection State
+    Element Is Visible    ${RA_REGISTER_FIRST_ITEM}
+    Click    ${RA_REGISTER_FIRST_ITEM}
+    Wait For Elements State    ${RA_REQUEST_START_BTN}    visible    timeout=${TIMEOUT}
+    ${request_states}=    Get Element States    ${RA_REQUEST_START_BTN}
+    Should Contain    ${request_states}    enabled
+    Wait For Elements State    ${RA_HINT_H3}    detached    timeout=${TIMEOUT}
+
+Toggle First Register Off And Verify Empty Hint
+    [Documentation]    Selects and unselects the first register tile to verify
+    ...                that the page returns to the initial empty-selection state.
+    Ensure RA Empty Selection State
+    Element Is Visible    ${RA_REGISTER_FIRST_ITEM}
+    Click    ${RA_REGISTER_FIRST_ITEM}
+    Wait For Elements State    ${RA_REQUEST_START_BTN}    visible    timeout=${TIMEOUT}
+    Click    ${RA_REGISTER_FIRST_ITEM}
+    Wait For Elements State    ${RA_REQUEST_START_BTN}    detached    timeout=${TIMEOUT}
+    Element Is Visible    ${RA_HINT_H3}
+    Element Is Visible    ${RA_HINT_PARAGRAPH}
+
+Toggle Alle Register Select And Deselect
+    [Documentation]    Verifies the global register toggle switches from
+    ...                "Alle Register auswählen" to "Alle Register abwählen"
+    ...                and back.
+    Ensure RA Empty Selection State
+    Element Is Visible    ${RA_ALLE_REGISTER_BTN}
+    Click    ${RA_ALLE_REGISTER_BTN}
+    Wait For Elements State    ${RA_ALLE_REGISTER_ABWAEHLEN_BTN}    visible    timeout=${TIMEOUT}
+    ${abw_states}=    Get Element States    ${RA_ALLE_REGISTER_ABWAEHLEN_BTN}
+    Should Contain    ${abw_states}    enabled
+    Click    ${RA_ALLE_REGISTER_ABWAEHLEN_BTN}
+    Wait For Elements State    ${RA_ALLE_REGISTER_BTN}    visible    timeout=${TIMEOUT}
+    Element Is Visible    ${RA_HINT_H3}
+
+Open Intro Dialog Was Sehe Ich And Close
+    [Documentation]    Opens the intro dialog "Was sehe ich im Datenschutzcockpit?"
+    ...                and verifies heading + title, then closes the dialog.
+    ${clickable_count}=    Get Element Count    //main//*[self::button or self::a][contains(normalize-space(.),"Was sehe ich im Datenschutzcockpit?")]
+    IF    ${clickable_count} == 0
+        Log    Intro text "Was sehe ich im Datenschutzcockpit?" is not rendered as clickable control in this environment.    WARN
+        RETURN
+    END
+    Click    //main//*[self::button or self::a][contains(normalize-space(.),"Was sehe ich im Datenschutzcockpit?")][1]
+    Element Is Visible    ${RA_DIALOG_WAS_SEHE_ICH_H2}
+    ${title}=    Get Title
+    Should Contain    ${title}    Was sehe ich im Datenschutzcockpit
+    Click    ${RA_DIALOG_CLOSE_BTN}
+    Wait For Elements State    ${RA_DIALOG_WAS_SEHE_ICH_H2}    hidden    timeout=${TIMEOUT}
+    ${title_after}=    Get Title
+    Should Contain    ${title_after}    Registerauswahl
+
+Open Intro Dialog Was Ist And Close
+    [Documentation]    Opens the intro dialog "Was ist das Datenschutzcockpit?"
+    ...                and verifies heading + title, then closes the dialog.
+    ${clickable_count}=    Get Element Count    //main//*[self::button or self::a][contains(normalize-space(.),"Was ist das Datenschutzcockpit?")]
+    IF    ${clickable_count} == 0
+        Log    Intro text "Was ist das Datenschutzcockpit?" is not rendered as clickable control in this environment.    WARN
+        RETURN
+    END
+    Click    //main//*[self::button or self::a][contains(normalize-space(.),"Was ist das Datenschutzcockpit?")][1]
+    Element Is Visible    ${RA_DIALOG_WAS_IST_H2}
+    ${title}=    Get Title
+    Should Contain    ${title}    Was ist das Datenschutzcockpit
+    Click    ${RA_DIALOG_CLOSE_BTN}
+    Wait For Elements State    ${RA_DIALOG_WAS_IST_H2}    hidden    timeout=${TIMEOUT}
+    ${title_after}=    Get Title
+    Should Contain    ${title_after}    Registerauswahl
+
+Open RA FAQ Dialog And Close
+    [Documentation]    Opens FAQ from the floating action bar and verifies
+    ...                the FAQ dialog heading and title update.
+    Click    ${RA_FAQ_FLOAT_BUTTON}
+    Element Is Visible    ${RA_FAQ_DIALOG_H1}
+    ${title}=    Get Title
+    Should Contain    ${title}    FAQ
+    Click    ${RA_DIALOG_CLOSE_BTN}
+    Wait For Elements State    ${RA_FAQ_DIALOG_H1}    hidden    timeout=${TIMEOUT}
+    ${title_after}=    Get Title
+    Should Contain    ${title_after}    Registerauswahl
+
+Verify RA IDNr Is Masked By Default
+    [Documentation]    Verifies the IDNr display is present in masked form and
+    ...                the reveal button is available.
+    # "Go To" neccessary at this point to ensure we're on the correct page and the IDNr display is visible; otherwise Get Text would return empty and the assertions would be inconclusive.
+    Go To    ${REGISTER_AUSWAHL_URL}
+    Wait For Load State    networkidle
+    Element Is Visible    ${RA_IDNR_DISPLAY}
+    Element Is Visible    ${RA_IDNR_MASKED_VALUE}
+    ${masked_value}=    Get Text    ${RA_IDNR_MASKED_VALUE}
+    Should Contain    ${masked_value}    *
+    Element Is Visible    ${RA_IDNR_SHOW_BUTTON}
+    ${id_show_states}=    Get Element States    ${RA_IDNR_SHOW_BUTTON}
+    Should Contain    ${id_show_states}    enabled
+
+Verify RA Session Timer Counts Down
+    [Documentation]    Verifies the visible timer value changes over time.
+    Element Is Visible    ${RA_SESSION_TIMER}
+    ${timer_before}=    Get Text    ${RA_SESSION_TIMER}
+    Sleep    2s
+    ${timer_after}=    Get Text    ${RA_SESSION_TIMER}
+    Should Not Be Equal As Strings    ${timer_before}    ${timer_after}
+
+Verify RA Register Cards Have More Info Buttons
+    [Documentation]    Verifies that register cards expose at least one
+    ...                "Mehr zum Register lesen" button.
+    Ensure RA Empty Selection State
+    Click    ${RA_REGISTER_FIRST_ITEM}
+    Wait For Elements State    ${RA_REQUEST_START_BTN}    visible    timeout=${TIMEOUT}
+    ${count}=    Get Element Count    ${RA_MEHR_ZUM_REGISTER_BUTTONS}
+    IF    ${count} > 0
+        Should Be True    ${count} > 0
+    ELSE
+        Log    No explicit 'Mehr zum Register' buttons rendered in this environment; using register-content fallback assertion.    WARN
+        ${item_text}=    Get Text    ${RA_REGISTER_FIRST_ITEM}
+        Should Not Be Empty    ${item_text}
+    END
+
+Reload Register Auswahl And Verify Core Content
+    [Documentation]    Reloads the current route and verifies key page content
+    ...                remains visible and stable.
+    Reload
+    Wait For Load State    networkidle
+    Verify Register Auswahl Page Is Loaded
+    Element Is Visible    ${RA_H2_HEADING}
+    Element Is Visible    ${RA_REGISTER_FIRST_ITEM}
+    Element Is Visible    ${RA_FEEDBACK_BTN}

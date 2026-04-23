@@ -131,8 +131,7 @@ Login Into Datenschutzcockpit
     ...                for the main H1 heading to be visible, confirming the
     ...                page has loaded and rendered. Then clicks button  "AusweisApp starten"
     ...                and login into Datenschutzcockpit with AusweisApp (Docker).
-    # If running in CI but not on a self-hosted environment, skip the AusweisApp login steps since the SDK service is not available.
-    IF   ${CI} and not ${CI_SELF_HOSTED}              RETURN   #ARD: Just to test Github Actions Workflow in my personal Repository. Plse remove in real DSC Repository.
+    Skip Current Test If AusweisApp Environment Is Missing
     ${url}=            Get Url
     IF    "authentication-info" not in """${url}"""
         Navigate To Authentication Info Page

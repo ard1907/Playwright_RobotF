@@ -21,6 +21,16 @@ ${DIALOG_SELECTOR}        //div[contains(@class,"modal") and @aria-hidden="false
 
 *** Keywords ***
 
+Skip Current Test If AusweisApp Environment Is Missing
+    [Documentation]    Central temporary guard for individual AusweisApp-
+    ...                dependent tests or keywords. Comment out the Skip If
+    ...                line when standard CI should execute these flows.
+    ...                Use this only for isolated login-dependent tests;
+    ...                full cockpit suites should prefer the suite-level guard
+    ...                in dsc_setup_teardown.robot.
+    ${is_available}=    Evaluate    (not ${CI}) or ${CI_SELF_HOSTED}
+    Skip If    not ${is_available}    No AusweisApp SDK on standard CI. Remove or comment out this central guard in the real DSC environment.
+
 # ── Navigation ─────────────────────────────────────────────────────────────────
 
 Navigate To Landing Page
@@ -53,9 +63,6 @@ Navigate To Authentication Info Page
 Navigate To Register Auswahl Page
     [Documentation]    Navigates to the Register Auswahl page in the cockpit area.
     ...                Requires an active, authenticated session.
-    ...                On non-self-hosted CI the step is skipped because the
-    ...                AusweisApp SDK is not available and no login took place.
-    IF   ${CI} and not ${CI_SELF_HOSTED}    RETURN    #ARD: No AusweisApp SDK on standard CI. Remove in real DSC Repository.
     ${url}=             Get Url
     IF    "register-auswahl" not in """${url}"""
         Go To               ${REGISTER_AUSWAHL_URL}

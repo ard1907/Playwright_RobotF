@@ -1,5 +1,5 @@
 # Testübersicht — Playwright_RobotF Projekt
-Generiert: 2026-04-22
+Generiert: 2026-04-23
 
 ## Zweck
 Dieses Dokument fasst die Robot Framework Testsuiten, Testfälle sowie die wichtigsten Page-Object- und Resource-Keywords des Repositories zusammen. Es soll neuen Leser:innen einen schnellen Überblick darüber geben, welche Funktionalität getestet wird und wo die Implementierung zu finden ist.
@@ -65,6 +65,42 @@ Dieses Dokument fasst die Robot Framework Testsuiten, Testfälle sowie die wicht
     - TC009 — Full Login Page User Journey
       - End-to-end-Lauf für Auth-Info-Interaktionen und FAQ/Karten-Flows.
 
+- `tests/ui/ts_03_smoke_test_register_selection.robot`
+  - Suite-Setup: `Open Browser And Login For AusweisApp Suite ${AUTH_INFO_URL}`
+  - Test-Setup: `Navigate To Register Auswahl Page`
+  - Suite-Teardown: `Close Browser After AusweisApp Suite`
+  - Testfälle:
+    - TC001 — Validate Register Selection Page
+      - Prüft Kernelemente der Registerauswahl: Titel, H1/H2, IDNr-Anzeige, Session-Timer, Logout-Button und Einleitungstext.
+    - TC002 — Verify Header Accessibility And Navigation Buttons Are Present
+      - Prüft Header-Buttons, Floating-FAQ, Footer-Navigation und Versionsstring.
+    - TC003 — Verify Register List Elements Are Rendered
+      - Validiert Grundzustand der Registerliste, Toggle-Controls und Empty-State-Hinweise.
+    - TC004 — Verify Intro Content Links Are Present
+      - Prüft die beiden Intro-Verweise zu Datenschutzcockpit-Inhalten.
+    - TC005 — Verify Feedback Button Is Present
+      - Validiert den cockpit-spezifischen Feedback-Button.
+    - TC006 — Select Single Register Enables Request Start
+      - Wählt ein Register aus und prüft, dass `Anfrage starten` sichtbar/aktiv wird.
+    - TC007 — Toggle Single Register Returns Empty State
+      - Entfernt die Registerauswahl erneut und validiert die Rückkehr in den Empty State.
+    - TC008 — Toggle All Registers Select And Deselect
+      - Prüft den globalen Auswahl-/Abwahl-Flow aller Register.
+    - TC009 — Intro Dialog 'Was sehe ich' Opens And Closes
+      - Öffnet den Intro-Dialog, sofern die Umgebung den Verweis klickbar rendert; sonst kontrollierter Warn-Fallback.
+    - TC010 — Intro Dialog 'Was ist das DSC' Opens And Closes
+      - Öffnet den zweiten Intro-Dialog mit demselben Guard-/Fallback-Verhalten.
+    - TC011 — Floating FAQ Dialog Opens And Closes
+      - Öffnet das FAQ-Overlay im Cockpit und validiert Titel/Schließen.
+    - TC012 — Verify IDNr Is Masked By Default
+      - Prüft die maskierte IDNr-Anzeige und den Anzeigen-Button.
+    - TC013 — Verify Session Timer Counts Down
+      - Liest den Session-Timer zweimal und validiert die Zustandsänderung.
+    - TC014 — Verify Register Cards Expose More-Info Buttons
+      - Prüft `Mehr zum Register` oder nutzt einen kontrollierten Content-Fallback, falls die Umgebung keinen expliziten Button rendert.
+    - TC015 — Reload Keeps Registerauswahl Stable
+      - Lädt die Seite neu und validiert, dass Kerninhalte stabil sichtbar bleiben.
+
 - `test_helpers/dsc_basic_test.robot`
   - Suite-Setup: `Open Application Browser`
   - Test-Setup: `Navigate To Landing Page`
@@ -94,13 +130,13 @@ Dieses Dokument fasst die Robot Framework Testsuiten, Testfälle sowie die wicht
 - `pages/dsc_privacy_page.robot` — `Validate Datenschutz Page`
 - `pages/dsc_accessibility_page.robot` — `Validate Barrierefreiheit Page`
 - `pages/dsc_sign_language_page.robot` — `Validate Gebaerdensprache Page`
-- `pages/dsc_register_selection_page.robot` — Logout-Helpers
+- `pages/dsc_register_selection_page.robot` — Registerauswahl-Assertions, Auswahl-/Toggle-Keywords, FAQ-/Intro-Dialog-Checks, IDNr-/Timer-Prüfungen und Logout-Helpers
 
 ---
 
 ## 3) Gemeinsame Ressourcen (resources/)
-- `resources/dsc_setup_teardown.robot` — Browser-Lifecycle-Keywords
-- `resources/dsc_shared_keywords.robot` — Navigations-, Sichtbarkeits- und Tab-Helpers
+- `resources/dsc_setup_teardown.robot` — Browser-Lifecycle-Keywords sowie `Open Browser And Login For AusweisApp Suite` und `Close Browser After AusweisApp Suite` als wiederverwendbares Setup-/Teardown-Paar für künftige AusweisApp-abhängige Suites
+- `resources/dsc_shared_keywords.robot` — Navigations-, Sichtbarkeits- und Tab-Helpers inkl. `Navigate To Register Auswahl Page` sowie `Skip Current Test If AusweisApp Environment Is Missing` für einzelne login-abhängige Tests
 - `resources/dsc_variables.robot` — Basis-URLs, TIMEOUTs, TITLE_* Strings, `${AUSWEISAPP_URL}`-Override
 
 ---
@@ -109,14 +145,20 @@ Dieses Dokument fasst die Robot Framework Testsuiten, Testfälle sowie die wicht
 - Top-Level-Smoke-Suites befinden sich in `tests/ui/` und Hilfs-Suites in `test_helpers/`.
 - Suchen Sie `Validate ...` Keywords in `pages/` um die konkreten Prüfungen zu sehen.
 - Testsuites importieren `resources/dsc_*` und `pages/*` — Ändern Sie Selektoren in `pages/*.robot`.
-- Filtern Sie Läufe mit Tags (`smoke`, `landing`, `auth`, `faq`, `accessibility`, `cookies`).
+- Filtern Sie Läufe mit Tags (`smoke`, `landing`, `auth`, `faq`, `accessibility`, `cookies`, `register-auswahl`, `interaction`, `selection`, `toggle`, `dialog`, `security`, `session`, `timer`, `reload`).
 
 ---
 
 ## 5) Hinweise & Empfehlungen
 - Architektur: Page Object Model — Konsistenz wahren, Selektoren zentral in `pages/` pflegen.
 - Neue Tests: Page-Keywords erstellen → Suite anlegen → `Validate ...` aufrufen.
+- Für künftige AusweisApp-abhängige Suites wie `ts_04` dieses Muster verwenden, statt CI-Guards in Testfällen oder Page-Objekten zu duplizieren:
+  - `Suite Setup     Open Browser And Login For AusweisApp Suite    ${AUTH_INFO_URL}`
+  - `Suite Teardown  Close Browser After AusweisApp Suite`
+  - `Test Setup      <routenspezifisches Navigations-Keyword>`
+- Der temporäre Standard-CI-Skip ist zentral deaktivierbar: dafür die jeweilige `Skip If`-Zeile in `resources/dsc_setup_teardown.robot` für Suite-weites Verhalten bzw. in `resources/dsc_shared_keywords.robot` für einzelne Login-Guards auskommentieren.
 - Für externe Links: `Open External Tab And Validate` Helper verwenden.
+- Für stabile Cockpit-Tests in `ts_03`: pro Test die Zielroute frisch laden, damit keine UI-Zustände aus dem vorherigen Test vererbt werden.
 
 ---
 
@@ -126,5 +168,3 @@ Dieses Dokument fasst die Robot Framework Testsuiten, Testfälle sowie die wicht
 - Ressourcen/Variablen: `resources/`
 
 ---
-
-
