@@ -31,7 +31,10 @@
 #   TC012  Verify IDNr Is Masked By Default
 #   TC013  Verify Session Timer Counts Down
 #   TC014  Verify Register Cards Expose More-Info Buttons
-#   TC015  Reload Keeps Registerauswahl Stable
+#   TC015  Verify Register List View Elements Are Rendered
+#   TC016  Select Single Register In List View Enables Request Start
+#   TC017  Toggle All Registers In List View Select And Deselect
+#   TC018  Reload Keeps Registerauswahl Stable
 # ==============================================================================
 
 *** Settings ***
@@ -49,7 +52,16 @@ Resource        ../../pages/dsc_register_selection_page.robot
 Suite Setup     Open Browser And Login For AusweisApp Suite    ${AUTH_INFO_URL}
 Suite Teardown  Close Browser After AusweisApp Suite
 # Navigate fresh to the register-auswahl page before every test for isolation.
-Test Setup      Navigate To Register Auswahl Page
+Test Setup      Open Register Auswahl In Default Grid View
+
+
+*** Keywords ***
+
+Open Register Auswahl In Default Grid View
+    [Documentation]    Opens the register-auswahl route and resets the register
+    ...                chooser to its default grid presentation for test isolation.
+    Navigate To Register Auswahl Page
+    Switch Register Auswahl To Grid View
 
 
 *** Test Cases ***
@@ -191,8 +203,40 @@ TC014 - Verify Register Cards Count And More-Info Buttons
     Verify Register Cards Count And Link "Mehr zum Register lesen"
 
 
+TC015 - Verify Register List View Elements Are Rendered
+    [Documentation]    Switches from the default grid view to the list view and
+    ...                verifies the list-specific controls are rendered.
+    ...                Assertions:
+    ...                  • List view toggle can be activated
+    ...                  • Each register entry renders a checkbox in list view
+    ...                  • Empty-state hint remains visible while nothing is selected
+    [Tags]             smoke    register-auswahl    register-list    list-view
+    Verify RA Register List View Is Rendered
 
-TC015 - Reload Keeps Registerauswahl Stable
+
+TC016 - Select Single Register In List View Enables Request Start
+    [Documentation]    Switches to list view, selects the first register entry,
+    ...                and verifies the page becomes submit-ready.
+    ...                Assertions:
+    ...                  • "Anfrage starten" button becomes visible and enabled
+    ...                  • Empty-state hint disappears after the selection
+    [Tags]             smoke    register-auswahl    register-list    list-view    selection
+    Select First Register In List View And Verify Anfrage Starten
+
+
+TC017 - Toggle All Registers In List View Select And Deselect
+    [Documentation]    Switches to list view and verifies the global selection
+    ...                control can select and deselect all register entries.
+    ...                Assertions:
+    ...                  • "Alle Register auswählen" switches to "Alle Register abwählen"
+    ...                  • "Anfrage starten" becomes visible while all are selected
+    ...                  • Empty-state hint returns after deselecting all entries
+    [Tags]             smoke    register-auswahl    register-list    list-view    all-registers
+    Toggle Alle Register In List View And Deselect
+
+
+
+TC018 - Reload Keeps Registerauswahl Stable
     [Documentation]    Reloads the page and verifies that core components are
     ...                still visible and the route remains stable.
     [Tags]             smoke    register-auswahl    stability    reload

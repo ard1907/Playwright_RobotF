@@ -3,7 +3,7 @@
 Robot Framework and Playwright-based end-to-end smoke tests for the Datenschutzcockpit SPA.
 
 This repository focuses on automated UI checks for the landing page, authentication info page, dialogs, FAQ content, legal notice, privacy notice, accessibility information, external links, and selected login/logout flows.
-It now also includes a dedicated smoke suite for the authenticated register-selection page inside the cockpit area.
+It also includes a dedicated smoke suite for the authenticated register-selection page inside the cockpit area, covering grid and list views, single and global selection flows, dialogs, timer checks, and reload stability.
 
 ## What is in this repository
 
@@ -25,7 +25,7 @@ The suite currently covers:
 - Leichte Sprache and Gebärdensprache dialogs
 - legal notice, privacy, and accessibility dialogs
 - external links to AusweisApp and compatible card-reader pages
-- the register-selection page after successful login, including selection behavior, dialogs, FAQ access, timer checks, and reload stability
+- the register-selection page after successful login, including grid and list views, selection behavior, dialogs, FAQ access, timer checks, and reload stability
 - a safe cookie collection flow and related login helpers
 
 For a file-by-file overview of the suites and keywords, see `README_Tests_Overview_EN.md`.
@@ -91,7 +91,7 @@ The smaller suites in `test_helpers/` are useful for focused checks and debuggin
 ### Tag-based execution
 
 The suites use tags such as `smoke`, `landing`, `auth`, `faq`, `accessibility`, `accordion`, `external-link`, `e2e`, and `cookies`. Use Robot Framework tag filtering when you want a narrower run.
-The register-selection suite also uses tags such as `register-auswahl`, `interaction`, `selection`, `toggle`, `dialog`, `security`, `session`, `timer`, and `reload`.
+The register-selection suite also uses tags such as `register-auswahl`, `interaction`, `selection`, `toggle`, `list-view`, `all-registers`, `dialog`, `security`, `session`, `timer`, and `reload`.
 
 ## Docker and CI options
 

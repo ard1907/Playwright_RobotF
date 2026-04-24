@@ -3,7 +3,7 @@
 Robot-Framework- und Playwright-basierte End-to-End-Smoke-Tests für die Datenschutzcockpit-SPA.
 
 Dieses Repository konzentriert sich auf automatisierte UI-Prüfungen der Startseite, der Anmelde-/Info-Seite, von Dialogen, FAQ-Inhalten, Impressum, Datenschutzerklärung, Barrierefreiheit, externen Links sowie ausgewählten Login- und Logout-Flows.
-Zusätzlich umfasst es inzwischen eine eigene Smoke-Suite für die Registerauswahl im authentifizierten Cockpit-Bereich.
+Zusätzlich umfasst es eine eigene Smoke-Suite für die Registerauswahl im authentifizierten Cockpit-Bereich, inklusive Grid-/Listenansicht, Einzel- und Globalauswahl, Dialogen, Timer-Prüfungen und Reload-Stabilität.
 
 ## Inhalt dieses Repositories
 
@@ -25,7 +25,7 @@ Die Suiten decken derzeit ab:
 - die Dialoge für Leichte Sprache und Gebärdensprache
 - Impressum, Datenschutzerklärung und Barrierefreiheit
 - externe Links zu AusweisApp und kompatiblen Lesegerät-Seiten
-- die Registerauswahl-Seite nach erfolgreichem Login inklusive Auswahl-, Dialog-, FAQ-, Timer- und Reload-Verhalten
+- die Registerauswahl-Seite nach erfolgreichem Login inklusive Grid-/Listenansicht, Auswahl-, Dialog-, FAQ-, Timer- und Reload-Verhalten
 - einen sicheren Cookie-Erfassungs-Flow und zugehörige Login-Helpers
 
 Eine dateiweise Übersicht der Suiten und Keywords findest du in `README_Tests_Overview_DE.md`.
@@ -91,7 +91,7 @@ Die kleineren Suiten in `test_helpers/` sind nützlich für fokussierte Prüfung
 ### Ausführung über Tags
 
 Die Suiten verwenden Tags wie `smoke`, `landing`, `auth`, `faq`, `accessibility`, `accordion`, `external-link`, `e2e` und `cookies`. Mit der Tag-Filterung von Robot Framework lässt sich ein gezielter Lauf starten.
-Für die Registerauswahl kommen zusätzlich Tags wie `register-auswahl`, `interaction`, `selection`, `toggle`, `dialog`, `security`, `session`, `timer` und `reload` hinzu.
+Für die Registerauswahl kommen zusätzlich Tags wie `register-auswahl`, `interaction`, `selection`, `toggle`, `list-view`, `all-registers`, `dialog`, `security`, `session`, `timer` und `reload` hinzu.
 
 ## Docker- und CI-Optionen
 

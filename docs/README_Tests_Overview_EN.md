@@ -75,7 +75,7 @@ This document summarizes Robot Framework test suites, test cases, and key page-o
     - TC002 — Verify Header Accessibility And Navigation Buttons Are Present
       - Checks header buttons, floating FAQ, footer navigation, and version string.
     - TC003 — Verify Register List Elements Are Rendered
-      - Validates the register-list default state, toggle controls, and empty-state hints.
+      - Validates the register-list default grid state, toggle controls, and empty-state hints.
     - TC004 — Verify Intro Content Links Are Present
       - Checks the two intro references to Datenschutzcockpit content.
     - TC005 — Verify Feedback Button Is Present
@@ -100,6 +100,12 @@ This document summarizes Robot Framework test suites, test cases, and key page-o
       - Checks that register cards and `Mehr zum Register lesen` buttons are present in matching counts.
     - TC015 — Reload Keeps Registerauswahl Stable
       - Reloads the page and validates that core content remains stable.
+    - TC016 — Verify Register List View Elements Are Rendered
+      - Switches to list view and checks the list-specific controls and empty-state hints.
+    - TC017 — Select Single Register In List View Enables Request Start
+      - Switches to list view, selects one register, and verifies that `Anfrage starten` becomes visible and enabled.
+    - TC018 — Toggle All Registers In List View Select And Deselect
+      - Switches to list view and validates the global select-all and deselect-all behavior.
 
 - `test_helpers/dsc_basic_test.robot`
   - Suite Setup: `Open Application Browser`
@@ -141,7 +147,7 @@ These provide page-level selectors and keywords. Use these files to update selec
 - `pages/dsc_sign_language_page.robot`
   - Master keyword: `Validate Gebaerdensprache Page` — verifies video presence and headings.
 - `pages/dsc_register_selection_page.robot`
-  - Contains register-selection assertions, selection/toggle keywords, FAQ/intro dialog checks, IDNr/timer checks, and logout helpers.
+  - Contains register-selection assertions, grid/list view keywords, selection/toggle helpers, FAQ/intro dialog checks, IDNr/timer checks, and logout helpers.
 
 ---
 
@@ -161,7 +167,7 @@ These provide page-level selectors and keywords. Use these files to update selec
 - Top-level smoke suites are in `tests/ui/` and helper suites in `test_helpers/`.
 - Each suite imports `resources/dsc_*` and `pages/*` — page objects encapsulate selectors and assertions.
 - Look for `Validate ...` master keywords inside `pages/*.robot` to see exactly what assertions are performed.
-- Use tags (e.g., `smoke`, `landing`, `auth`, `faq`, `accessibility`, `cookies`, `register-auswahl`, `interaction`, `selection`, `toggle`, `dialog`, `security`, `session`, `timer`, `reload`) to filter test runs.
+- Use tags (e.g., `smoke`, `landing`, `auth`, `faq`, `accessibility`, `cookies`, `register-auswahl`, `interaction`, `selection`, `toggle`, `list-view`, `all-registers`, `dialog`, `security`, `session`, `timer`, `reload`) to filter test runs.
 
 ---
 

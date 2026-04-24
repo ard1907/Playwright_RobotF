@@ -49,7 +49,10 @@ Dieses Dokument fasst die drei Testsuiten im Ordner `tests/ui/` zusammen und lis
 - `TC013 - Verify Session Timer Counts Down` - Liest den Session-Timer zweimal und prüft, dass er sich verändert.
 - `TC014 - Verify Register Cards Count And More-Info Buttons` - Prüft, dass Registerkarten und „Mehr zum Register lesen“-Buttons in passender Anzahl vorhanden sind.
 - `TC015 - Reload Keeps Registerauswahl Stable` - Lädt die Seite neu und prüft, dass die Kerninhalte stabil bleiben.
+- `TC016 - Verify Register List View Elements Are Rendered` - Wechselt in die Listenansicht und prüft die listenansichtsspezifischen Controls sowie die Empty-State-Hinweise.
+- `TC017 - Select Single Register In List View Enables Request Start` - Wechselt in die Listenansicht, wählt ein Register aus und prüft, dass `Anfrage starten` sichtbar und aktiv wird.
+- `TC018 - Toggle All Registers In List View Select And Deselect` - Wechselt in die Listenansicht und prüft das globale Auswahl- und Abwahlverhalten.
 
 ## Hinweis
 
-Die Registerauswahl-Suite ist nur nach erfolgreichem Login erreichbar. Einzelne Intro- und Mehr-Info-Elemente können je nach Umgebung als nicht-klassische Klickziele gerendert werden; die Suite berücksichtigt das mit kontrollierten Fallbacks.
+Die Registerauswahl-Suite ist nur nach erfolgreichem Login erreichbar. Einzelne Intro- und Mehr-Info-Elemente können je nach Umgebung als nicht-klassische Klickziele gerendert werden; die Suite berücksichtigt das mit kontrollierten Fallbacks. Die Suite deckt außerdem Grid- und Listenansicht ab.

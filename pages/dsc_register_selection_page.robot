@@ -54,10 +54,12 @@ ${RA_ALLE_REGISTER_ABWAEHLEN_BTN}    role=button[name="Alle Register abwählen"]
 # At least one register list item (each contains an h3 card heading).
 ${RA_REGISTER_FIRST_ITEM}         (//ul//li[.//h3])[1]
 ${RA_REGISTER_ALL_ITEMS}          (//ul//li[.//h3])
+${RA_REGISTER_ITEM_CHECKBOXES}    //ul//li[.//h3]//input[@type="checkbox"]
+${RA_REGISTER_FIRST_CHECKBOX}     (//ul//li[.//h3]//input[@type="checkbox"])[1]
 ${RA_MEHR_ZUM_REGISTER_BUTTONS}   //u[contains(normalize-space(.),"Mehr zum Register lesen")]
 ${RA_REQUEST_START_BTN}           //button[normalize-space(.)="Anfrage starten"]
-# View toggle: grid (default, active) and list view buttons.
-${RA_VIEW_GRID_BTN}               //div[contains(@class,"registerFinderBtn") and contains(@class,"active")]
+# View toggle: grid is the default view; list view adds one checkbox per entry.
+${RA_VIEW_GRID_BTN}               (//div[contains(@class,"registerFinderBtn")])[1]
 ${RA_VIEW_LIST_BTN}               //div[@role="button" and contains(@class,"registerFinderBtn")]
 # Hint shown when no register is selected yet.
 ${RA_HINT_H3}                     //h3[text()="Bitte wählen Sie mindestens ein Register"]
@@ -162,16 +164,60 @@ Verify RA Register List Is Rendered
     [Documentation]    Verifies the register selection section is fully rendered:
     ...                  • "Alle Register auswählen" control visible and enabled
     ...                  • At least one register list item with heading visible
-    ...                  • Grid view toggle is present (active default state)
+    ...                  • Grid view toggle is present and list-view-only checkboxes are absent
     ...                  • List view toggle is present
     ...                  • Hint heading "Bitte wählen Sie mindestens ein Register" visible
     ...                  • Hint instruction paragraph visible
+    Switch Register Auswahl To Grid View
     Element Is Visible    ${RA_ALLE_REGISTER_BTN}
     ${alle_states}=    Get Element States    ${RA_ALLE_REGISTER_BTN}
     Should Contain    ${alle_states}    enabled
     Element Is Visible    ${RA_REGISTER_FIRST_ITEM}
     Element Is Visible    ${RA_VIEW_GRID_BTN}
     Element Is Visible    ${RA_VIEW_LIST_BTN}
+    Verify RA Register Grid View Structure
+    Element Is Visible    ${RA_HINT_H3}
+    Element Is Visible    ${RA_HINT_PARAGRAPH}
+
+Switch Register Auswahl To List View
+    [Documentation]    Switches the register selection from the default grid view
+    ...                to the list view and waits until the per-entry checkboxes
+    ...                are rendered.
+    ${item_class}=    Get Attribute    ${RA_REGISTER_FIRST_ITEM}    class
+    IF    "RegisterTeaser--list" not in """${item_class}"""
+        Click    ${RA_VIEW_LIST_BTN}
+    END
+    Wait Until Keyword Succeeds    5x    500ms    Verify RA Register List View Structure
+
+Switch Register Auswahl To Grid View
+    [Documentation]    Restores the default grid view when the page persisted
+    ...                a previous list-view choice across navigations.
+    ${item_class}=    Get Attribute    ${RA_REGISTER_FIRST_ITEM}    class
+    IF    "RegisterTeaser--kachel" not in """${item_class}"""
+        # The inactive view toggle is the clickable control in both directions.
+        Click    ${RA_VIEW_LIST_BTN}
+    END
+    Wait Until Keyword Succeeds    5x    500ms    Verify RA Register Grid View Structure
+
+Verify RA Register Grid View Structure
+    [Documentation]    Internal helper that confirms the default grid view is
+    ...                active on the rendered register teaser.
+    ${item_class}=    Get Attribute    ${RA_REGISTER_FIRST_ITEM}    class
+    Should Contain    ${item_class}    RegisterTeaser--kachel
+
+Verify RA Register List View Structure
+    [Documentation]    Internal helper that confirms the list view has rendered
+    ...                on the rendered register teaser.
+    ${item_class}=    Get Attribute    ${RA_REGISTER_FIRST_ITEM}    class
+    Should Contain    ${item_class}    RegisterTeaser--list
+
+Verify RA Register List View Is Rendered
+    [Documentation]    Verifies that the list view renders one checkbox for each
+    ...                register entry while preserving the empty-selection hint.
+    Ensure RA Empty Selection State
+    Switch Register Auswahl To List View
+    Element Is Visible    ${RA_REGISTER_FIRST_ITEM}
+    Verify RA Register List View Structure
     Element Is Visible    ${RA_HINT_H3}
     Element Is Visible    ${RA_HINT_PARAGRAPH}
 
@@ -218,6 +264,17 @@ Select First Register And Verify Anfrage Starten
     Should Contain    ${request_states}    enabled
     Wait For Elements State    ${RA_HINT_H3}    detached    timeout=${TIMEOUT}
 
+Select First Register In List View And Verify Anfrage Starten
+    [Documentation]    Switches to the list view, selects the first register,
+    ...                and verifies that the submit action appears.
+    Ensure RA Empty Selection State
+    Switch Register Auswahl To List View
+    Click    ${RA_REGISTER_FIRST_ITEM}
+    Wait For Elements State    ${RA_REQUEST_START_BTN}    visible    timeout=${TIMEOUT}
+    ${request_states}=    Get Element States    ${RA_REQUEST_START_BTN}
+    Should Contain    ${request_states}    enabled
+    Wait For Elements State    ${RA_HINT_H3}    detached    timeout=${TIMEOUT}
+
 Toggle First Register Off And Verify Empty Hint
     [Documentation]    Selects and unselects the first register tile to verify
     ...                that the page returns to the initial empty-selection state.
@@ -243,6 +300,27 @@ Toggle Alle Register Select And Deselect
     Click    ${RA_ALLE_REGISTER_ABWAEHLEN_BTN}
     Wait For Elements State    ${RA_ALLE_REGISTER_BTN}    visible    timeout=${TIMEOUT}
     Element Is Visible    ${RA_HINT_H3}
+
+Toggle Alle Register In List View And Deselect
+    [Documentation]    Switches to the list view, selects all registers, and
+    ...                verifies the page returns to the empty-selection state
+    ...                after deselecting them again.
+    Ensure RA Empty Selection State
+    Switch Register Auswahl To List View
+    Verify RA Register List View Structure
+    Click    ${RA_ALLE_REGISTER_BTN}
+    Wait For Elements State    ${RA_ALLE_REGISTER_ABWAEHLEN_BTN}    visible    timeout=${TIMEOUT}
+    ${abw_states}=    Get Element States    ${RA_ALLE_REGISTER_ABWAEHLEN_BTN}
+    Should Contain    ${abw_states}    enabled
+    Wait For Elements State    ${RA_REQUEST_START_BTN}    visible    timeout=${TIMEOUT}
+    ${request_states}=    Get Element States    ${RA_REQUEST_START_BTN}
+    Should Contain    ${request_states}    enabled
+    Verify RA Register List View Structure
+    Click    ${RA_ALLE_REGISTER_ABWAEHLEN_BTN}
+    Wait For Elements State    ${RA_ALLE_REGISTER_BTN}    visible    timeout=${TIMEOUT}
+    Verify RA Register List View Structure
+    Element Is Visible    ${RA_HINT_H3}
+    Element Is Visible    ${RA_HINT_PARAGRAPH}
 
 Open Intro Dialog Was Sehe Ich And Close
     [Documentation]    Opens the intro dialog "Was sehe ich im Datenschutzcockpit?"

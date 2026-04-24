@@ -75,7 +75,7 @@ Dieses Dokument fasst die Robot Framework Testsuiten, Testfälle sowie die wicht
     - TC002 — Verify Header Accessibility And Navigation Buttons Are Present
       - Prüft Header-Buttons, Floating-FAQ, Footer-Navigation und Versionsstring.
     - TC003 — Verify Register List Elements Are Rendered
-      - Validiert Grundzustand der Registerliste, Toggle-Controls und Empty-State-Hinweise.
+      - Validiert den Grid-Standardzustand der Registerliste, Toggle-Controls und Empty-State-Hinweise.
     - TC004 — Verify Intro Content Links Are Present
       - Prüft die beiden Intro-Verweise zu Datenschutzcockpit-Inhalten.
     - TC005 — Verify Feedback Button Is Present
@@ -100,6 +100,12 @@ Dieses Dokument fasst die Robot Framework Testsuiten, Testfälle sowie die wicht
       - Prüft, dass Registerkarten und `Mehr zum Register lesen`-Buttons in passender Anzahl vorhanden sind.
     - TC015 — Reload Keeps Registerauswahl Stable
       - Lädt die Seite neu und validiert, dass Kerninhalte stabil sichtbar bleiben.
+    - TC016 — Verify Register List View Elements Are Rendered
+      - Wechselt in die Listenansicht und prüft die listenansichtsspezifischen Controls sowie die Empty-State-Hinweise.
+    - TC017 — Select Single Register In List View Enables Request Start
+      - Wechselt in die Listenansicht, wählt ein Register aus und prüft, dass `Anfrage starten` sichtbar und aktiv wird.
+    - TC018 — Toggle All Registers In List View Select And Deselect
+      - Wechselt in die Listenansicht und validiert das globale Auswahl- und Abwahlverhalten.
 
 - `test_helpers/dsc_basic_test.robot`
   - Suite-Setup: `Open Application Browser`
@@ -130,7 +136,7 @@ Dieses Dokument fasst die Robot Framework Testsuiten, Testfälle sowie die wicht
 - `pages/dsc_privacy_page.robot` — `Validate Datenschutz Page`
 - `pages/dsc_accessibility_page.robot` — `Validate Barrierefreiheit Page`
 - `pages/dsc_sign_language_page.robot` — `Validate Gebaerdensprache Page`
-- `pages/dsc_register_selection_page.robot` — Registerauswahl-Assertions, Auswahl-/Toggle-Keywords, FAQ-/Intro-Dialog-Checks, IDNr-/Timer-Prüfungen und Logout-Helpers
+- `pages/dsc_register_selection_page.robot` — Registerauswahl-Assertions, Grid-/Listenansicht-Keywords, Auswahl-/Toggle-Helpers, FAQ-/Intro-Dialog-Checks, IDNr-/Timer-Prüfungen und Logout-Helpers
 
 ---
 
@@ -145,7 +151,7 @@ Dieses Dokument fasst die Robot Framework Testsuiten, Testfälle sowie die wicht
 - Top-Level-Smoke-Suites befinden sich in `tests/ui/` und Hilfs-Suites in `test_helpers/`.
 - Suchen Sie `Validate ...` Keywords in `pages/` um die konkreten Prüfungen zu sehen.
 - Testsuites importieren `resources/dsc_*` und `pages/*` — Ändern Sie Selektoren in `pages/*.robot`.
-- Filtern Sie Läufe mit Tags (`smoke`, `landing`, `auth`, `faq`, `accessibility`, `cookies`, `register-auswahl`, `interaction`, `selection`, `toggle`, `dialog`, `security`, `session`, `timer`, `reload`).
+- Filtern Sie Läufe mit Tags (`smoke`, `landing`, `auth`, `faq`, `accessibility`, `cookies`, `register-auswahl`, `interaction`, `selection`, `toggle`, `list-view`, `all-registers`, `dialog`, `security`, `session`, `timer`, `reload`).
 
 ---
 

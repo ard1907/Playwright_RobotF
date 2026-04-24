@@ -49,7 +49,10 @@ This document summarizes the three test suites in `tests/ui/` and lists the cont
 - `TC013 - Verify Session Timer Counts Down` - Reads the session timer twice and verifies that it changes.
 - `TC014 - Verify Register Cards Count And More-Info Buttons` - Checks that register cards and "Mehr zum Register lesen" buttons are present in matching counts.
 - `TC015 - Reload Keeps Registerauswahl Stable` - Reloads the page and verifies that the core content stays stable.
+- `TC016 - Verify Register List View Elements Are Rendered` - Switches to list view and checks the list-specific controls and empty-state hints.
+- `TC017 - Select Single Register In List View Enables Request Start` - Switches to list view, selects one register, and verifies that `Anfrage starten` becomes visible and enabled.
+- `TC018 - Toggle All Registers In List View Select And Deselect` - Switches to list view and verifies the global select-all and deselect-all behavior.
 
 ## Note
 
-The register-selection suite is only reachable after a successful login. Some intro and more-info elements can be rendered as non-standard click targets depending on the environment; the suite handles that with controlled fallbacks.
+The register-selection suite is only reachable after a successful login. Some intro and more-info elements can be rendered as non-standard click targets depending on the environment; the suite handles that with controlled fallbacks. The suite also covers both grid and list views.
