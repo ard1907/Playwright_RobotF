@@ -49,11 +49,11 @@ Open Application Browser
     [Arguments]        ${url}=${BASE_URL}    ${browser_type}=${BROWSER}    ${headless_bool}=${HEADLESS}   ${slow_mo}=${SLOW_MOTION}
     IF    ${CI}
         Open Chromium Browser
-        New Context    tracing=retain-on-failure   locale=de-DE
+        New Context    tracing=retain-on-failure   locale=de-DE    acceptDownloads=${True}
     ELSE
         ${slow_mo}=    IF   "${headless_bool}"=="True" or "${slow_mo}"==""    Set Variable   0:00:00.010   ELSE    Set Variable   ${slow_mo}
         Open Chromium Browser    ${browser_type}    ${headless_bool}    ${slow_mo}
-        New Context    tracing=retain-on-failure   locale=de-DE     viewport=None      # viewport={'width': ${WIDTH}, 'height': ${HEIGHT}}
+        New Context    tracing=retain-on-failure   locale=de-DE     viewport=None    acceptDownloads=${True}      # viewport={'width': ${WIDTH}, 'height': ${HEIGHT}}
     END
     New Page               ${url}
     Wait For Load State    networkidle

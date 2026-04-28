@@ -188,3 +188,30 @@ Close Current Tab And Return
     Switch Page    ${page_ids}[0]
     Wait For Load State    networkidle
 
+
+# ── Generic Register Card Keywords ────────────────────────────────────────────
+
+Select Register Card By Name
+    [Documentation]    Clicks a register card (list item) on the register-auswahl
+    ...                page by matching the h3 heading text exactly.
+    ...                Works generically for any register card and is designed
+    ...                to be reused across all register-specific test suites.
+    ...                Register Karten können sehr zahlreich werden – dieser
+    ...                Keyword ermöglicht die generische Auswahl per Name.
+    ...
+    ...                Arguments:
+    ...                  ${register_name}  – Exact text of the register h3 heading
+    ...                                     (e.g. "Test BVA", "Test BA", "Test KBA")
+    [Arguments]    ${register_name}
+    ${selector}=    Set Variable    //ul//li[.//h3[normalize-space(text())="${register_name}"]]
+    Wait For Elements State    ${selector}    visible    timeout=${TIMEOUT}
+    Click    ${selector}
+
+Get OS Downloads Directory
+    [Documentation]    Returns the platform-appropriate user Downloads directory
+    ...                as an absolute path string:
+    ...                  • Windows : %USERPROFILE%\Downloads
+    ...                  • Linux / macOS : ~/Downloads
+    ${downloads_dir}=    Evaluate    str(__import__('pathlib').Path.home() / 'Downloads')
+    RETURN    ${downloads_dir}
+

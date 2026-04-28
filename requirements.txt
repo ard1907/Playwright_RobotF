@@ -9,3 +9,6 @@ robotframework-jsonlibrary
 
 # Hilfsbibliotheken
 requests>=2.31.0
+
+# PDF verification (used in ts_04 BVA workflow tests)
+pypdf>=4.0

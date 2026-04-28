@@ -39,6 +39,11 @@ ${TITLE_GEBAERDENSPRACHE}   Datenschutzcockpit - Gebärdensprache
 ${REGISTER_AUSWAHL_URL}     ${BASE_URL}cockpit/register-auswahl
 ${TITLE_REGISTER_AUSWAHL}   Datenschutzcockpit - Registerauswahl
 
+# ── Datenabfrage / Datenansicht Page ──────────────────────────────────────────
+${DATENABFRAGE_URL}         ${BASE_URL}cockpit/datenabfrage
+${TITLE_DATENABFRAGE}       Datenschutzcockpit - Ergebnisse
+${TITLE_DATENANSICHT}       Datenschutzcockpit - Datenansicht
+
 # AusweisApp SDK URL (override via env in CI or compose):
 # Set environment variable AUSWEISAPP_URL to e.g. http://ausweisapp-sdk:24727
 ${AUSWEISAPP_URL}          %{AUSWEISAPP_URL=http://localhost:24727}
