@@ -1,0 +1,22 @@
+register:
+  name: Test BVA
+  tag: bva
+first_run:
+  completed: true
+  captured_at: '2026-04-28T16:28:41'
+dialog:
+  sender: Bundesverwaltungsamt, Registermodernisierungsbehörde
+  assert_sender: true
+  # Felder aus first-run (2026-04-28) manuell korrigiert:
+  # Rohdaten vom JS-Capture: "Angaben zur PersonIdentifikationsnummer08214967384Geburtstag1964-08-12"
+  # → Abschnitt "Angaben zur Person" + 2 Felder extrahiert.
+  data_fields:
+  - key: Identifikationsnummer
+    value: '08214967384'
+    assert_value: true
+  - key: Geburtstag
+    value: '1964-08-12'
+    assert_value: true
+pdf:
+  verify: false
+  filename_pattern: ^Datenschutzcockpit-\d{2}_\d{2}_\d{4}-\d{2}_\d{2}_uhr\.pdf$

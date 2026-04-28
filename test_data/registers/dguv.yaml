@@ -1,0 +1,17 @@
+register:
+  name: Test-DGUV
+  tag: dguv
+first_run:
+  completed: false
+  captured_at: null
+dialog:
+  sender: ''
+  assert_sender: true
+  # Felder werden durch first-run befüllt:
+  #   robot --include first-run \
+  #         tests/ui/ts_05_smoke_test_register_cards_generic.robot
+  # Anschließend YAML prüfen, ggf. manuell korrigieren und committen.
+  data_fields: []
+pdf:
+  verify: false
+  filename_pattern: ^Datenschutzcockpit-\d{2}_\d{2}_\d{4}-\d{2}_\d{2}_uhr\.pdf$
