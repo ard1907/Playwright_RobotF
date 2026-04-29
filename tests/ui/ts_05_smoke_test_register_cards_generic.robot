@@ -16,13 +16,15 @@
 #                clear message pointing to the first-run command.
 #
 #   First-run mode (data capture):
-#     robot --include first-run tests/ui/ts_05_smoke_test_register_cards_generic.robot
+#     robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True \
+#           tests/ui/ts_05_smoke_test_register_cards_generic.robot
 #     Drives the full workflow, captures sender + data fields from the live dialog,
 #     and writes/updates the YAML fixture.
 #     By default, skips writing if a fixture already exists.
 #
 #   First-run with forced overwrite:
-#     robot --include first-run --variable FIXTURE_FORCE_REGENERATE:True \
+#     robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True \
+#           --variable FIXTURE_FORCE_REGENERATE:True \
 #           tests/ui/ts_05_smoke_test_register_cards_generic.robot
 #
 # ── Fixture file convention ────────────────────────────────────────────────────
@@ -72,6 +74,9 @@ ${FIXTURES_DIR}                   ${CURDIR}${/}..${/}..${/}test_data${/}register
 # Set to True on the command line to overwrite existing fixture files:
 #   --variable FIXTURE_FORCE_REGENERATE:True
 ${FIXTURE_FORCE_REGENERATE}       ${False}
+# Explicit opt-in so first-run tests never execute during a default suite run.
+#   --include first-run --variable ENABLE_FIRST_RUN_TESTS:True
+${ENABLE_FIRST_RUN_TESTS}         ${False}
 
 
 *** Keywords ***
@@ -100,6 +105,13 @@ Open Register Auswahl In Default Grid View
     Switch Register Auswahl To Grid View
 
 
+Require Explicit First Run Mode
+    [Documentation]    Guards first-run capture tests so they only execute when
+    ...                the suite is started with explicit first-run intent.
+    Skip If    not ${ENABLE_FIRST_RUN_TESTS}
+    ...    First-run tests are opt-in. Run with: robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
+
+
 # ── Composite Verification Keyword ─────────────────────────────────────────────
 
 Run Register Card Verification
@@ -119,7 +131,7 @@ Run Register Card Verification
     ${fixture}=    Load Register Fixture    ${fixture_path}
     ${is_complete}=    Is First Run Completed    ${fixture}
     Skip If    not ${is_complete}
-    ...    Fixture not yet populated by first-run: ${fixture_path}\nRun: robot --include first-run tests/ui/ts_05_smoke_test_register_cards_generic.robot
+    ...    Fixture not yet populated by first-run: ${fixture_path}\nRun: robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
     # Navigate full workflow to the open, data-loaded dialog
     ${register_name}=    Get Register Name    ${fixture}
     Run Full Register Workflow To Dialog Data    ${register_name}
@@ -143,7 +155,8 @@ Run Register First Run Capture
     ...                dialog data (sender + data fields) via JavaScript, and
     ...                writes the result to the given YAML fixture file.
     ...
-    ...                By default, skips writing if the fixture already exists.
+    ...                By default, skips writing only when the fixture already
+    ...                exists and is marked as completed.
     ...                Pass --variable FIXTURE_FORCE_REGENERATE:True to overwrite.
     ...
     ...                Arguments:
@@ -208,10 +221,10 @@ Verify Register Card Workflow: Test-DGUV
 
 # ==============================================================================
 # FIRST-RUN DATA CAPTURE TESTS
-# Run with: robot --include first-run tests/ui/ts_05_smoke_test_register_cards_generic.robot
+# Run with: robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
 # Forced overwrite: add --variable FIXTURE_FORCE_REGENERATE:True
 #
-# These tests are excluded from the default run (no shared tags with normal tests).
+# These tests are guarded explicitly and skip unless ENABLE_FIRST_RUN_TESTS=True.
 # ==============================================================================
 
 First Run: Capture And Generate Fixture For Test BVA
@@ -221,14 +234,17 @@ First Run: Capture And Generate Fixture For Test BVA
     ...
     ...                Run once before the normal verification tests:
     ...                  robot --include first-run \
+    ...                        --variable ENABLE_FIRST_RUN_TESTS:True \
     ...                        tests/ui/ts_05_smoke_test_register_cards_generic.robot
     ...
     ...                To overwrite an existing bva.yaml:
     ...                  robot --include first-run \
+    ...                        --variable ENABLE_FIRST_RUN_TESTS:True \
     ...                        --variable FIXTURE_FORCE_REGENERATE:True \
     ...                        tests/ui/ts_05_smoke_test_register_cards_generic.robot
     ...
     ...                After the run: review the generated YAML and commit it.
+    [Setup]    Require Explicit First Run Mode
     [Tags]    first-run    bva
     Run Register First Run Capture    Test BVA    bva    ${FIXTURES_DIR}${/}bva.yaml
 
@@ -239,14 +255,17 @@ First Run: Capture And Generate Fixture For Test-DGUV
     ...
     ...                Run once before the normal verification tests:
     ...                  robot --include first-run \
+    ...                        --variable ENABLE_FIRST_RUN_TESTS:True \
     ...                        tests/ui/ts_05_smoke_test_register_cards_generic.robot
     ...
     ...                To overwrite an existing dguv.yaml:
     ...                  robot --include first-run \
+    ...                        --variable ENABLE_FIRST_RUN_TESTS:True \
     ...                        --variable FIXTURE_FORCE_REGENERATE:True \
     ...                        tests/ui/ts_05_smoke_test_register_cards_generic.robot
     ...
     ...                After the run: review the generated YAML and commit it.
+    [Setup]    Require Explicit First Run Mode
     [Tags]    first-run    dguv
     Run Register First Run Capture    Test-DGUV    dguv    ${FIXTURES_DIR}${/}dguv.yaml
 

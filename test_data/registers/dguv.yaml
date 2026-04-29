@@ -2,16 +2,36 @@ register:
   name: Test-DGUV
   tag: dguv
 first_run:
-  completed: false
-  captured_at: null
+  completed: true
+  captured_at: '2026-04-29T10:14:58'
 dialog:
-  sender: ''
+  sender: Zentrales Unternehmerverzeichnis (ZUV) der gesetzlichen Unfallversicherung
   assert_sender: true
-  # Felder werden durch first-run befüllt:
-  #   robot --include first-run \
-  #         tests/ui/ts_05_smoke_test_register_cards_generic.robot
-  # Anschließend YAML prüfen, ggf. manuell korrigieren und committen.
-  data_fields: []
+  data_fields:
+  - key: Empfänger der Daten
+    value: Träger der Gesetzlichen Unfallversicherung, Arbeitsschutzbehörden der Länder,
+      Bundesamt für Statistik als Registerbehörde nach dem Unternehmensbasisdatengesetz
+    assert_value: true
+  - key: Verarbeitungszwecke
+    value: Aktualisierung der im ZUV gespeicherten personenbezogenen Daten nach (§
+      2 Nr. 2 IDNrG)
+    assert_value: true
+  - key: Dauer der Speicherung
+    value: 120 Jahre
+    assert_value: true
+  - key: Beschwerderecht
+    value: 'Für Rechtsbeschwerden zuständige Aufsichtsbehörde: Die Bundebeauftragte
+      für den Datenschutz und die Informationsfreiheit (BfDI), Graurheindorfer Str.
+      153, 53117 Bonn, poststelle@bfdi.bund.de'
+    assert_value: true
+  - key: Datenherkunft
+    value: Bundeszentralamt für Steuern im Rahmen des Identitätsdatenabrufverfahrens
+      nach § 2 Identifikationsnummerngesetz (IDNrG)
+    assert_value: true
+  - key: Profiling
+    value: Eine automatisierte Entscheidungsfindung einschließlich Profiling auf Grundlage
+      Ihrer im ZUV gespeicherten Daten findet nicht statt.
+    assert_value: true
 pdf:
   verify: false
   filename_pattern: ^Datenschutzcockpit-\d{2}_\d{2}_\d{4}-\d{2}_\d{2}_uhr\.pdf$

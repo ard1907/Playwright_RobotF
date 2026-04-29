@@ -16,6 +16,7 @@
 	"ms-toolsai.jupyter",
 	"ritwickdey.liveserver",
 	"yzhang.markdown-all-in-one",
+	"davidanson.vscode-markdownlint",
 	"ms-playwright.playwright",
 	"ms-python.vscode-pylance",
 	"ms-python.python",

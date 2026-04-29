@@ -3,7 +3,7 @@
 Robot-Framework- und Playwright-basierte End-to-End-Smoke-Tests für die Datenschutzcockpit-SPA.
 
 Dieses Repository konzentriert sich auf automatisierte UI-Prüfungen der Startseite, der Anmelde-/Info-Seite, von Dialogen, FAQ-Inhalten, Impressum, Datenschutzerklärung, Barrierefreiheit, externen Links sowie ausgewählten Login- und Logout-Flows.
-Zusätzlich umfasst es eine eigene Smoke-Suite für die Registerauswahl im authentifizierten Cockpit-Bereich, inklusive Grid-/Listenansicht, Einzel- und Globalauswahl, Dialogen, Timer-Prüfungen und Reload-Stabilität.
+Zusätzlich umfasst es eigene Suiten für den authentifizierten Cockpit-Bereich: die Registerauswahl, einen BVA-spezifischen Ergebnis-Flow und einen generischen Registerkarten-Flow, der mehrere Registerkarten über YAML-Fixtures prüfen kann.
 
 ## Inhalt dieses Repositories
 
@@ -26,9 +26,11 @@ Die Suiten decken derzeit ab:
 - Impressum, Datenschutzerklärung und Barrierefreiheit
 - externe Links zu AusweisApp und kompatiblen Lesegerät-Seiten
 - die Registerauswahl-Seite nach erfolgreichem Login inklusive Grid-/Listenansicht, Auswahl-, Dialog-, FAQ-, Timer- und Reload-Verhalten
+- den generischen Registerkarten-Ergebnis-Flow nach Login inklusive fixture-basierter Verifikation und kontrollierter First-Run-Generierung
 - einen sicheren Cookie-Erfassungs-Flow und zugehörige Login-Helpers
 
 Eine dateiweise Übersicht der Suiten und Keywords findest du in `README_Tests_Overview_DE.md`.
+Eine einfache Beschreibung der Registerkarten-Testlogik findest du in `LogikRegisterTests.md`.
 
 ## Voraussetzungen
 
@@ -84,6 +86,26 @@ Eine einzelne Suite starten, wenn nur ein Bereich geprüft werden soll:
 robot tests/ui/ts_01_smoke_test_landing_page.robot
 robot tests/ui/ts_02_smoke_test_auth_info_page.robot
 robot tests/ui/ts_03_smoke_test_register_selection.robot
+robot tests/ui/ts_04_smoke_test_register_selection_BVA.robot
+robot tests/ui/ts_05_smoke_test_register_cards_generic.robot
+```
+
+Nur die generische Registerkarten-Verifikation starten:
+
+```bash
+robot tests/ui/ts_05_smoke_test_register_cards_generic.robot
+```
+
+Den generischen First-Run explizit starten:
+
+```bash
+robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
+```
+
+Bereits abgeschlossene Fixtures bewusst neu erzeugen:
+
+```bash
+robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True --variable FIXTURE_FORCE_REGENERATE:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
 ```
 
 Die kleineren Suiten in `test_helpers/` sind nützlich für fokussierte Prüfungen und Debugging.
@@ -133,3 +155,5 @@ Die Verzeichnisse `results/` und `results2/` enthalten gespeicherte Artefakte fr
 
 - `README_Tests_Overview_EN.md`
 - `README_Tests_Overview_DE.md`
+- `LogicRegisterTests.md`
+- `LogikRegisterTests.md`

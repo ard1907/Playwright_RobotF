@@ -68,11 +68,6 @@ ${REG_DATEN_ABGERUFEN_BTN}
 ...    //div[@role="dialog" and @aria-hidden="false"]//button[contains(.,"Daten abgerufen")]
 ${REG_DIALOG_CLOSE_BTN}
 ...    //div[@role="dialog" and @aria-hidden="false"]//button[@data-testid="closeModalBtn"]
-# NOTE: data-testid "protkolldatenEinsehenBtn" preserves the upstream typo.
-${REG_DATEN_EINSEHEN_FIRST}
-...    (//button[@data-testid="protkolldatenEinsehenBtn"])[1]
-
-
 *** Keywords ***
 
 # ── Navigation ─────────────────────────────────────────────────────────────────
@@ -89,6 +84,8 @@ Navigate To Register Results Page
     ...                  ${register_name}  – Exact h3 text of the register card
     [Arguments]    ${register_name}
     Navigate To Register Auswahl Page
+    Switch Register Auswahl To Grid View
+    Ensure RA Empty Selection State
     Select Register Card By Name    ${register_name}
     Wait For Elements State    ${REG_REQUEST_START_BTN}    visible    timeout=${TIMEOUT}
     Click    ${REG_REQUEST_START_BTN}
@@ -125,8 +122,15 @@ Open First Register Protokolldaten Dialog
     [Documentation]    Clicks the first "Daten einsehen" button inside the
     ...                expanded register result entry and waits until the
     ...                Protokolldaten dialog is open and its H1 is visible.
-    Wait For Elements State    ${REG_DATEN_EINSEHEN_FIRST}    visible    timeout=${TIMEOUT}
-    Click    ${REG_DATEN_EINSEHEN_FIRST}
+    ...                Arguments:
+    ...                  ${register_name}  – Exact h3 text of the expanded result entry
+    [Arguments]    ${register_name}
+    ${open_result}=    Set Variable
+    ...    //div[@aria-label="Ergebnis ist geöffnet" and .//h3[normalize-space(.)="${register_name}"]]
+    ${dialog_btn}=    Set Variable
+    ...    (${open_result}//button[@data-testid="protkolldatenEinsehenBtn"])[1]
+    Wait For Elements State    ${dialog_btn}    visible    timeout=${TIMEOUT}
+    Click    ${dialog_btn}
     Wait For Elements State    ${REG_DIALOG}     visible    timeout=${TIMEOUT}
     Wait For Elements State    ${REG_DIALOG_H1}  visible    timeout=${TIMEOUT}
 
@@ -175,7 +179,7 @@ Run Full Register Workflow To Dialog Data
     [Arguments]    ${register_name}
     Navigate To Register Results Page    ${register_name}
     Expand Register Result Entry          ${register_name}
-    Open First Register Protokolldaten Dialog
+    Open First Register Protokolldaten Dialog    ${register_name}
     Fetch Personal Data In Register Dialog
 
 
@@ -205,14 +209,24 @@ Verify Register Dialog Data Fields
     ...                  ${data_fields}  – List of dicts:
     ...                                   {key: str, value: str, assert_value: bool}
     [Arguments]    ${data_fields}
+    ${dialog_text}=    Get Text    ${REG_DIALOG}
+    ${live_fields}=    Capture Dialog Data Fields Via JavaScript
     FOR    ${field}    IN    @{data_fields}
-        ${key_sel}=    Set Variable
-        ...    //div[@role="dialog" and @aria-hidden="false"]//*[normalize-space(text())="${field}[key]"]
-        Wait For Elements State    ${key_sel}    visible    timeout=${TIMEOUT}
+        ${has_key}=    Dialog Contains Field Key    ${dialog_text}    ${field}[key]
+        IF    not ${has_key}
+            ${has_key}=    Has Data Field Key    ${live_fields}    ${field}[key]
+        END
+        Should Be True    ${has_key}    Missing dialog field key: ${field}[key]
         IF    ${field}[assert_value]
-            ${val_sel}=    Set Variable
-            ...    //div[@role="dialog" and @aria-hidden="false"]//*[normalize-space(text())="${field}[value]"]
-            Wait For Elements State    ${val_sel}    visible    timeout=${TIMEOUT}
+            ${pair_in_text}=    Dialog Contains Field Pair
+            ...    ${dialog_text}
+            ...    ${field}[key]
+            ...    ${field}[value]
+            IF    not ${pair_in_text}
+                ${live_value}=    Get Data Field Value    ${live_fields}    ${field}[key]
+                Should Be Equal As Strings    ${live_value}    ${field}[value]
+                ...    msg=Unexpected dialog value for key '${field}[key]'
+            END
         END
     END
 
@@ -273,20 +287,24 @@ Generate Register Fixture From Dialog
     ...                  ${force_regenerate} – Overwrite existing file (default: False)
     [Arguments]    ${fixture_path}    ${register_name}    ${register_tag}    ${force_regenerate}=${False}
     ${exists}=    Fixture Exists    ${fixture_path}
-    IF    ${exists} and not ${force_regenerate}
-        Log    Fixture already exists and force_regenerate is False – skipping write: ${fixture_path}    WARN
+    ${existing}=    Set Variable    ${None}
+    ${is_complete}=    Set Variable    ${False}
+    IF    ${exists}
+        ${existing}=    Load Register Fixture    ${fixture_path}
+        ${is_complete}=    Is First Run Completed    ${existing}
+    END
+    IF    ${exists} and ${is_complete} and not ${force_regenerate}
+        Log    Fixture already exists and is already completed; skipping write: ${fixture_path}    WARN
         RETURN
+    END
+    IF    ${exists} and not ${is_complete}
+        Log    Fixture exists but is incomplete; regenerating fixture data: ${fixture_path}    WARN
     END
     # Capture live data from the open dialog
     ${sender}=    Capture Dialog Sender Via JavaScript
     ${fields}=    Capture Dialog Data Fields Via JavaScript
     Log    First-run: captured sender: ${sender}
     Log    First-run: captured fields: ${fields}
-    # Load existing fixture to preserve the pdf section (if it exists)
-    ${existing}=    Run Keyword If    ${exists}
-    ...    Load Register Fixture    ${fixture_path}
-    ...    ELSE
-    ...    Set Variable    ${None}
     # Build and write YAML
     ${fixture_data}=    Build First Run Fixture
     ...    register_name=${register_name}

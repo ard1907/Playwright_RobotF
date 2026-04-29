@@ -1,7 +1,7 @@
 # UI Test Overview — `tests/ui/`
 Generated: 2026-04-23
 
-This document summarizes the three test suites in `tests/ui/` and lists the contained test cases per suite in a compact form.
+This document summarizes the UI test suites in `tests/ui/` and lists the contained test cases per suite in a compact form.
 
 ## 1) `tests/ui/ts_01_smoke_test_landing_page.robot`
 
@@ -56,3 +56,36 @@ This document summarizes the three test suites in `tests/ui/` and lists the cont
 ## Note
 
 The register-selection suite is only reachable after a successful login. Some intro and more-info elements can be rendered as non-standard click targets depending on the environment; the suite handles that with controlled fallbacks. The suite also covers both grid and list views.
+
+## 4) `tests/ui/ts_04_smoke_test_register_selection_BVA.robot`
+
+- `TC001 - Select Test BVA Register Card Enables Anfrage Starten` - Selects the BVA register and verifies the request button state.
+- `TC002 - Deselect Test BVA Register Card Returns Empty Selection State` - Verifies the BVA card can be toggled off cleanly.
+- `TC003 - Start BVA Request Navigates To Results Page` - Starts a BVA request and checks the result route.
+- `TC004 - Verify Results Page Shows Correct Statistics For BVA` - Checks the result counters for the BVA workflow.
+- `TC005 - Verify Test BVA Result Entry Is Visible And Collapsed` - Verifies the BVA result box in collapsed state.
+- `TC006 - Expand Test BVA Result Entry Shows Data Tables` - Expands the BVA result and checks table headings.
+- `TC007 - Open First Protokolldaten Dialog Shows Initial State` - Opens the first BVA detail dialog and validates the initial state.
+- `TC008 - Request Personal Data Shows Inhaltsdaten In Dialog` - Fetches personal data in the BVA dialog and validates the loaded state.
+- `TC009 - Verify PDF Download Filename Matches Pattern And Timestamp` - Checks the generated PDF filename.
+- `TC010 - Verify PDF Content Contains Current Date As Datenübermittlung Heading` - Checks the generated PDF content.
+- `TC011 - Close Protokolldaten Dialog Returns To Results View` - Verifies dialog close behavior.
+- `TC012 - Navigate Back To Register Auswahl Restores Correct URL` - Verifies returning from the result page.
+
+## 5) `tests/ui/ts_05_smoke_test_register_cards_generic.robot`
+
+- `Verify Register Card Workflow: Test BVA` - Verifies the generic BVA register-card workflow against `test_data/registers/bva.yaml`.
+- `Verify Register Card Workflow: Test-DGUV` - Verifies the generic DGUV register-card workflow against `test_data/registers/dguv.yaml`.
+- `First Run: Capture And Generate Fixture For Test BVA` - Captures the BVA dialog data and can regenerate `bva.yaml` when first-run is explicitly enabled.
+- `First Run: Capture And Generate Fixture For Test-DGUV` - Captures the DGUV dialog data and can regenerate `dguv.yaml` when first-run is explicitly enabled.
+
+## Note
+
+The generic register-card suite uses two modes:
+
+- Normal mode verifies live dialog data against YAML fixtures.
+- First-run mode captures dialog data and writes fixtures.
+
+First-run mode is opt-in and must be started with `--include first-run --variable ENABLE_FIRST_RUN_TESTS:True`.
+Incomplete fixtures are regenerated automatically during first-run. Completed fixtures are only overwritten when `FIXTURE_FORCE_REGENERATE=True` is passed.
+For a simple end-to-end explanation, see `LogicRegisterTests.md`.

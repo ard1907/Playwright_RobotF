@@ -3,13 +3,10 @@ register:
   tag: bva
 first_run:
   completed: true
-  captured_at: '2026-04-28T16:28:41'
+  captured_at: '2026-04-29T10:15:51'
 dialog:
   sender: Bundesverwaltungsamt, Registermodernisierungsbehörde
   assert_sender: true
-  # Felder aus first-run (2026-04-28) manuell korrigiert:
-  # Rohdaten vom JS-Capture: "Angaben zur PersonIdentifikationsnummer08214967384Geburtstag1964-08-12"
-  # → Abschnitt "Angaben zur Person" + 2 Felder extrahiert.
   data_fields:
   - key: Identifikationsnummer
     value: '08214967384'

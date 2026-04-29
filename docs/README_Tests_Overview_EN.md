@@ -107,6 +107,43 @@ This document summarizes Robot Framework test suites, test cases, and key page-o
     - TC018 — Toggle All Registers In List View Select And Deselect
       - Switches to list view and validates the global select-all and deselect-all behavior.
 
+- `tests/ui/ts_04_smoke_test_register_selection_BVA.robot`
+  - Suite Setup: `Open Browser And Login For BVA Suite`
+  - Test Setup: `Open Register Auswahl In Default Grid View`
+  - Suite Teardown: `Close Browser After AusweisApp Suite`
+  - Test Cases:
+    - TC001..TC002 — BVA selection toggle checks
+      - Validate selecting and deselecting the Test BVA card.
+    - TC003..TC006 — BVA result page checks
+      - Validate result-route navigation, result statistics, collapsed state, and expanded state.
+    - TC007..TC012 — BVA detail dialog and PDF checks
+      - Validate the Protokolldaten dialog, personal-data fetch, PDF checks, dialog close behavior, and return navigation.
+
+- `tests/ui/ts_05_smoke_test_register_cards_generic.robot`
+  - Suite Setup: `Open Browser And Login For Generic Register Suite`
+  - Test Setup: `Open Register Auswahl In Default Grid View`
+  - Suite Teardown: `Close Browser After Generic Register Suite`
+  - Purpose:
+    - Verifies register cards generically via YAML fixtures in `test_data/registers/`.
+    - Uses one test case per register card for normal verification.
+    - Uses separate first-run capture tests to build or refresh fixture data.
+  - Runtime modes:
+    - Normal mode: `robot tests/ui/ts_05_smoke_test_register_cards_generic.robot`
+      - Loads a fixture, skips if `first_run.completed` is false, and verifies the live dialog against expected data.
+    - First-run mode: `robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_smoke_test_register_cards_generic.robot`
+      - Captures live sender and field data, then writes fixture content.
+      - Incomplete fixtures are regenerated automatically.
+      - Completed fixtures are only overwritten when `FIXTURE_FORCE_REGENERATE=True` is passed.
+  - Test Cases:
+    - Verify Register Card Workflow: Test BVA
+      - Verifies the generic BVA register against `bva.yaml`.
+    - Verify Register Card Workflow: Test-DGUV
+      - Verifies the generic DGUV register against `dguv.yaml`.
+    - First Run: Capture And Generate Fixture For Test BVA
+      - Captures live BVA dialog data and writes the fixture.
+    - First Run: Capture And Generate Fixture For Test-DGUV
+      - Captures live DGUV dialog data and writes the fixture.
+
 - `test_helpers/dsc_basic_test.robot`
   - Suite Setup: `Open Application Browser`
   - Test Setup: `Navigate To Landing Page`
@@ -148,6 +185,8 @@ These provide page-level selectors and keywords. Use these files to update selec
   - Master keyword: `Validate Gebaerdensprache Page` — verifies video presence and headings.
 - `pages/dsc_register_selection_page.robot`
   - Contains register-selection assertions, grid/list view keywords, selection/toggle helpers, FAQ/intro dialog checks, IDNr/timer checks, and logout helpers.
+- `pages/dsc_register_result_page.robot`
+  - Contains the generic register-result flow: register selection, result expansion, Protokolldaten dialog open/fetch/close, pair-aware dialog field verification, and fixture generation rules.
 
 ---
 
@@ -160,6 +199,8 @@ These provide page-level selectors and keywords. Use these files to update selec
   - Contains `Skip Current Test If AusweisApp Environment Is Missing` for isolated login-dependent tests that should skip on standard CI without skipping a whole suite.
 - `resources/dsc_variables.robot`
   - Variables: `${BASE_URL}`, `${AUTH_INFO_URL}`, `${BROWSER}`, `${HEADLESS}`, `${TIMEOUT}`, `${TITLE_*}` strings, `${AUSWEISAPP_URL}` env override. Controls runtime behavior and expected titles.
+- `resources/dsc_register_fixture_library.py`
+  - Loads and writes YAML fixtures, exposes first-run status and expected dialog data, and supports robust key/value matching for the generic register-card suite.
 
 ---
 
@@ -181,6 +222,8 @@ These provide page-level selectors and keywords. Use these files to update selec
 - The temporary standard-CI skip is centrally switchable: comment out the `Skip If` line in `resources/dsc_setup_teardown.robot` for suite-wide behavior and in `resources/dsc_shared_keywords.robot` for isolated test-level login guards.
 - When updating external-link assertions, prefer `Open External Tab And Validate` helper to keep consistency.
 - For stable cockpit tests in `ts_03`, load the target route fresh per test so UI state is not inherited from the previous case.
+- For the generic register-card suite, keep first-run opt-in explicit. Do not rely on the `first-run` tag alone; use `ENABLE_FIRST_RUN_TESTS=True`.
+- When a register dialog renders fields in an unusual DOM structure, review the generated YAML and compare it with `LogicRegisterTests.md` before adjusting the capture JavaScript.
 
 ---
 

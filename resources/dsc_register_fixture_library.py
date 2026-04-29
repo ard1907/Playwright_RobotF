@@ -24,6 +24,7 @@ Robot keyword mapping (underscore → space):
 """
 
 import pathlib
+import re
 from datetime import datetime
 
 import yaml
@@ -33,6 +34,22 @@ class dsc_register_fixture_library:
     """Robot Framework library for register card YAML fixture management."""
 
     ROBOT_LIBRARY_SCOPE = "SUITE"
+
+    def _field_key_matches(self, actual_key: str, expected_key: str) -> bool:
+        """Match exact keys first, then tolerate captured section-prefix joins."""
+        actual = " ".join(str(actual_key).split())
+        expected = " ".join(str(expected_key).split())
+        if not actual or not expected:
+            return False
+        if actual == expected:
+            return True
+        actual_compact = actual.replace(" ", "")
+        expected_compact = expected.replace(" ", "")
+        return expected_compact in actual_compact
+
+    def _compact_text(self, text: str) -> str:
+        """Normalize dialog text for resilient substring comparisons."""
+        return re.sub(r"\s+", "", str(text or "")).replace(":", "")
 
     # ── Loading ────────────────────────────────────────────────────────────────
 
@@ -96,6 +113,38 @@ class dsc_register_fixture_library:
           assert_value (bool) – if True, verify value visibility; if False, key only
         """
         return fixture.get("dialog", {}).get("data_fields", [])
+
+    def has_data_field_key(self, data_fields: list, key: str) -> bool:
+        """Return True when captured dialog data contains the exact key."""
+        expected_key = str(key).strip()
+        for field in data_fields or []:
+            if not isinstance(field, dict):
+                continue
+            if self._field_key_matches(field.get("key", ""), expected_key):
+                return True
+        return False
+
+    def get_data_field_value(self, data_fields: list, key: str) -> str:
+        """Return the value paired with the given key from captured dialog data."""
+        expected_key = str(key).strip()
+        for field in data_fields or []:
+            if not isinstance(field, dict):
+                continue
+            if self._field_key_matches(field.get("key", ""), expected_key):
+                value = str(field.get("value", "")).strip()
+                if expected_key:
+                    value = re.sub(rf"^{re.escape(expected_key)}\s*", "", value)
+                return value.strip()
+        return ""
+
+    def dialog_contains_field_key(self, dialog_text: str, key: str) -> bool:
+        """Return True when the normalized dialog text contains the expected key."""
+        return self._compact_text(key) in self._compact_text(dialog_text)
+
+    def dialog_contains_field_pair(self, dialog_text: str, key: str, value: str) -> bool:
+        """Return True when the normalized dialog text contains key followed by value."""
+        expected_sequence = self._compact_text(key) + self._compact_text(value)
+        return expected_sequence in self._compact_text(dialog_text)
 
     # ── Writing (first-run) ────────────────────────────────────────────────────
 
