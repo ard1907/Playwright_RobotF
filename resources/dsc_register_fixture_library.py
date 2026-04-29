@@ -19,6 +19,7 @@ Robot keyword mapping (underscore → space):
   get_expected_sender          → Get Expected Sender
   is_sender_assertion_enabled  → Is Sender Assertion Enabled
   get_data_fields_to_verify    → Get Data Fields To Verify
+  get_pdf_configuration        → Get Pdf Configuration
   build_first_run_fixture      → Build First Run Fixture
   write_register_fixture       → Write Register Fixture
 """
@@ -113,6 +114,19 @@ class dsc_register_fixture_library:
           assert_value (bool) – if True, verify value visibility; if False, key only
         """
         return fixture.get("dialog", {}).get("data_fields", [])
+
+    def get_pdf_configuration(self, fixture: dict) -> dict:
+        """
+        Return the pdf configuration dictionary from the fixture.
+        Contains 'verify', 'filename_pattern', etc.
+        """
+        default_pdf = {
+            "verify": False,
+            "filename_pattern": (
+                r"^Datenschutzcockpit-\d{2}_\d{2}_\d{4}-\d{2}_\d{2}_uhr\.pdf$"
+            ),
+        }
+        return fixture.get("pdf", default_pdf)
 
     def has_data_field_key(self, data_fields: list, key: str) -> bool:
         """Return True when captured dialog data contains the exact key."""

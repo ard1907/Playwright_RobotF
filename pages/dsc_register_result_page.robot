@@ -194,8 +194,7 @@ Verify Register Dialog Sender
     ...                Arguments:
     ...                  ${expected_sender}  – Organisation name text to match
     [Arguments]    ${expected_sender}
-    ${sender_sel}=    Set Variable
-    ...    (//div[@role="dialog" and @aria-hidden="false"]//*[normalize-space(text())="${expected_sender}"])[1]
+    ${sender_sel}=    Set Variable    div[role="dialog"][aria-hidden="false"] >> text="${expected_sender}" >> nth=0
     Wait For Elements State    ${sender_sel}    visible    timeout=${TIMEOUT}
 
 
@@ -231,6 +230,23 @@ Verify Register Dialog Data Fields
     END
 
 
+Verify Register Dialog PDF Download Matches Pattern
+    [Documentation]    Triggers the 'Als PDF speichern' button inside the open
+    ...                dialog, waits for the download, and verifies the generated
+    ...                filename matches the expected RegEx pattern.
+    ...
+    ...                Arguments:
+    ...                  ${filename_pattern}  – RegEx pattern from the YAML fixture
+    [Arguments]    ${filename_pattern}
+    ${pdf_btn_sel}=    Set Variable    //button[@aria-label="Als PDF speichern"]
+    Wait For Elements State    ${pdf_btn_sel}    visible    timeout=${TIMEOUT}
+    ${dl_promise}=    Promise To Wait For Download
+    Click    ${pdf_btn_sel}
+    ${file_obj}=    Wait For    ${dl_promise}
+    Should Match Regexp    ${file_obj}[suggestedFilename]    ${filename_pattern}
+    ...    msg=PDF filename "${file_obj}[suggestedFilename]" does not match pattern ${filename_pattern}
+
+
 # ── First-Run: Data Capture via JavaScript ─────────────────────────────────────
 
 Capture Dialog Sender Via JavaScript
@@ -243,9 +259,9 @@ Capture Dialog Sender Via JavaScript
     ...
     ...                Returns the captured text. If the DOM structure does not
     ...                match, an empty string is returned; update the YAML manually.
-    ${sender}=    Evaluate JavaScript
-    ...    //div[@role="dialog" and @aria-hidden="false"]
-    ...    (dialog) => { const h1=dialog.querySelector('h1'); if(!h1)return ''; const SKIP=['BUTTON','INPUT','SELECT','SCRIPT','STYLE','H1','H2','H3','H4','H5','H6']; const w=document.createTreeWalker(dialog,NodeFilter.SHOW_TEXT,null); let past=false; while(w.nextNode()){const n=w.currentNode; if(!past){if(h1.contains(n)){past=true;}continue;} const t=(n.textContent||'').trim(); if(t.length<10)continue; let el=n.parentElement; let bad=false; while(el&&el!==dialog){if(SKIP.includes(el.tagName)){bad=true;break;}el=el.parentElement;} if(!bad)return t;} return ''; }
+    ${js_code}=    Get File    ${CURDIR}/../resources/scripts_js/extract_dialog_data.js
+    ${sender}=    Evaluate JavaScript    //div[@role="dialog" and @aria-hidden="false"]
+    ...    ${js_code}    arg=sender
     RETURN    ${sender}
 
 
@@ -262,9 +278,9 @@ Capture Dialog Data Fields Via JavaScript
     ...
     ...                If neither pattern matches (unknown DOM structure), an
     ...                empty list is returned; update the YAML manually.
-    ${fields}=    Evaluate JavaScript
-    ...    //div[@role="dialog" and @aria-hidden="false"]
-    ...    (dialog) => { const f=[]; const clean=t=>(t||'').trim().replace(/:$/,''); const INLINE=['SPAN','P','STRONG','EM','B','I','LABEL']; const INL_OR_BLOCK=['SPAN','P','STRONG','EM','B','I','LABEL','DIV','LI']; const addIfValid=(k,v)=>{if(k&&k.length>=2&&k.length<100&&!k.match(/^\d+$/)&&v.length<300)f.push({key:k,value:v});}; const dts=[...dialog.querySelectorAll('dt')]; if(dts.length>0){dts.forEach(dt=>{const dd=dt.nextElementSibling; if(dd&&dd.tagName==='DD'){const k=clean(dt.textContent); const v=clean(dd.textContent); addIfValid(k,v);}});if(f.length>0)return f;} const rows=[...dialog.querySelectorAll('tr')]; rows.forEach(tr=>{const cells=[...tr.querySelectorAll('td')]; if(cells.length>=2){const k=clean(cells[0].textContent); const v=clean(cells[1].textContent); addIfValid(k,v);}});if(f.length>0)return f; const seen=new Set(); [...dialog.querySelectorAll('*')].forEach(el=>{const ch=[...el.children]; if(ch.length===2&&INL_OR_BLOCK.includes(ch[0].tagName)&&INL_OR_BLOCK.includes(ch[1].tagName)&&ch[0].children.length===0&&ch[1].children.length===0){const k=clean(ch[0].textContent); const v=clean(ch[1].textContent); const sig=k+'|'+v; if(!seen.has(sig)){seen.add(sig);addIfValid(k,v);}}}); if(f.length>0)return f; const SKIP_TAGS=['BUTTON','INPUT','SELECT','SCRIPT','STYLE','H1','H2','H3','H4','H5','H6']; const w=document.createTreeWalker(dialog,NodeFilter.SHOW_TEXT,null); const texts=[]; while(w.nextNode()){const n=w.currentNode; let el=n.parentElement; let bad=false; while(el&&el!==dialog){if(SKIP_TAGS.includes(el.tagName)){bad=true;break;}el=el.parentElement;} if(bad)continue; const t=(n.textContent||'').trim(); if(t.length>=2&&t.length<100)texts.push(t);} const SEC_RE=/^[A-ZÄÖÜ][a-zäöüß ]+[a-zäöüß]$/; const cleaned=texts.filter(t=>!SEC_RE.test(t)||t.split(' ').length<=2); for(let i=0;i+1<cleaned.length;i+=2){const k=clean(cleaned[i]); const v=clean(cleaned[i+1]); addIfValid(k,v);} return f; }
+    ${js_code}=    Get File    ${CURDIR}/../resources/scripts_js/extract_dialog_data.js
+    ${fields}=    Evaluate JavaScript    //div[@role="dialog" and @aria-hidden="false"]
+    ...    ${js_code}    arg=fields
     RETURN    ${fields}
 
 

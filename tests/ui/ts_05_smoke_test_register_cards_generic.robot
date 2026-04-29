@@ -144,6 +144,13 @@ Run Register Card Verification
     # Verify data fields (key always; value conditional on assert_value)
     ${data_fields}=    Get Data Fields To Verify    ${fixture}
     Verify Register Dialog Data Fields    ${data_fields}
+    
+    # Verify PDF Download if configured
+    ${pdf_config}=    Get Pdf Configuration    ${fixture}
+    IF    ${pdf_config}[verify]
+        Verify Register Dialog PDF Download Matches Pattern    ${pdf_config}[filename_pattern]
+    END
+
     # Cleanup
     Close Register Protokolldaten Dialog
 

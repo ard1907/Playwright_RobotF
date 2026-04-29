@@ -100,8 +100,7 @@ Verify Register Auswahl Page Is Loaded
     [Documentation]    Confirms the SPA has routed to the register-auswahl page:
     ...                the base Datenschutzcockpit title is visible and the H1
     ...                heading is visible (proves the component has rendered).
-    # Verify Page Title Contains    ${TITLE_REGISTER_AUSWAHL}    #ARD: prüfen !
-    Verify Page Title Contains    ${TITLE_BASE}
+    Get Title    contains    ${TITLE_REGISTER_AUSWAHL}
     Element Is Visible    ${RA_H1_HEADING}
 
 Validate Register Auswahl Page
