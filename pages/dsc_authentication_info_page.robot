@@ -29,6 +29,7 @@ Resource    ../resources/dsc_shared_keywords.robot
 # These header buttons are shared across all SPA pages (same component).
 ${AI_EASY_LANGUAGE_BTN}        role=button[name="Das Datenschutzcockpit in Leichter Sprache"]
 ${AI_SIGN_LANGUAGE_BTN}        role=button[name="Zum Gebärdensprache-Video"]
+${AI_DIALOG}                   role=dialog
 
 
 # ── Logo / Brand ───────────────────────────────────────────────────────────────
@@ -323,13 +324,13 @@ Open Leichte Sprache Dialog From Auth Page
     [Documentation]    Clicks the "Leichte Sprache" header button on the auth-info
     ...                page and waits for the corresponding dialog to appear.
     Click    ${AI_EASY_LANGUAGE_BTN}
-    Wait For Elements State    role=dialog    visible    timeout=${TIMEOUT}
+    Wait For Elements State    ${AI_DIALOG}    visible    timeout=${TIMEOUT}
 
 Open Gebaerdensprache Dialog From Auth Page
     [Documentation]    Clicks the "Gebärdensprache-Video" header button on the
     ...                auth-info page and waits for the dialog to appear.
     Click    ${AI_SIGN_LANGUAGE_BTN}
-    Wait For Elements State    role=dialog    visible    timeout=${TIMEOUT}
+    Wait For Elements State    ${AI_DIALOG}    visible    timeout=${TIMEOUT}
 
 
 # ── FAQ Card Interactions ─────────────────────────────────────────────────

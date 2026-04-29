@@ -68,6 +68,30 @@ ${REG_DATEN_ABGERUFEN_BTN}
 ...    //div[@role="dialog" and @aria-hidden="false"]//button[contains(.,"Daten abgerufen")]
 ${REG_DIALOG_CLOSE_BTN}
 ...    //div[@role="dialog" and @aria-hidden="false"]//button[@data-testid="closeModalBtn"]
+
+# ── Dynamic Register Result Locators ──────────────────────────────────────────
+# Build register-specific result locators from these templates to keep the
+# keyword section free of inline selectors.
+${REG_RESULT_ENTRY_TMPL}
+...    //div[contains(@aria-label,"Ergebnis ist") and .//h3[normalize-space(.)="__REGISTER_NAME__"]]
+${REG_EXPAND_BTN_TMPL}
+...    //div[@role="button" and .//h3[normalize-space(.)="__REGISTER_NAME__"]]
+${REG_RESULT_OPENED_TMPL}
+...    //div[@aria-label="Ergebnis ist geöffnet" and .//h3[normalize-space(.)="__REGISTER_NAME__"]]
+# Use the first heading only because the expanded results list can render many
+# matching h4 nodes in the DOM at the same time.
+${REG_TABLE_H4_FIRST}
+...    (//div[@aria-label="Ergebnis ist geöffnet"]//h4[contains(normalize-space(.),"Datenübermittlung am")])[1]
+# NOTE: data-testid "protkolldatenEinsehenBtn" preserves the upstream typo.
+${REG_FIRST_DIALOG_BTN_TMPL}
+...    (//div[@aria-label="Ergebnis ist geöffnet" and .//h3[normalize-space(.)="__REGISTER_NAME__"]]//button[@data-testid="protkolldatenEinsehenBtn"])[1]
+
+# ── Dynamic Dialog Assertions / Actions ───────────────────────────────────────
+# Use nth=0 because the sender text can occur more than once in the visible
+# dialog and Browser Library strict mode would otherwise reject the locator.
+${REG_DIALOG_SENDER_TMPL}
+...    div[role="dialog"][aria-hidden="false"] >> text="__EXPECTED_SENDER__" >> nth=0
+${REG_DIALOG_PDF_SAVE_BTN}         //button[@aria-label="Als PDF speichern"]
 *** Keywords ***
 
 # ── Navigation ─────────────────────────────────────────────────────────────────
@@ -92,8 +116,7 @@ Navigate To Register Results Page
     Wait For Load State    networkidle
     ${url}=    Get Url
     Should Contain    ${url}    datenabfrage
-    ${result_entry}=    Set Variable
-    ...    //div[contains(@aria-label,"Ergebnis ist") and .//h3[normalize-space(.)="${register_name}"]]
+    ${result_entry}=    Replace String    ${REG_RESULT_ENTRY_TMPL}    __REGISTER_NAME__    ${register_name}
     Wait For Elements State    ${result_entry}    visible    timeout=30s
 
 
@@ -106,16 +129,12 @@ Expand Register Result Entry
     ...                Arguments:
     ...                  ${register_name}  – Exact h3 text of the register card
     [Arguments]    ${register_name}
-    ${expand_btn}=    Set Variable
-    ...    //div[@role="button" and .//h3[normalize-space(.)="${register_name}"]]
-    ${result_opened}=    Set Variable
-    ...    //div[@aria-label="Ergebnis ist geöffnet" and .//h3[normalize-space(.)="${register_name}"]]
-    ${table_h4}=    Set Variable
-    ...    (//div[@aria-label="Ergebnis ist geöffnet"]//h4[contains(normalize-space(.),"Datenübermittlung am")])[1]
+    ${expand_btn}=    Replace String    ${REG_EXPAND_BTN_TMPL}    __REGISTER_NAME__    ${register_name}
+    ${result_opened}=    Replace String    ${REG_RESULT_OPENED_TMPL}    __REGISTER_NAME__    ${register_name}
     Wait For Elements State    ${expand_btn}    visible    timeout=${TIMEOUT}
     Click    ${expand_btn}
     Wait For Elements State    ${result_opened}    visible    timeout=${TIMEOUT}
-    Wait For Elements State    ${table_h4}         visible    timeout=30s
+    Wait For Elements State    ${REG_TABLE_H4_FIRST}    visible    timeout=30s
 
 
 Open First Register Protokolldaten Dialog
@@ -125,10 +144,7 @@ Open First Register Protokolldaten Dialog
     ...                Arguments:
     ...                  ${register_name}  – Exact h3 text of the expanded result entry
     [Arguments]    ${register_name}
-    ${open_result}=    Set Variable
-    ...    //div[@aria-label="Ergebnis ist geöffnet" and .//h3[normalize-space(.)="${register_name}"]]
-    ${dialog_btn}=    Set Variable
-    ...    (${open_result}//button[@data-testid="protkolldatenEinsehenBtn"])[1]
+    ${dialog_btn}=    Replace String    ${REG_FIRST_DIALOG_BTN_TMPL}    __REGISTER_NAME__    ${register_name}
     Wait For Elements State    ${dialog_btn}    visible    timeout=${TIMEOUT}
     Click    ${dialog_btn}
     Wait For Elements State    ${REG_DIALOG}     visible    timeout=${TIMEOUT}
@@ -194,7 +210,7 @@ Verify Register Dialog Sender
     ...                Arguments:
     ...                  ${expected_sender}  – Organisation name text to match
     [Arguments]    ${expected_sender}
-    ${sender_sel}=    Set Variable    div[role="dialog"][aria-hidden="false"] >> text="${expected_sender}" >> nth=0
+    ${sender_sel}=    Replace String    ${REG_DIALOG_SENDER_TMPL}    __EXPECTED_SENDER__    ${expected_sender}
     Wait For Elements State    ${sender_sel}    visible    timeout=${TIMEOUT}
 
 
@@ -238,10 +254,9 @@ Verify Register Dialog PDF Download Matches Pattern
     ...                Arguments:
     ...                  ${filename_pattern}  – RegEx pattern from the YAML fixture
     [Arguments]    ${filename_pattern}
-    ${pdf_btn_sel}=    Set Variable    //button[@aria-label="Als PDF speichern"]
-    Wait For Elements State    ${pdf_btn_sel}    visible    timeout=${TIMEOUT}
+    Wait For Elements State    ${REG_DIALOG_PDF_SAVE_BTN}    visible    timeout=${TIMEOUT}
     ${dl_promise}=    Promise To Wait For Download
-    Click    ${pdf_btn_sel}
+    Click    ${REG_DIALOG_PDF_SAVE_BTN}
     ${file_obj}=    Wait For    ${dl_promise}
     Should Match Regexp    ${file_obj}[suggestedFilename]    ${filename_pattern}
     ...    msg=PDF filename "${file_obj}[suggestedFilename]" does not match pattern ${filename_pattern}
@@ -260,7 +275,7 @@ Capture Dialog Sender Via JavaScript
     ...                Returns the captured text. If the DOM structure does not
     ...                match, an empty string is returned; update the YAML manually.
     ${js_code}=    Get File    ${CURDIR}/../resources/scripts_js/extract_dialog_data.js
-    ${sender}=    Evaluate JavaScript    //div[@role="dialog" and @aria-hidden="false"]
+    ${sender}=    Evaluate JavaScript    ${REG_DIALOG}
     ...    ${js_code}    arg=sender
     RETURN    ${sender}
 
@@ -279,7 +294,7 @@ Capture Dialog Data Fields Via JavaScript
     ...                If neither pattern matches (unknown DOM structure), an
     ...                empty list is returned; update the YAML manually.
     ${js_code}=    Get File    ${CURDIR}/../resources/scripts_js/extract_dialog_data.js
-    ${fields}=    Evaluate JavaScript    //div[@role="dialog" and @aria-hidden="false"]
+    ${fields}=    Evaluate JavaScript    ${REG_DIALOG}
     ...    ${js_code}    arg=fields
     RETURN    ${fields}
 

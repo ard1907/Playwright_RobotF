@@ -19,6 +19,7 @@ Resource    ../resources/dsc_shared_keywords.robot
 *** Variables ***
 
 # ── Dialog H1 ─────────────────────────────────────────────────────────────────
+${DS_DIALOG}           role=dialog
 ${DS_H1_HEADING}       role=heading[name="Datenschutzerklärung"]
 
 # ── Numbered Section H2 Headings ──────────────────────────────────────────────
@@ -50,7 +51,7 @@ Verify Datenschutz Dialog Is Open
     [Documentation]    Confirms the Datenschutz dialog is active and the page
     ...                title has updated to "Datenschutzerklärung".
     Verify Page Title Contains    ${TITLE_DATENSCHUTZ}
-    Element Is Visible    role=dialog
+    Element Is Visible    ${DS_DIALOG}
 
 Verify Datenschutz H1 Heading
     [Documentation]    Checks the "Datenschutzerklärung" H1 heading is visible.

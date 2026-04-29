@@ -21,6 +21,7 @@ Resource    ../resources/dsc_shared_keywords.robot
 *** Variables ***
 
 # ── Dialog Headings ────────────────────────────────────────────────────────────
+${IMP_DIALOG}            role=dialog
 ${IMP_H1_HEADING}        role=heading[name="Impressum"]
 ${IMP_H2_PUBLISHER}      role=heading[name="Herausgeber und verantwortliche Stelle für den Betrieb:"]
 ${IMP_H2_RESPONSIBLE}    role=heading[name="Verantwortlich für den Inhalt:"]
@@ -55,7 +56,7 @@ Verify Impressum Dialog Is Open
     [Documentation]    Confirms the Impressum dialog is active and the page title
     ...                has updated to "Impressum".
     Verify Page Title Contains    ${TITLE_IMPRESSUM}
-    Element Is Visible    role=dialog
+    Element Is Visible    ${IMP_DIALOG}
 
 Verify Impressum H1 Heading
     [Documentation]    Checks the "Impressum" H1 heading inside the dialog.

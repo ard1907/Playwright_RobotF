@@ -44,6 +44,8 @@ ${BF_BGG_EMAIL}                        role=link[name="info@schlichtungsstelle-b
 ${BF_BGG_WEBSITE}                      role=link[name="www.schlichtungsstelle-bgg.de"]
 ${BF_DSC_EMAIL}                        role=link[name="datenschutzcockpit@finanzen.bremen.de"]
 
+${BF_DIALOG}                           role=dialog
+
 # ── Close Button ──────────────────────────────────────────────────────────────
 ${BF_CLOSE_BTN}              role=button[name="Menü schließen"]
 
@@ -56,7 +58,7 @@ Verify Barrierefreiheit Dialog Is Open
     [Documentation]    Confirms the Barrierefreiheit dialog is active and the page
     ...                title has updated to "Barrierefreiheit".
     Verify Page Title Contains    ${TITLE_BARRIEREFREIHEIT}
-    Element Is Visible    role=dialog
+    Element Is Visible    ${BF_DIALOG}
 
 Verify Barrierefreiheit H1 Heading
     [Documentation]    Checks the "Erklärung zur Barrierefreiheit" H1 heading.

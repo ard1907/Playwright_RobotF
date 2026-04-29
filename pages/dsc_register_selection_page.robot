@@ -42,6 +42,12 @@ ${RA_INTRO_TEXT_WAS_SEHE_ICH}     //main//p[contains(.,'Was sehe ich im Datensch
 ${RA_INTRO_TEXT_WAS_IST}          //main//p[contains(.,'Was ist das Datenschutzcockpit?')]
 ${RA_INTRO_BTN_WAS_SEHE_ICH}      //main//button[contains(.,"Was sehe ich im Datenschutzcockpit?")]
 ${RA_INTRO_BTN_WAS_IST}           //main//button[contains(.,"Was ist das Datenschutzcockpit?")]
+# Some environments render these intro triggers as <button>, others as <a>.
+# Keep the locator broad, but centralise it here so the fallback is documented.
+${RA_INTRO_CLICKABLE_WAS_SEHE_ICH}
+...    //main//*[self::button or self::a][contains(normalize-space(.),"Was sehe ich im Datenschutzcockpit?")][1]
+${RA_INTRO_CLICKABLE_WAS_IST}
+...    //main//*[self::button or self::a][contains(normalize-space(.),"Was ist das Datenschutzcockpit?")][1]
 ${RA_DIALOG_WAS_SEHE_ICH_H2}      //h2[text()="Was sehe ich im Datenschutzcockpit?"]
 ${RA_DIALOG_WAS_IST_H2}           //h2[text()="Was ist das Datenschutzcockpit?"]
 ${RA_DIALOG_CLOSE_BTN}            role=button[name="Menü schließen"]
@@ -324,12 +330,12 @@ Toggle Alle Register In List View And Deselect
 Open Intro Dialog Was Sehe Ich And Close
     [Documentation]    Opens the intro dialog "Was sehe ich im Datenschutzcockpit?"
     ...                and verifies heading + title, then closes the dialog.
-    ${clickable_count}=    Get Element Count    //main//*[self::button or self::a][contains(normalize-space(.),"Was sehe ich im Datenschutzcockpit?")]
+    ${clickable_count}=    Get Element Count    ${RA_INTRO_CLICKABLE_WAS_SEHE_ICH}
     IF    ${clickable_count} == 0
         Log    Intro text "Was sehe ich im Datenschutzcockpit?" is not rendered as clickable control in this environment.    WARN
         RETURN
     END
-    Click    //main//*[self::button or self::a][contains(normalize-space(.),"Was sehe ich im Datenschutzcockpit?")][1]
+    Click    ${RA_INTRO_CLICKABLE_WAS_SEHE_ICH}
     Element Is Visible    ${RA_DIALOG_WAS_SEHE_ICH_H2}
     ${title}=    Get Title
     Should Contain    ${title}    Was sehe ich im Datenschutzcockpit
@@ -341,12 +347,12 @@ Open Intro Dialog Was Sehe Ich And Close
 Open Intro Dialog Was Ist And Close
     [Documentation]    Opens the intro dialog "Was ist das Datenschutzcockpit?"
     ...                and verifies heading + title, then closes the dialog.
-    ${clickable_count}=    Get Element Count    //main//*[self::button or self::a][contains(normalize-space(.),"Was ist das Datenschutzcockpit?")]
+    ${clickable_count}=    Get Element Count    ${RA_INTRO_CLICKABLE_WAS_IST}
     IF    ${clickable_count} == 0
         Log    Intro text "Was ist das Datenschutzcockpit?" is not rendered as clickable control in this environment.    WARN
         RETURN
     END
-    Click    //main//*[self::button or self::a][contains(normalize-space(.),"Was ist das Datenschutzcockpit?")][1]
+    Click    ${RA_INTRO_CLICKABLE_WAS_IST}
     Element Is Visible    ${RA_DIALOG_WAS_IST_H2}
     ${title}=    Get Title
     Should Contain    ${title}    Was ist das Datenschutzcockpit

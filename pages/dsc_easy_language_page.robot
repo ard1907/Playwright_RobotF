@@ -111,7 +111,7 @@ Open Leichte Sprache Dialog
     [Documentation]    Clicks the "Leichte Sprache" header button on the landing
     ...                page and waits for the corresponding dialog to appear.
     Click    ${LS_EASY_LANGUAGE_BTN}
-    Wait For Elements State    role=dialog    visible    timeout=${TIMEOUT}
+    Wait For Elements State    ${LS_DIALOG}    visible    timeout=${TIMEOUT}
 
 Close Leichte Sprache Dialog
     [Documentation]    Closes the Leichte Sprache dialog via the shared

@@ -20,6 +20,7 @@ Resource    ../resources/dsc_shared_keywords.robot
 ${LP_LOGO_LINK}              role=link[name="Bund.de Datenschutzcockpit Beta Logo"]
 ${LP_EASY_LANGUAGE_BTN}      role=button[name="Das Datenschutzcockpit in Leichter Sprache"]
 ${LP_SIGN_LANGUAGE_BTN}      role=button[name="Zum Gebärdensprache-Video"]
+${LP_DIALOG}                 role=dialog
 
 
 # ── Main Content ───────────────────────────────────────────────────────────────
@@ -175,25 +176,25 @@ Open FAQ Dialog
     [Documentation]    Clicks the floating FAQ button and waits for the FAQ
     ...                dialog to become visible before returning.
     Click    ${LP_FAQ_FLOAT_BUTTON}
-    Wait For Elements State    role=dialog    visible    timeout=${TIMEOUT}
+    Wait For Elements State    ${LP_DIALOG}    visible    timeout=${TIMEOUT}
 
 Open Impressum Dialog
     [Documentation]    Clicks the "Impressum" footer button and waits for the
     ...                Impressum dialog to appear.
     Click    ${LP_IMPRESSUM_BTN}
-    Wait For Elements State    role=dialog    visible    timeout=${TIMEOUT}
+    Wait For Elements State    ${LP_DIALOG}    visible    timeout=${TIMEOUT}
 
 Open Datenschutz Dialog
     [Documentation]    Clicks the "Datenschutz" footer button and waits for the
     ...                Datenschutz dialog to appear.
     Click    ${LP_DATENSCHUTZ_BTN}
-    Wait For Elements State    role=dialog    visible    timeout=${TIMEOUT}
+    Wait For Elements State    ${LP_DIALOG}    visible    timeout=${TIMEOUT}
 
 Open Barrierefreiheit Dialog
     [Documentation]    Clicks the "Barrierefreiheit" footer button and waits for
     ...                the accessibility statement dialog to appear.
     Click    ${LP_BARRIEREFREIHEIT_BTN}
-    Wait For Elements State    role=dialog    visible    timeout=${TIMEOUT}
+    Wait For Elements State    ${LP_DIALOG}    visible    timeout=${TIMEOUT}
 
 
 # ── FAQ Card Interactions ─────────────────────────────────────────────────────

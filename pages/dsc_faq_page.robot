@@ -18,6 +18,7 @@ Resource    ../resources/dsc_shared_keywords.robot
 *** Variables ***
 
 # ── Dialog Structure ───────────────────────────────────────────────────────────
+${FAQ_DIALOG}              role=dialog
 ${FAQ_H1_HEADING}          role=heading[name="Informationen zum Datenschutzcockpit"]
 ${FAQ_H2_HOW_IT_WORKS}     role=heading[name="Wie funktioniert das Datenschutzcockpit?"]
 ${FAQ_H2_HOW_TO_LOGIN}     role=heading[name="Wie funktioniert die Anmeldung?"]
@@ -39,6 +40,7 @@ ${FAQ_ITEM_AUSWEIS_LOGIN}
 ...    role=button[name="Wie melde ich mich mit der AusweisApp an? - Antwort ist geschlossen"]
 ${FAQ_ITEM_HOW_SECURE}
 ...    role=button[name="Wie sicher ist das Datenschutzcockpit? - Antwort ist geschlossen"]
+${FAQ_CLOSE_BTN}           role=button[name="Menü schließen"]
 
 
 *** Keywords ***
@@ -49,7 +51,7 @@ Verify FAQ Dialog Is Open
     [Documentation]    Confirms the FAQ dialog is visible and the SPA has updated
     ...                its title to include "FAQ".
     Verify Page Title Contains    ${TITLE_FAQ}
-    Element Is Visible    role=dialog
+    Element Is Visible    ${FAQ_DIALOG}
 
 Verify FAQ Main Heading
     [Documentation]    Checks the H1 heading "Informationen zum Datenschutzcockpit"
@@ -83,7 +85,7 @@ Verify FAQ Login Card Items
 
 Verify FAQ Close Button Is Present
     [Documentation]    Confirms the universal dialog close button is accessible.
-    Element Is Visible    role=button[name="Menü schließen"]
+    Element Is Visible    ${FAQ_CLOSE_BTN}
 
 
 # ── Dialog Lifecycle ───────────────────────────────────────────────────────────

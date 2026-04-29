@@ -112,7 +112,7 @@ Open Gebaerdensprache Dialog
     [Documentation]    Clicks the "Gebärdensprache-Video" header button on the
     ...                auth-info page and waits for the dialog to appear.
     Click    ${GS_SIGN_LANGUAGE_BTN}
-    Wait For Elements State    role=dialog    visible    timeout=${TIMEOUT}
+    Wait For Elements State    ${GS_DIALOG}    visible    timeout=${TIMEOUT}
 
 Close Gebaerdensprache Dialog
     [Documentation]    Closes the Gebärdensprache dialog via the shared
