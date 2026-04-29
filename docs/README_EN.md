@@ -13,7 +13,7 @@ It also includes dedicated suites for the authenticated cockpit area: the regist
 - `pages/` contains page-object style Robot Framework keywords and selectors.
 - `resources/` contains shared browser setup, navigation helpers, and variables.
 - `docker/` and `docker2/` contain container setups for local and CI-style execution.
-- `scripts/` contains helper scripts for working with test results.
+- `tools/` contains helper scripts for working with test results.
 - `results/`, `results2/`, `log.html`, `report.html`, and `output.xml` are generated test artifacts.
 
 ## Main test coverage
@@ -128,7 +128,7 @@ The Docker-based test setup typically runs with `CI=True`, `HEADLESS=True`, `BRO
 To copy results from the runner container after a workflow run, use:
 
 ```bash
-./scripts/get-results.sh
+./tools/get-results.sh
 ```
 
 ## Generated artifacts
@@ -151,7 +151,7 @@ The `results/` and `results2/` directories contain saved artifacts from prior ru
 - `pages/` - page objects and assertions
 - `resources/` - shared setup, navigation, and variables
 - `docker*/` - Docker and CI support files
-- `scripts/` - result handling helpers
+- `tools/` - result handling helpers
 
 ## Related documentation
 

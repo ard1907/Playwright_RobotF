@@ -13,7 +13,7 @@ Zusätzlich umfasst es eigene Suiten für den authentifizierten Cockpit-Bereich:
 - `pages/` enthält Keyword- und Selektor-Definitionen im Page-Object-Stil.
 - `resources/` enthält gemeinsames Browser-Setup, Navigations-Keywords und Variablen.
 - `docker/` und `docker2/` enthalten Container-Setups für lokale Ausführung und CI-nahe Läufe.
-- `scripts/` enthält Hilfsskripte für die Arbeit mit Testergebnissen.
+- `tools/` enthält Hilfsskripte für die Arbeit mit Testergebnissen.
 - `results/`, `results2/`, `log.html`, `report.html` und `output.xml` sind generierte Test-Artefakte.
 
 ## Zentrale Testabdeckung
@@ -128,7 +128,7 @@ Der Docker-basierte Testlauf verwendet typischerweise `CI=True`, `HEADLESS=True`
 Um nach einem Workflow-Lauf die Ergebnisse aus dem Runner-Container zu kopieren, verwende:
 
 ```bash
-./scripts/get-results.sh
+./tools/get-results.sh
 ```
 
 ## Generierte Artefakte
@@ -151,7 +151,7 @@ Die Verzeichnisse `results/` und `results2/` enthalten gespeicherte Artefakte fr
 - `pages/` - Page Objects und Assertions
 - `resources/` - gemeinsames Setup, Navigation und Variablen
 - `docker*/` - Docker- und CI-Hilfsdateien
-- `scripts/` - Hilfen für Ergebnisverarbeitung
+- `tools/` - Hilfen für Ergebnisverarbeitung
 
 ## Verwandte Dokumentation
 

@@ -108,4 +108,4 @@ coverage.xml
 .mypy_cache/
 .cache/
 
-scripts/
+tools/
