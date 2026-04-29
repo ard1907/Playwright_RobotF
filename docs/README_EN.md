@@ -8,7 +8,8 @@ It also includes dedicated suites for the authenticated cockpit area: the regist
 ## What is in this repository
 
 - `tests/ui/` contains the main smoke suites.
-- `test_helpers/` contains smaller helper suites and focused checks.
+- `tests/helpers/` contains smaller helper suites and focused checks.
+- `tests/examples/` contains example and exploratory Robot suites.
 - `pages/` contains page-object style Robot Framework keywords and selectors.
 - `resources/` contains shared browser setup, navigation helpers, and variables.
 - `docker/` and `docker2/` contain container setups for local and CI-style execution.
@@ -108,7 +109,7 @@ Force regeneration of already completed fixtures:
 robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True --variable FIXTURE_FORCE_REGENERATE:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
 ```
 
-The smaller suites in `test_helpers/` are useful for focused checks and debugging.
+The smaller suites in `tests/helpers/` are useful for focused checks and debugging.
 
 ### Tag-based execution
 
@@ -145,7 +146,8 @@ The `results/` and `results2/` directories contain saved artifacts from prior ru
 ## Project structure at a glance
 
 - `tests/ui/` - primary smoke test suites
-- `test_helpers/` - focused helper suites
+- `tests/helpers/` - focused helper suites
+- `tests/examples/` - example and exploratory suites
 - `pages/` - page objects and assertions
 - `resources/` - shared setup, navigation, and variables
 - `docker*/` - Docker and CI support files

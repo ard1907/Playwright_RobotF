@@ -82,7 +82,7 @@ results2/
 reports/
 browser/
 screenshots/
-test_examples/
+tests/examples/
 
 ########################################
 # Coverage Reports

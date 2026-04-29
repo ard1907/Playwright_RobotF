@@ -8,7 +8,8 @@ Zusätzlich umfasst es eigene Suiten für den authentifizierten Cockpit-Bereich:
 ## Inhalt dieses Repositories
 
 - `tests/ui/` enthält die Haupt-Smoke-Suiten.
-- `test_helpers/` enthält kleinere Hilfssuiten und fokussierte Prüfungen.
+- `tests/helpers/` enthält kleinere Hilfssuiten und fokussierte Prüfungen.
+- `tests/examples/` enthält Beispiel- und Explorationssuiten.
 - `pages/` enthält Keyword- und Selektor-Definitionen im Page-Object-Stil.
 - `resources/` enthält gemeinsames Browser-Setup, Navigations-Keywords und Variablen.
 - `docker/` und `docker2/` enthalten Container-Setups für lokale Ausführung und CI-nahe Läufe.
@@ -108,7 +109,7 @@ Bereits abgeschlossene Fixtures bewusst neu erzeugen:
 robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True --variable FIXTURE_FORCE_REGENERATE:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
 ```
 
-Die kleineren Suiten in `test_helpers/` sind nützlich für fokussierte Prüfungen und Debugging.
+Die kleineren Suiten in `tests/helpers/` sind nützlich für fokussierte Prüfungen und Debugging.
 
 ### Ausführung über Tags
 
@@ -145,7 +146,8 @@ Die Verzeichnisse `results/` und `results2/` enthalten gespeicherte Artefakte fr
 ## Projektstruktur auf einen Blick
 
 - `tests/ui/` - Haupt-Smoke-Suiten
-- `test_helpers/` - fokussierte Hilfssuiten
+- `tests/helpers/` - fokussierte Hilfssuiten
+- `tests/examples/` - Beispiel- und Explorationssuiten
 - `pages/` - Page Objects und Assertions
 - `resources/` - gemeinsames Setup, Navigation und Variablen
 - `docker*/` - Docker- und CI-Hilfsdateien

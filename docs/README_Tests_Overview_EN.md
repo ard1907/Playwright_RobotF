@@ -144,7 +144,7 @@ This document summarizes Robot Framework test suites, test cases, and key page-o
     - First Run: Capture And Generate Fixture For Test-DGUV
       - Captures live DGUV dialog data and writes the fixture.
 
-- `test_helpers/dsc_basic_test.robot`
+- `tests/helpers/dsc_basic_test.robot`
   - Suite Setup: `Open Application Browser`
   - Test Setup: `Navigate To Landing Page`
   - Suite Teardown: `Close Application Browser`
@@ -154,7 +154,7 @@ This document summarizes Robot Framework test suites, test cases, and key page-o
     - TC002 — Navigate To Leichte Sprache And Validate
       - Opens Leichte Sprache dialog and runs the related validation keywords.
 
-- `test_helpers/dsc_get_cookies_requests.robot`
+- `tests/helpers/dsc_get_cookies_requests.robot`
   - Suite Setup: `Open Application Browser For Cookie Testing`
   - Test Setup: `Navigate To Authentication Info Page`
   - Suite Teardown: `Close Application Browser`
@@ -205,7 +205,7 @@ These provide page-level selectors and keywords. Use these files to update selec
 ---
 
 ## 4) How to read the tests quickly
-- Top-level smoke suites are in `tests/ui/` and helper suites in `test_helpers/`.
+- Top-level smoke suites are in `tests/ui/`, helper suites in `tests/helpers/`, and examples in `tests/examples/`.
 - Each suite imports `resources/dsc_*` and `pages/*` — page objects encapsulate selectors and assertions.
 - Look for `Validate ...` master keywords inside `pages/*.robot` to see exactly what assertions are performed.
 - Use tags (e.g., `smoke`, `landing`, `auth`, `faq`, `accessibility`, `cookies`, `register-auswahl`, `interaction`, `selection`, `toggle`, `list-view`, `all-registers`, `dialog`, `security`, `session`, `timer`, `reload`) to filter test runs.
@@ -214,7 +214,7 @@ These provide page-level selectors and keywords. Use these files to update selec
 
 ## 5) Notes & Recommendations
 - Pattern: Page Object Model — update selectors only in `pages/*.robot` and shared logic in `resources/*.robot`.
-- Adding tests: create page keywords, add a suite in `tests/ui/` or `test_helpers/`, import resources/pages and call the `Validate ...` master keywords.
+- Adding tests: create page keywords, add a suite in `tests/ui/`, `tests/helpers/`, or `tests/examples/`, import resources/pages and call the `Validate ...` master keywords.
 - For future AusweisApp-dependent suites such as `ts_04`, prefer this template instead of duplicating CI guards in tests or page objects:
   - `Suite Setup     Open Browser And Login For AusweisApp Suite    ${AUTH_INFO_URL}`
   - `Suite Teardown  Close Browser After AusweisApp Suite`
@@ -228,7 +228,7 @@ These provide page-level selectors and keywords. Use these files to update selec
 ---
 
 ## Where to find files
-- Tests: `tests/ui/`, helpers: `test_helpers/`
+- Tests: `tests/ui/`, helpers: `tests/helpers/`, examples: `tests/examples/`
 - Page objects: `pages/`
 - Shared resources and variables: `resources/`
 

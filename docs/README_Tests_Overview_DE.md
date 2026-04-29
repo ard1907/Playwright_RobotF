@@ -144,7 +144,7 @@ Dieses Dokument fasst die Robot Framework Testsuiten, Testfälle sowie die wicht
     - First Run: Capture And Generate Fixture For Test-DGUV
       - Erfasst Live-Daten des DGUV-Dialogs und schreibt das Fixture.
 
-- `test_helpers/dsc_basic_test.robot`
+- `tests/helpers/dsc_basic_test.robot`
   - Suite-Setup: `Open Application Browser`
   - Test-Setup: `Navigate To Landing Page`
   - Suite-Teardown: `Close Application Browser`
@@ -154,7 +154,7 @@ Dieses Dokument fasst die Robot Framework Testsuiten, Testfälle sowie die wicht
     - TC002 — Navigate To Leichte Sprache And Validate
       - Öffnet Leichte Sprache-Dialog und führt die zugehörigen Prüfungen aus.
 
-- `test_helpers/dsc_get_cookies_requests.robot`
+- `tests/helpers/dsc_get_cookies_requests.robot`
   - Suite-Setup: `Open Application Browser For Cookie Testing`
   - Test-Setup: `Navigate To Authentication Info Page`
   - Suite-Teardown: `Close Application Browser`
@@ -187,7 +187,7 @@ Dieses Dokument fasst die Robot Framework Testsuiten, Testfälle sowie die wicht
 ---
 
 ## 4) Schnell einsteigen: Tests lesen
-- Top-Level-Smoke-Suites befinden sich in `tests/ui/` und Hilfs-Suites in `test_helpers/`.
+- Top-Level-Smoke-Suites befinden sich in `tests/ui/`, Hilfs-Suites in `tests/helpers/` und Beispiele in `tests/examples/`.
 - Suchen Sie `Validate ...` Keywords in `pages/` um die konkreten Prüfungen zu sehen.
 - Testsuites importieren `resources/dsc_*` und `pages/*` — Ändern Sie Selektoren in `pages/*.robot`.
 - Filtern Sie Läufe mit Tags (`smoke`, `landing`, `auth`, `faq`, `accessibility`, `cookies`, `register-auswahl`, `interaction`, `selection`, `toggle`, `list-view`, `all-registers`, `dialog`, `security`, `session`, `timer`, `reload`).
@@ -210,7 +210,7 @@ Dieses Dokument fasst die Robot Framework Testsuiten, Testfälle sowie die wicht
 ---
 
 ## Fundorte
-- Tests: `tests/ui/`; Helfer: `test_helpers/`
+- Tests: `tests/ui/`; Helfer: `tests/helpers/`; Beispiele: `tests/examples/`
 - Page-Objekte: `pages/`
 - Ressourcen/Variablen: `resources/`
 

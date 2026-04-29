@@ -13,7 +13,7 @@ browser
 results
 screenshots
 # test_data
-test_examples
+tests/examples
 venv
 .gitignore
 *.html
