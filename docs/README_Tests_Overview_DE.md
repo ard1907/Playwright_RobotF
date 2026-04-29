@@ -182,7 +182,7 @@ Dieses Dokument fasst die Robot Framework Testsuiten, Testfälle sowie die wicht
 - `resources/dsc_setup_teardown.robot` — Browser-Lifecycle-Keywords sowie `Open Browser And Login For AusweisApp Suite` und `Close Browser After AusweisApp Suite` als wiederverwendbares Setup-/Teardown-Paar für künftige AusweisApp-abhängige Suites
 - `resources/dsc_shared_keywords.robot` — Navigations-, Sichtbarkeits- und Tab-Helpers inkl. `Navigate To Register Auswahl Page` sowie `Skip Current Test If AusweisApp Environment Is Missing` für einzelne login-abhängige Tests
 - `resources/dsc_variables.robot` — Basis-URLs, TIMEOUTs, TITLE_* Strings, `${AUSWEISAPP_URL}`-Override
-- `resources/scripts_py/dsc_register_fixture_library.py` — lädt und schreibt YAML-Fixtures, liefert First-Run-Status und erwartete Dialogdaten und unterstützt robuste Schlüssel/Wert-Zuordnung für die generische Registerkarten-Suite
+- `resources/libraries/dsc_register_fixture_library.py` — lädt und schreibt YAML-Fixtures, liefert First-Run-Status und erwartete Dialogdaten und unterstützt robuste Schlüssel/Wert-Zuordnung für die generische Registerkarten-Suite
 
 ---
 

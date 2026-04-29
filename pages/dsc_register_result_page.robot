@@ -16,7 +16,7 @@
 #   Browser Library (Playwright)
 #   resources/dsc_variables.robot          → ${TIMEOUT}, URLs
 #   resources/dsc_shared_keywords.robot    → Select Register Card By Name
-#   resources/scripts_py/dsc_register_fixture_library.py → YAML I/O (Python library)
+#   resources/libraries/dsc_register_fixture_library.py → YAML I/O (Python library)
 #   pages/dsc_register_selection_page.robot   → Switch Register Auswahl To Grid View
 #
 # ── First-run JavaScript notes ─────────────────────────────────────────────────
@@ -43,7 +43,7 @@ Library     Collections
 
 Resource    ../resources/dsc_variables.robot
 Resource    ../resources/dsc_shared_keywords.robot
-Library     ../resources/scripts_py/dsc_register_fixture_library.py
+Library     ../resources/libraries/dsc_register_fixture_library.py
 
 Resource    ../pages/dsc_register_selection_page.robot
 
@@ -274,7 +274,7 @@ Capture Dialog Sender Via JavaScript
     ...
     ...                Returns the captured text. If the DOM structure does not
     ...                match, an empty string is returned; update the YAML manually.
-    ${js_code}=    Get File    ${CURDIR}/../resources/scripts_js/extract_dialog_data.js
+    ${js_code}=    Get File    ${CURDIR}/../resources/browser_scripts/extract_dialog_data.js
     ${sender}=    Evaluate JavaScript    ${REG_DIALOG}
     ...    ${js_code}    arg=sender
     RETURN    ${sender}
@@ -293,7 +293,7 @@ Capture Dialog Data Fields Via JavaScript
     ...
     ...                If neither pattern matches (unknown DOM structure), an
     ...                empty list is returned; update the YAML manually.
-    ${js_code}=    Get File    ${CURDIR}/../resources/scripts_js/extract_dialog_data.js
+    ${js_code}=    Get File    ${CURDIR}/../resources/browser_scripts/extract_dialog_data.js
     ${fields}=    Evaluate JavaScript    ${REG_DIALOG}
     ...    ${js_code}    arg=fields
     RETURN    ${fields}

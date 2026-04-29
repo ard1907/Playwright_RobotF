@@ -1,5 +1,5 @@
 /**
- * resources/scripts_js/extract_dialog_data.js
+ * resources/browser_scripts/extract_dialog_data.js
  * 
  * Script that encapsulates complex DOM-Traversal to extract
  * data fields and sender organization information from the register result dialog.
