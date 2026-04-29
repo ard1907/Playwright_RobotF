@@ -31,7 +31,7 @@ The core logic is spread across these files:
 - `pages/dsc_register_result_page.robot`
 - `pages/dsc_register_selection_page.robot`
 - `resources/dsc_shared_keywords.robot`
-- `resources/dsc_register_fixture_library.py`
+- `resources/scripts_py/dsc_register_fixture_library.py`
 - `test_data/registers/*.yaml`
 
 In short:

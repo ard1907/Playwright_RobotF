@@ -58,6 +58,11 @@ Suite Teardown  Close Browser After AusweisApp Suite
 Test Setup      Open Register Auswahl In Default Grid View
 
 
+*** Variables ***
+${SUITE_START_EPOCH}
+
+
+
 *** Keywords ***
 
 Open Browser And Login For BVA Suite

@@ -199,7 +199,7 @@ These provide page-level selectors and keywords. Use these files to update selec
   - Contains `Skip Current Test If AusweisApp Environment Is Missing` for isolated login-dependent tests that should skip on standard CI without skipping a whole suite.
 - `resources/dsc_variables.robot`
   - Variables: `${BASE_URL}`, `${AUTH_INFO_URL}`, `${BROWSER}`, `${HEADLESS}`, `${TIMEOUT}`, `${TITLE_*}` strings, `${AUSWEISAPP_URL}` env override. Controls runtime behavior and expected titles.
-- `resources/dsc_register_fixture_library.py`
+- `resources/scripts_py/dsc_register_fixture_library.py`
   - Loads and writes YAML fixtures, exposes first-run status and expected dialog data, and supports robust key/value matching for the generic register-card suite.
 
 ---

@@ -16,7 +16,7 @@
 #   Browser Library (Playwright)
 #   resources/dsc_variables.robot          → ${TIMEOUT}, URLs
 #   resources/dsc_shared_keywords.robot    → Select Register Card By Name
-#   resources/dsc_register_fixture_library.py → YAML I/O (Python library)
+#   resources/scripts_py/dsc_register_fixture_library.py → YAML I/O (Python library)
 #   pages/dsc_register_selection_page.robot   → Switch Register Auswahl To Grid View
 #
 # ── First-run JavaScript notes ─────────────────────────────────────────────────
@@ -43,7 +43,7 @@ Library     Collections
 
 Resource    ../resources/dsc_variables.robot
 Resource    ../resources/dsc_shared_keywords.robot
-Library     ../resources/dsc_register_fixture_library.py
+Library     ../resources/scripts_py/dsc_register_fixture_library.py
 
 Resource    ../pages/dsc_register_selection_page.robot
 
