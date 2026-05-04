@@ -36,6 +36,7 @@ Library     DateTime
 Library     String
 Resource    ../resources/dsc_variables.robot
 Resource    ../resources/dsc_shared_keywords.robot
+Resource    ../pages/dsc_register_result_page.robot
 
 
 *** Variables ***
@@ -138,44 +139,28 @@ Navigate To BVA Results Page
     ...                  5. Wait for the BVA result entry to appear (API async load)
     ...                The result entry wait uses a 30s timeout because the backend
     ...                API response may arrive well after the initial networkidle.
-    Navigate To Register Auswahl Page
-    Select Register Card By Name    ${BVA_REGISTER_NAME}
-    Wait For Elements State    ${BVA_RA_REQUEST_START_BTN}    visible    timeout=${TIMEOUT}
-    Click    ${BVA_RA_REQUEST_START_BTN}
-    Wait For Load State    networkidle
-    ${url}=    Get Url
-    Should Contain    ${url}    datenabfrage
-    Wait For Elements State    ${DA_BVA_RESULT_ENTRY}    visible    timeout=30s
+    Navigate To Register Results Page    ${BVA_REGISTER_NAME}
 
 
 Expand BVA Result Entry
     [Documentation]    Clicks the expand toggle (Pfeil-nach-unten) on the Test BVA
     ...                result entry to reveal the Datenübermittlung tables.
     ...                Waits until the entry transitions to "Ergebnis ist geöffnet".
-    Wait For Elements State    ${DA_BVA_EXPAND_BTN}    visible    timeout=${TIMEOUT}
-    Click    ${DA_BVA_EXPAND_BTN}
-    Wait For Elements State    ${DA_BVA_RESULT_OPENED}    visible    timeout=${TIMEOUT}
-    # Inner data tables load asynchronously after expand; wait for first h4 to appear.
-    Wait For Elements State    ${DA_BVA_TABLE_HEADING}    visible    timeout=30s
+    Expand Register Result Entry    ${BVA_REGISTER_NAME}
 
 
 Open First Protokolldaten Dialog
     [Documentation]    Clicks the first "Daten einsehen" button inside the expanded
     ...                BVA result entry to open the Protokolldaten detail dialog.
     ...                Waits until the dialog and its H1 heading are visible.
-    Wait For Elements State    ${DA_BVA_DATEN_EINSEHEN_FIRST}    visible    timeout=${TIMEOUT}
-    Click    ${DA_BVA_DATEN_EINSEHEN_FIRST}
-    Wait For Elements State    ${PD_DIALOG}    visible    timeout=${TIMEOUT}
-    Wait For Elements State    ${PD_DIALOG_H1}    visible    timeout=${TIMEOUT}
+    Open First Register Protokolldaten Dialog    ${BVA_REGISTER_NAME}
 
 
 Fetch Personal Data In Dialog
     [Documentation]    Clicks "Persönliche Daten anfragen" inside the Protokolldaten
     ...                dialog and waits until the "Daten abgerufen" indicator appears,
     ...                confirming that the personal data has been loaded.
-    Wait For Elements State    ${PD_DIALOG_ANFRAGEN_BTN}    visible    timeout=${TIMEOUT}
-    Click    ${PD_DIALOG_ANFRAGEN_BTN}
-    Wait For Elements State    ${PD_DATEN_ABGERUFEN_BTN}    visible    timeout=${TIMEOUT}
+    Fetch Personal Data In Register Dialog    ${BVA_REGISTER_NAME}
 
 
 Navigate To Full BVA Dialog With Personal Data

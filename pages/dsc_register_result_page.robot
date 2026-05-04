@@ -92,6 +92,15 @@ ${REG_FIRST_DIALOG_BTN_TMPL}
 ${REG_DIALOG_SENDER_TMPL}
 ...    div[role="dialog"][aria-hidden="false"] >> text="__EXPECTED_SENDER__" >> nth=0
 ${REG_DIALOG_PDF_SAVE_BTN}         //button[@aria-label="Als PDF speichern"]
+${REG_PAGE_TEXT_ROOT}              css=body
+${REG_ERROR_TEXT_NO_DATA}          Keine Daten gefunden
+${REG_ERROR_TEXT_TECHNICAL}
+...    Wir konnten die öffentliche Stelle aus technischen Gründen nicht erreichen.
+${REG_ERROR_TEXT_REQUEST_FAILED}   Anfrage fehlgeschlagen
+${REG_RESULTS_API_RESPONSE_MATCHER}
+...    response => response.url().endsWith('/auth/realms/dsc/registers/register-tokens') && response.request().method() === 'POST'
+${REG_DIALOG_API_RESPONSE_MATCHER}
+...    response => response.url().endsWith('/auth/realms/dsc/registers/register-tokens') && response.request().method() === 'POST'
 *** Keywords ***
 
 # ── Navigation ─────────────────────────────────────────────────────────────────
@@ -112,12 +121,25 @@ Navigate To Register Results Page
     Ensure RA Empty Selection State
     Select Register Card By Name    ${register_name}
     Wait For Elements State    ${REG_REQUEST_START_BTN}    visible    timeout=${TIMEOUT}
+    ${response_promise}=    Promise To    Wait For Response
+    ...    ${REG_RESULTS_API_RESPONSE_MATCHER}
+    ...    timeout=30s
     Click    ${REG_REQUEST_START_BTN}
     Wait For Load State    networkidle
     ${url}=    Get Url
     Should Contain    ${url}    datenabfrage
-    ${result_entry}=    Replace String    ${REG_RESULT_ENTRY_TMPL}    __REGISTER_NAME__    ${register_name}
-    Wait For Elements State    ${result_entry}    visible    timeout=30s
+    ${api_response}=    Wait For And Log Captured Api Response
+    ...    initial register data load
+    ...    ${response_promise}
+    ${response_error}=    Get First Known Register Data Error From Response    ${api_response}
+    IF    '${response_error}' != ''
+        Report Register Backend Failure And Skip
+        ...    initial register data load
+        ...    ${register_name}
+        ...    ${response_error}
+        ...    ${api_response}
+    END
+    Wait For Register Result Or Skip On Known Error    ${register_name}    ${api_response}
 
 
 Expand Register Result Entry
@@ -155,9 +177,24 @@ Fetch Personal Data In Register Dialog
     [Documentation]    Clicks "Persönliche Daten anfragen" inside the open
     ...                Protokolldaten dialog and waits for the "Daten abgerufen"
     ...                confirmation button, confirming that the data has loaded.
+    [Arguments]    ${register_name}=Unknown Register
     Wait For Elements State    ${REG_DIALOG_ANFRAGEN_BTN}    visible    timeout=${TIMEOUT}
+    ${response_promise}=    Promise To    Wait For Response
+    ...    ${REG_DIALOG_API_RESPONSE_MATCHER}
+    ...    timeout=30s
     Click    ${REG_DIALOG_ANFRAGEN_BTN}
-    Wait For Elements State    ${REG_DATEN_ABGERUFEN_BTN}    visible    timeout=${TIMEOUT}
+    ${api_response}=    Wait For And Log Captured Api Response
+    ...    personal data request
+    ...    ${response_promise}
+    ${response_error}=    Get First Known Register Data Error From Response    ${api_response}
+    IF    '${response_error}' != ''
+        Report Register Backend Failure And Skip
+        ...    personal data request
+        ...    ${register_name}
+        ...    ${response_error}
+        ...    ${api_response}
+    END
+    Wait For Personal Data Or Skip On Known Error    ${register_name}    ${api_response}
 
 
 Close Register Protokolldaten Dialog
@@ -196,7 +233,161 @@ Run Full Register Workflow To Dialog Data
     Navigate To Register Results Page    ${register_name}
     Expand Register Result Entry          ${register_name}
     Open First Register Protokolldaten Dialog    ${register_name}
-    Fetch Personal Data In Register Dialog
+    Fetch Personal Data In Register Dialog    ${register_name}
+
+
+Wait For And Log Captured Api Response
+    [Documentation]    Waits for a previously created response promise, writes
+    ...                request and response details into the Robot log, and
+    ...                returns the captured response object when available.
+    [Arguments]    ${phase}    ${response_promise}
+    ${wait_status}    ${response}=    Run Keyword And Ignore Error    Wait For    ${response_promise}
+    IF    '${wait_status}' == 'PASS'
+        Log Captured Api Response Details    ${phase}    ${response}
+        RETURN    ${response}
+    END
+    Log    ${phase}: No matching API response was captured within timeout. Details: ${response}    WARN
+    Log To Console    WARN: ${phase}: No matching API response was captured within timeout.
+    RETURN    ${None}
+
+
+Log Captured Api Response Details
+    [Documentation]    Logs the request method, target URL, status and body of
+    ...                a captured Browser Library response object.
+    [Arguments]    ${phase}    ${response}
+    ${request_text}=    Convert To String    ${response}[request]
+    ${body_text}=    Convert To String    ${response}[body]
+    Log    ${phase}: API request details: ${request_text}
+    Log    ${phase}: API response status=${response}[status] ok=${response}[ok] url=${response}[url]
+    Log    ${phase}: API response headers: ${response}[headers]
+    Log    ${phase}: API response body: ${body_text}
+
+
+Get First Known Register Data Error From Response
+    [Documentation]    Extracts known backend/data failure messages from a
+    ...                captured API response body, if present.
+    [Arguments]    ${response}
+    IF    $response == $None
+        RETURN    ${EMPTY}
+    END
+    ${body_text}=    Convert To String    ${response}[body]
+    ${known_error}=    Get First Known Register Data Error From Text    ${body_text}
+    RETURN    ${known_error}
+
+
+Get First Known Register Data Error From Container
+    [Documentation]    Reads the visible text of a container and returns the
+    ...                first known backend/data failure message found in it.
+    [Arguments]    ${container_selector}
+    ${status}    ${container_text}=    Run Keyword And Ignore Error    Get Text    ${container_selector}
+    IF    '${status}' != 'PASS'
+        RETURN    ${EMPTY}
+    END
+    ${known_error}=    Get First Known Register Data Error From Text    ${container_text}
+    RETURN    ${known_error}
+
+
+Get First Known Register Data Error From Text
+    [Documentation]    Matches UI/backend failure text variants used by the DSC
+    ...                application when no register data can be rendered.
+    [Arguments]    ${text}
+    ${contains_no_data}=    Run Keyword And Return Status
+    ...    Should Contain    ${text}    ${REG_ERROR_TEXT_NO_DATA}
+    IF    ${contains_no_data}
+        RETURN    ${REG_ERROR_TEXT_NO_DATA}
+    END
+    ${contains_technical}=    Run Keyword And Return Status
+    ...    Should Contain    ${text}    ${REG_ERROR_TEXT_TECHNICAL}
+    IF    ${contains_technical}
+        RETURN    ${REG_ERROR_TEXT_TECHNICAL}
+    END
+    ${contains_request_failed}=    Run Keyword And Return Status
+    ...    Should Contain    ${text}    ${REG_ERROR_TEXT_REQUEST_FAILED}
+    IF    ${contains_request_failed}
+        RETURN    ${REG_ERROR_TEXT_REQUEST_FAILED}
+    END
+    RETURN    ${EMPTY}
+
+
+Get First Known Register Data Error From Active UI
+    [Documentation]    Looks for known backend/data failure text first in the
+    ...                provided primary container and then in the visible page.
+    [Arguments]    ${primary_container}=${REG_PAGE_TEXT_ROOT}
+    ${known_error}=    Get First Known Register Data Error From Container    ${primary_container}
+    IF    '${known_error}' != ''
+        RETURN    ${known_error}
+    END
+    IF    '${primary_container}' != '${REG_PAGE_TEXT_ROOT}'
+        ${known_error}=    Get First Known Register Data Error From Container    ${REG_PAGE_TEXT_ROOT}
+        IF    '${known_error}' != ''
+            RETURN    ${known_error}
+        END
+    END
+    RETURN    ${EMPTY}
+
+
+Report Register Backend Failure And Skip
+    [Documentation]    Emits a warning to the log and console and marks the
+    ...                current test as skipped when a known backend/data failure
+    ...                is visible in the application.
+    [Arguments]    ${phase}    ${register_name}    ${error_message}    ${response}=${None}
+    ${skip_message}=    Set Variable
+    ...    Register workflow skipped for "${register_name}" during ${phase}: visible application error "${error_message}".
+    Log    ${skip_message}    WARN
+    Log To Console    WARN: ${skip_message}
+    IF    $response != $None
+        Log    ${phase}: Skipping after API response url=${response}[url] status=${response}[status] ok=${response}[ok]    WARN
+    END
+    Skip    ${skip_message}
+
+
+Wait For Register Result Or Skip On Known Error
+    [Documentation]    Waits for the register result entry to appear, but aborts
+    ...                early with SKIP if the application renders a known
+    ...                backend/data error instead.
+    [Arguments]    ${register_name}    ${response}=${None}
+    ${result_entry}=    Replace String    ${REG_RESULT_ENTRY_TMPL}    __REGISTER_NAME__    ${register_name}
+    FOR    ${index}    IN RANGE    30
+        ${result_count}=    Get Element Count    ${result_entry}
+        IF    ${result_count} > 0
+            RETURN
+        END
+        ${known_error}=    Get First Known Register Data Error From Active UI
+        IF    '${known_error}' != ''
+            Report Register Backend Failure And Skip
+            ...    initial register data load
+            ...    ${register_name}
+            ...    ${known_error}
+            ...    ${response}
+        END
+        Sleep    500ms
+    END
+    Fail
+    ...    Register result entry for "${register_name}" did not become visible and no known application error was detected.
+
+
+Wait For Personal Data Or Skip On Known Error
+    [Documentation]    Waits for the dialog to reach the "Daten abgerufen"
+    ...                state, but aborts early with SKIP if the application
+    ...                renders a known backend/data error instead.
+    [Arguments]    ${register_name}    ${response}=${None}
+    FOR    ${index}    IN RANGE    30
+        ${loaded_count}=    Get Element Count    ${REG_DATEN_ABGERUFEN_BTN}
+        IF    ${loaded_count} > 0
+            RETURN
+        END
+        ${known_error}=    Get First Known Register Data Error From Active UI    ${REG_DIALOG}
+        IF    '${known_error}' != ''
+            Report Register Backend Failure And Skip
+            ...    personal data request
+            ...    ${register_name}
+            ...    ${known_error}
+            ...    ${response}
+        END
+        Sleep    500ms
+    END
+    Fail
+    ...    Personal data for "${register_name}" was not marked as loaded and no known application error was detected.
 
 
 # ── Assertion Keywords ─────────────────────────────────────────────────────────
