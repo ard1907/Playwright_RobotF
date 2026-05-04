@@ -14,11 +14,11 @@
 
 *** Settings ***
 Library         Browser
-Resource        ../resources/dsc_variables.robot
-Resource        ../resources/dsc_setup_teardown.robot
-Resource        ../resources/dsc_shared_keywords.robot
-Resource        ../pages/dsc_authentication_info_page.robot
-Resource        ../pages/dsc_register_selection_page.robot
+Resource        ../../resources/dsc_variables.robot
+Resource        ../../resources/dsc_setup_teardown.robot
+Resource        ../../resources/dsc_shared_keywords.robot
+Resource        ../../pages/dsc_authentication_info_page.robot
+Resource        ../../pages/dsc_register_selection_page.robot
 
 # ── Suite-level browser lifecycle ─────────────────────────────────────────────
 Suite Setup     Open Application Browser For Cookie Testing
