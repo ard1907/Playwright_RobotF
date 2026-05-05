@@ -1,5 +1,5 @@
 # ==============================================================================
-# ts_04_smoke_test_register_selection_BVA.robot  –  Smoke Test Suite for the
+# ts_04_smoke_test_register_selection_bva.robot  –  Smoke Test Suite for the
 #                                                   Test BVA Register Workflow
 #
 # Target  : https://qs-datenschutzcockpit.dsc.govkg.de/spa/cockpit/datenabfrage
@@ -47,7 +47,7 @@ Resource    ../../resources/dsc_shared_keywords.robot
 
 Resource    ../../pages/dsc_authentication_info_page.robot
 Resource    ../../pages/dsc_register_selection_page.robot
-Resource    ../../pages/dsc_register_selection_BVA.robot
+Resource    ../../pages/dsc_register_selection_bva.robot
 
 # ── Suite-level browser lifecycle ─────────────────────────────────────────────
 # Login once for the whole suite; each test navigates fresh via [Setup].

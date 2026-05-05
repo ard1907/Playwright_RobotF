@@ -57,7 +57,7 @@ Dieses Dokument fasst die UI-Testsuiten im Ordner `tests/ui/` zusammen und liste
 
 Die Registerauswahl-Suite ist nur nach erfolgreichem Login erreichbar. Einzelne Intro- und Mehr-Info-Elemente können je nach Umgebung als nicht-klassische Klickziele gerendert werden; die Suite berücksichtigt das mit kontrollierten Fallbacks. Die Suite deckt außerdem Grid- und Listenansicht ab.
 
-## 4) `tests/ui/ts_04_smoke_test_register_selection_BVA.robot`
+## 4) `tests/ui/ts_04_smoke_test_register_selection_bva.robot`
 
 - `TC001 - Select Test BVA Register Card Enables Anfrage Starten` - Wählt das BVA-Register aus und prüft den Status des Anfrage-Buttons.
 - `TC002 - Deselect Test BVA Register Card Returns Empty Selection State` - Prüft, dass die BVA-Karte sauber wieder abgewählt werden kann.

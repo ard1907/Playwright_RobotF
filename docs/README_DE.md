@@ -87,7 +87,7 @@ Eine einzelne Suite starten, wenn nur ein Bereich geprüft werden soll:
 robot tests/ui/ts_01_smoke_test_landing_page.robot
 robot tests/ui/ts_02_smoke_test_auth_info_page.robot
 robot tests/ui/ts_03_smoke_test_register_selection.robot
-robot tests/ui/ts_04_smoke_test_register_selection_BVA.robot
+robot tests/ui/ts_04_smoke_test_register_selection_bva.robot
 robot tests/ui/ts_05_smoke_test_register_cards_generic.robot
 ```
 

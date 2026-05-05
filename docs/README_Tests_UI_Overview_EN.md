@@ -57,7 +57,7 @@ This document summarizes the UI test suites in `tests/ui/` and lists the contain
 
 The register-selection suite is only reachable after a successful login. Some intro and more-info elements can be rendered as non-standard click targets depending on the environment; the suite handles that with controlled fallbacks. The suite also covers both grid and list views.
 
-## 4) `tests/ui/ts_04_smoke_test_register_selection_BVA.robot`
+## 4) `tests/ui/ts_04_smoke_test_register_selection_bva.robot`
 
 - `TC001 - Select Test BVA Register Card Enables Anfrage Starten` - Selects the BVA register and verifies the request button state.
 - `TC002 - Deselect Test BVA Register Card Returns Empty Selection State` - Verifies the BVA card can be toggled off cleanly.

@@ -107,7 +107,7 @@ This document summarizes Robot Framework test suites, test cases, and key page-o
     - TC018 — Toggle All Registers In List View Select And Deselect
       - Switches to list view and validates the global select-all and deselect-all behavior.
 
-- `tests/ui/ts_04_smoke_test_register_selection_BVA.robot`
+- `tests/ui/ts_04_smoke_test_register_selection_bva.robot`
   - Suite Setup: `Open Browser And Login For BVA Suite`
   - Test Setup: `Open Register Auswahl In Default Grid View`
   - Suite Teardown: `Close Browser After AusweisApp Suite`
