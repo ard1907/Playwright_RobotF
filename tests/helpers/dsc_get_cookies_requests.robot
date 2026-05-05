@@ -31,7 +31,8 @@ Open Application Browser For Cookie Testing
     [Documentation]    Starts a new Chromium (or configured) browser process,
     ...                creates a fresh isolated context with German locale, opens
     ...                the first page and waits for the SPA to fully hydrate.
-    New Browser            ${BROWSER}    headless=${HEADLESS}
+    # New Browser    ${BROWSER}    headless=${HEADLESS}    # Use next line keyword to pass self-hosted workflow in docker containter.
+    Open Chromium Browser
     New Context            locale=de-DE
     New Page               ${BASE_URL}
     Wait For Load State    networkidle

@@ -8,6 +8,8 @@
 
 *** Settings ***
 Library         Browser
+Resource        ../../resources/dsc_variables.robot
+Resource        ../../resources/dsc_setup_teardown.robot
 
 Suite Setup     Open Application Browser
 Suite Teardown  Close Application Browser
@@ -41,7 +43,8 @@ ${LS_CLOSE_BTN}            role=button[name="Menü schließen"]
 *** Keywords ***
 
 Open Application Browser
-    New Browser    ${BROWSER}    headless=${HEADLESS}
+    # New Browser    ${BROWSER}    headless=${HEADLESS}    # Use next line keyworkd to pass self-hosted workflow in docker containter.
+    Open Chromium Browser
     New Context    locale=de-DE
     New Page       ${BASE_URL}
     Wait For Load State    networkidle
