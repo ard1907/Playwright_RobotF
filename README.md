@@ -32,6 +32,18 @@ The documentation is split into language-specific README files, test overviews, 
 
 ## Typical commands
 
+Refresh all Docker stacks after the folder restructure:
+
+```powershell
+.\tools\docker\refresh-docker.ps1
+```
+
+Run the same refresh with aggressive Docker cleanup of unused resources:
+
+```powershell
+.\tools\docker\refresh-docker.ps1 -PruneAll
+```
+
 Run all UI suites:
 
 ```bash
@@ -61,4 +73,3 @@ robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True --variable FIXT
 - The generic register-card suite has a normal verification mode and a separate first-run capture mode.
 - First-run is intentionally opt-in and requires `ENABLE_FIRST_RUN_TESTS=True`.
 - New register-card logic documentation is available in both German and English via the files linked above.
-

@@ -21,7 +21,7 @@ Thumbs.db
 ########################################
 # Docker
 ########################################
-docker/runner/docker-compose.local.yml
+docker/runner/docker-compose.yml
 # docker/tests/Emma_Mustermann.json
 
 ########################################

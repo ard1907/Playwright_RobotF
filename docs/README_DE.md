@@ -129,7 +129,7 @@ Der Docker-basierte Testlauf verwendet typischerweise `CI=True`, `HEADLESS=True`
 Um nach einem Workflow-Lauf die Ergebnisse aus dem Runner-Container zu kopieren, verwende:
 
 ```bash
-./tools/get-results.sh
+./tools/docker/get-results.sh
 ```
 
 ## Generierte Artefakte

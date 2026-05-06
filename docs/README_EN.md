@@ -129,7 +129,7 @@ The Docker-based test setup typically runs with `CI=True`, `HEADLESS=True`, `BRO
 To copy results from the runner container after a workflow run, use:
 
 ```bash
-./tools/get-results.sh
+./tools/docker/get-results.sh
 ```
 
 ## Generated artifacts
