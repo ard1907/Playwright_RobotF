@@ -1,5 +1,5 @@
 
-name: docker2-tests
+name: docker-tests
 
 services:
 
@@ -8,8 +8,8 @@ services:
   # Der SDK authentifiziert vollautomatisch ohne weiteres Python-Skript.
   ausweisapp-sdk:
     build:
-      context: ..
-      dockerfile: docker2/ausweisapp-sdk.Dockerfile
+      context: ../..
+      dockerfile: docker/tests/ausweisapp-sdk.Dockerfile
     ports:
       - "24727:24727"
 
@@ -18,8 +18,8 @@ services:
 
   robot-tests:
     build:
-      context: ..
-      dockerfile: docker2/robot_tests.Dockerfile
+      context: ../..
+      dockerfile: docker/tests/robot_tests.Dockerfile
     depends_on:
       - ausweisapp-sdk
 
@@ -39,4 +39,4 @@ services:
     # Runner-Container und nicht in den Windows-Workspace. Daher ist er hier deaktiviert.
     # Die Ergebnisse werden im Workflow per 'docker cp' aus dem Container geholt.
     # volumes:
-    #   - ../results2:/app/results2
+    #   - ../../results2:/app/results2

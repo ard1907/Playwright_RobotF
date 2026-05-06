@@ -13,9 +13,9 @@ ohne dass echte Hardware oder ein PIN-Dialog benoetigt wird.
 
 | Datei | Zweck |
 |---|---|
-| `ausweisapp-sdk.Dockerfile` | Baut das SDK-Image mit eingebetteter Karte |
-| `docker-compose.yml` | Startet den Container, Port `127.0.0.1:24727` |
-| `Emma_Mustermann.json` | Testkarte im SDK-Simulator-Format |
+| `docker/sdk/ausweisapp-sdk.Dockerfile` | Baut das SDK-Image mit eingebetteter Karte |
+| `docker/sdk/docker-compose.yml` | Startet den Container, Port `127.0.0.1:24727` |
+| `docker/sdk/Emma_Mustermann.json` | Testkarte im SDK-Simulator-Format |
 
 ---
 

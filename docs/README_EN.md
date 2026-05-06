@@ -12,7 +12,7 @@ It also includes dedicated suites for the authenticated cockpit area: the regist
 - `tests/examples/` contains example and exploratory Robot suites.
 - `pages/` contains page-object style Robot Framework keywords and selectors.
 - `resources/` contains shared browser setup, navigation helpers, and variables.
-- `docker/` and `docker2/` contain container setups for local and CI-style execution.
+- `docker/sdk/`, `docker/tests/`, and `docker/runner/` contain container setups for local execution, CI-style runs, and the self-hosted runner.
 - `tools/` contains helper scripts for working with test results.
 - `results/`, `results2/`, `log.html`, `report.html`, and `output.xml` are generated test artifacts.
 
@@ -120,8 +120,9 @@ The register-selection suite also uses tags such as `register-auswahl`, `interac
 
 This repository contains several container setups:
 
-- `docker/` provides the AusweisApp SDK simulator stack.
-- `docker2/` provides a local test stack with `ausweisapp-sdk` and `robot-tests`, plus a self-hosted GitHub Actions runner configuration.
+- `docker/sdk/` provides the AusweisApp SDK simulator stack.
+- `docker/tests/` provides a local test stack with `ausweisapp-sdk` and `robot-tests`.
+- `docker/runner/` provides the self-hosted GitHub Actions runner configuration.
 
 The Docker-based test setup typically runs with `CI=True`, `HEADLESS=True`, `BROWSER=chromium`, and `AUSWEISAPP_URL=http://127.0.0.1:24727` or a host-gateway equivalent.
 
@@ -150,7 +151,7 @@ The `results/` and `results2/` directories contain saved artifacts from prior ru
 - `tests/examples/` - example and exploratory suites
 - `pages/` - page objects and assertions
 - `resources/` - shared setup, navigation, and variables
-- `docker*/` - Docker and CI support files
+- `docker/sdk/`, `docker/tests/`, `docker/runner/` - Docker and CI support files
 - `tools/` - result handling helpers
 
 ## Related documentation

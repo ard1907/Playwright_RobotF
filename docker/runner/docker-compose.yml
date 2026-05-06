@@ -1,0 +1,39 @@
+name: docker-runner
+
+services:
+  github-runner:
+    # Security patch: replace mutable latest with a pinned digest for reproducible runner behavior.
+    # image: myoung34/github-runner:latest
+    image: myoung34/github-runner@sha256:bf123e0ad050a4f174f7358b81d740a8da41854f7e15883ba7a6baeb216461cf
+    container_name: github-runner
+    restart: always
+    init: true
+    security_opt:
+      # Security patch: block privilege escalation inside the runner container.
+      - no-new-privileges:true
+
+    env_file:
+      - ../../.env
+
+    environment:
+      - REPO_URL=https://github.com/ard1907/Playwright_RobotF
+      # Settings → Actions → Runners  -> New self-hosted runner -> Linux -> X64 -> copy the token and use it here: config.cmd --url ... --token ABC123
+      # - RUNNER_TOKEN=BZMXL3XABJS
+      # ARD: wenn in GA / workflow definiert, dann hier so verwenden:
+      # - ACCESS_TOKEN=${{ secrets.ACCESS_TOKEN }}
+      # ARD: wenn in .env definiert, dann hier so verwenden: ACCESS_TOKEN wird ueber ../.env geladen.
+      # - ACCESS_TOKEN=${ACCESS_TOKEN}   Dies ODER obige Zeile 7 / 8.
+      - RUNNER_NAME=local-github-actions-runner
+      - RUNNER_WORKDIR=/tmp/runner/work
+      - RUNNER_LABELS=self-hosted,linux,docker
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      # ACHTUNG: Jeder zusätzliche Volume-Mount (Linux- oder Windows-Pfad) verursacht
+      # in Docker Desktop eine Netzwerk-Neukonfiguration.
+      # Chromium (network_mode: host) nimmt das als ERR_NETWORK_CHANGED wahr → Tests scheitern.
+      # → Nur /var/run/docker.sock mounten!
+      #
+      # Ergebnisse aus dem Runner-Container holen (nach Workflow-Lauf, auf Windows ausführen):
+      #   docker cp github-runner:/tmp/runner/work/Playwright_RobotF/Playwright_RobotF/results2/. ./results2/
+      # Oder: tools\get-results.sh ausführen (kopiert automatisch in den lokalen results2-Ordner).

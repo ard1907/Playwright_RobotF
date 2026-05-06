@@ -41,7 +41,7 @@ jobs:
 
       - name: Start AusweisApp SDK
         run: |
-          docker compose -f docker2/docker-compose.tests_02.yml up -d --build --remove-orphans ausweisapp-sdk
+          docker compose -f docker/sdk/docker-compose.yml up -d --build --remove-orphans ausweisapp-sdk
 
       - name: Wait for AusweisApp SDK port
         run: |

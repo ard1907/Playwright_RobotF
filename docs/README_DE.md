@@ -12,7 +12,7 @@ Zusätzlich umfasst es eigene Suiten für den authentifizierten Cockpit-Bereich:
 - `tests/examples/` enthält Beispiel- und Explorationssuiten.
 - `pages/` enthält Keyword- und Selektor-Definitionen im Page-Object-Stil.
 - `resources/` enthält gemeinsames Browser-Setup, Navigations-Keywords und Variablen.
-- `docker/` und `docker2/` enthalten Container-Setups für lokale Ausführung und CI-nahe Läufe.
+- `docker/sdk/`, `docker/tests/` und `docker/runner/` enthalten Container-Setups für lokale Ausführung, CI-nahe Läufe und den Self-hosted-Runner.
 - `tools/` enthält Hilfsskripte für die Arbeit mit Testergebnissen.
 - `results/`, `results2/`, `log.html`, `report.html` und `output.xml` sind generierte Test-Artefakte.
 
@@ -120,8 +120,9 @@ Für die Registerauswahl kommen zusätzlich Tags wie `register-auswahl`, `intera
 
 Dieses Repository enthält mehrere Container-Setups:
 
-- `docker/` stellt den AusweisApp-SDK-Simulator-Stack bereit.
-- `docker2/` stellt einen lokalen Test-Stack mit `ausweisapp-sdk` und `robot-tests` sowie eine Konfiguration für einen selbst gehosteten GitHub-Actions-Runner bereit.
+- `docker/sdk/` stellt den AusweisApp-SDK-Simulator-Stack bereit.
+- `docker/tests/` stellt den lokalen Test-Stack mit `ausweisapp-sdk` und `robot-tests` bereit.
+- `docker/runner/` enthält die Konfiguration für einen selbst gehosteten GitHub-Actions-Runner.
 
 Der Docker-basierte Testlauf verwendet typischerweise `CI=True`, `HEADLESS=True`, `BROWSER=chromium` und `AUSWEISAPP_URL=http://127.0.0.1:24727` oder eine passende Host-Gateway-Variante.
 
@@ -150,7 +151,7 @@ Die Verzeichnisse `results/` und `results2/` enthalten gespeicherte Artefakte fr
 - `tests/examples/` - Beispiel- und Explorationssuiten
 - `pages/` - Page Objects und Assertions
 - `resources/` - gemeinsames Setup, Navigation und Variablen
-- `docker*/` - Docker- und CI-Hilfsdateien
+- `docker/sdk/`, `docker/tests/`, `docker/runner/` - Docker- und CI-Hilfsdateien
 - `tools/` - Hilfen für Ergebnisverarbeitung
 
 ## Verwandte Dokumentation

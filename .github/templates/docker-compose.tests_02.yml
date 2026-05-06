@@ -1,10 +1,10 @@
-name: docker2-tests-02
+name: docker-sdk-tests-02
 
 services:
   ausweisapp-sdk:
     build:
-      context: ..
-      dockerfile: docker2/ausweisapp-sdk.Dockerfile
+      context: ../..
+      dockerfile: docker/sdk/ausweisapp-sdk.Dockerfile
 
     ports:
       - "24727:24727"
