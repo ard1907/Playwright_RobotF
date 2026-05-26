@@ -50,7 +50,7 @@ ${TITLE_DATENANSICHT}       Datenschutzcockpit - Datenansicht
 ${AUSWEISAPP_URL}          %{AUSWEISAPP_URL=http://localhost:24727}
 
 # ── App Version ───────────────────────────────────────────────────────────────
-${APP_VERSION}              2.17.8
+${APP_VERSION}              2.17.14
 
 # ── External Links ────────────────────────────────────────────────────────────
 ${ASWAPP_DWLD_TITLE}         AusweisApp: Download der AusweisApp
