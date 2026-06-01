@@ -57,6 +57,12 @@ Resource    ../pages/dsc_register_result_page.robot
 Library     ../resources/libraries/dsc_register_api_fixture_library.py
 
 
+*** Variables ***
+
+${REG_DIALOG_DATA_API_RESPONSE_MATCHER}
+...    response => response.url().endsWith('/api/register-inhalts-data') && response.request().method() === 'POST'
+
+
 *** Keywords ***
 
 # ── Personal Data Fetch: Returns API Response ──────────────────────────────────
@@ -80,7 +86,7 @@ Fetch Personal Data And Return Api Response
     [Arguments]    ${register_name}=Unknown Register
     Wait For Elements State    ${REG_DIALOG_ANFRAGEN_BTN}    visible    timeout=${TIMEOUT}
     ${response_promise}=    Promise To    Wait For Response
-    ...    ${REG_DIALOG_API_RESPONSE_MATCHER}
+    ...    ${REG_DIALOG_DATA_API_RESPONSE_MATCHER}
     ...    timeout=30s
     Click    ${REG_DIALOG_ANFRAGEN_BTN}
     ${api_response}=    Wait For And Log Captured Api Response

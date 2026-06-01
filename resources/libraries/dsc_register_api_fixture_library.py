@@ -30,8 +30,10 @@ Keyword mapping (underscore → space):
   compare_api_response_bodies     → Compare Api Response Bodies
 """
 
+import ast
 import json
 import pathlib
+import xml.etree.ElementTree as ET
 from datetime import datetime
 
 
@@ -47,6 +49,9 @@ class dsc_register_api_fixture_library:
         "access_token",
         "accesstoken",
         "accessToken",
+        "registeraccessjwt",
+        "register_access_jwt",
+        "registerAccessJWT",
         "sessionid",
         "session_id",
         "sessionId",
@@ -118,8 +123,9 @@ class dsc_register_api_fixture_library:
         return fixture.get("register", {}).get("tag", "")
 
     def get_api_response_body(self, fixture: dict) -> dict:
-        """Return the stored API response body dict from the fixture."""
-        return fixture.get("api_response", {}).get("body", {})
+        """Return the stored comparison body from the fixture."""
+        api_response = fixture.get("api_response", {})
+        return api_response.get("comparison_body", api_response.get("body", {}))
 
     def get_api_response_status(self, fixture: dict) -> int:
         """Return the stored HTTP response status code from the fixture."""
@@ -154,7 +160,17 @@ class dsc_register_api_fixture_library:
         try:
             return json.loads(body_str)
         except (json.JSONDecodeError, ValueError):
-            return {"_raw": body_str}
+            pass
+
+        # Browser/Playwright response payloads may occasionally surface as a
+        # Python-style literal string with single quotes instead of strict JSON.
+        if body_str.startswith(("{", "[", "(", "'")):
+            try:
+                return ast.literal_eval(body_str)
+            except (ValueError, SyntaxError):
+                pass
+
+        return {"_raw": body_str}
 
     # ── Building and Writing (First-Run) ───────────────────────────────────────
 
@@ -170,15 +186,17 @@ class dsc_register_api_fixture_library:
         """
         Build a complete API fixture dict from a captured live API response.
 
-        Arguments:
-          register_name    – exact h3 text of the register card
-          register_tag     – short identifier (e.g. 'bva')
-          response_status  – HTTP status code (int or string)
-          response_url     – URL of the API endpoint that returned the data
-          body_bytes       – raw response body (bytes or string from Browser Library)
-          existing_fixture – if provided, the 'comparison' section is preserved
+                Arguments:
+                    register_name    – exact h3 text of the register card
+                    register_tag     – short identifier (e.g. 'bva')
+                    response_status  – HTTP status code (int or string)
+                    response_url     – URL of the API endpoint that returned the data
+                    body_bytes       – raw response body (bytes or string from Browser Library)
+                    existing_fixture – if provided, the 'comparison' section
+                                       is preserved
         """
         body = self.parse_api_response_body_bytes(body_bytes)
+        comparison_body = self._normalize_for_comparison(body)
 
         # Preserve comparison config from an existing fixture when available
         default_comparison = {
@@ -205,6 +223,7 @@ class dsc_register_api_fixture_library:
                 "status": int(response_status),
                 "url": str(response_url),
                 "body": body,
+                "comparison_body": comparison_body,
             },
             "comparison": comparison,
         }
@@ -225,8 +244,8 @@ class dsc_register_api_fixture_library:
 
     def compare_api_response_bodies(
         self,
-        reference_body: dict,
-        current_body: dict,
+        reference_body,
+        current_body,
         extra_skip_keys=None,
     ) -> list:
         """
@@ -249,8 +268,17 @@ class dsc_register_api_fixture_library:
                 skip.add(k_str)
                 skip.add(k_str.lower())
 
+        normalized_reference = self._normalize_for_comparison(reference_body)
+        normalized_current = self._normalize_for_comparison(current_body)
+
         differences: list = []
-        self._compare_recursive(reference_body, current_body, [], differences, skip)
+        self._compare_recursive(
+            normalized_reference,
+            normalized_current,
+            [],
+            differences,
+            skip,
+        )
         return differences
 
     # ── Internal Helpers ───────────────────────────────────────────────────────
@@ -258,6 +286,64 @@ class dsc_register_api_fixture_library:
     def _is_volatile_key(self, key: str, skip_set: set) -> bool:
         key_str = str(key)
         return key_str in skip_set or key_str.lower() in skip_set
+
+    def _normalize_for_comparison(self, value):
+        """Return a stable comparison structure for API responses.
+
+        `register-inhalts-data` currently returns encrypted XML inside the JSON
+        response body. The ciphertext changes between runs, so the raw payload
+        cannot be compared directly. This method preserves the raw response in
+        the fixture while deriving a stable comparison view from the response
+        envelope and XML metadata only.
+        """
+        if isinstance(value, dict):
+            return {k: self._normalize_for_comparison(v) for k, v in value.items()}
+        if isinstance(value, list):
+            return [self._normalize_for_comparison(item) for item in value]
+        if isinstance(value, str):
+            stripped = value.strip()
+            if stripped.startswith("<") and (
+                "EncryptedData" in stripped
+                or "CipherValue" in stripped
+                or "EncryptionMethod" in stripped
+            ):
+                xml_summary = self._summarize_encrypted_xml(stripped)
+                if xml_summary:
+                    return xml_summary
+        return value
+
+    def _summarize_encrypted_xml(self, xml_text: str):
+        """Summarize encrypted XML into stable metadata for comparison."""
+        try:
+            root = ET.fromstring(xml_text)
+        except ET.ParseError:
+            return {"_kind": "xml_parse_failed"}
+
+        encrypted_data = root.find(".//{http://www.w3.org/2001/04/xmlenc#}EncryptedData")
+        method_node = root.find(".//{http://www.w3.org/2001/04/xmlenc#}EncryptionMethod")
+        encryption_method = method_node.attrib.get("Algorithm", "") if method_node is not None else ""
+        encrypted_key_count = len(root.findall(".//{http://www.w3.org/2001/04/xmlenc#}EncryptedKey"))
+        cipher_value_node = root.find(".//{http://www.w3.org/2001/04/xmlenc#}CipherValue")
+        cipher_value = None
+        if cipher_value_node is not None and cipher_value_node.text:
+            cipher_value = cipher_value_node.text.strip()
+
+        return {
+            "_kind": "encrypted_xml_envelope",
+            "root_tag": self._strip_namespace(root.tag),
+            "version": root.attrib.get("version", ""),
+            "message_type": root.attrib.get("nachrichtentyp", ""),
+            "has_encrypted_data": encrypted_data is not None,
+            "encryption_algorithm": encryption_method or "",
+            "encrypted_key_count": encrypted_key_count,
+            "cipher_value_present": bool(cipher_value),
+            "cipher_value_length": len(cipher_value or ""),
+        }
+
+    def _strip_namespace(self, tag: str) -> str:
+        if "}" in tag:
+            return tag.split("}", 1)[1]
+        return tag
 
     def _compare_recursive(
         self,

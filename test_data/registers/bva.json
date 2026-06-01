@@ -1,0 +1,43 @@
+{
+  "register": {
+    "name": "Test BVA",
+    "tag": "bva"
+  },
+  "first_run": {
+    "completed": true,
+    "captured_at": "2026-05-26T16:44:34",
+    "phase": "personal_data_request"
+  },
+  "api_response": {
+    "status": 200,
+    "url": "https://qs-datenschutzcockpit.dsc.govkg.de/api/register-inhalts-data",
+    "body": {
+      "registerId": "3e8872de-e611-4245-836e-f256ed125533",
+      "body": "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?><ns2:antwortInhaltsdaten xmlns:ns2=\"http://xoev.de/datenschutzcockpit/xdatenschutzcockpit/transport_http/1.0.1\" xmlns=\"http://xoev.de/datenschutzcockpit/xdatenschutzcockpit/datentypen_xml/1.0.1\" xmlns:ns3=\"http://xoev.de/datenschutzcockpit/xdatenschutzcockpit/transport_http/0.1.0-pilot\" version=\"1.0.1\"><xenc:EncryptedData xmlns:xenc=\"http://www.w3.org/2001/04/xmlenc#\" Type=\"http://www.w3.org/2001/04/xmlenc#Content\"><xenc:EncryptionMethod Algorithm=\"http://www.w3.org/2009/xmlenc11#aes256-gcm\"/><xenc:CipherData><xenc:CipherValue>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</xenc:CipherValue></xenc:CipherData></xenc:EncryptedData></ns2:antwortInhaltsdaten>",
+      "standard": {
+        "version": "1.0.1"
+      }
+    },
+    "comparison_body": {
+      "registerId": "3e8872de-e611-4245-836e-f256ed125533",
+      "body": {
+        "_kind": "encrypted_xml_envelope",
+        "root_tag": "antwortInhaltsdaten",
+        "version": "1.0.1",
+        "message_type": "",
+        "has_encrypted_data": true,
+        "encryption_algorithm": "http://www.w3.org/2009/xmlenc11#aes256-gcm",
+        "encrypted_key_count": 0,
+        "cipher_value_present": true,
+        "cipher_value_length": 4412
+      },
+      "standard": {
+        "version": "1.0.1"
+      }
+    }
+  },
+  "comparison": {
+    "skip_keys": [],
+    "strict": false
+  }
+}

@@ -1,0 +1,43 @@
+{
+  "register": {
+    "name": "Test-DGUV",
+    "tag": "dguv"
+  },
+  "first_run": {
+    "completed": true,
+    "captured_at": "2026-05-26T16:44:41",
+    "phase": "personal_data_request"
+  },
+  "api_response": {
+    "status": 200,
+    "url": "https://qs-datenschutzcockpit.dsc.govkg.de/api/register-inhalts-data",
+    "body": {
+      "registerId": "097bfdcf-df71-466b-b4d3-99c61fc5d3be",
+      "body": "\n<ns3:RegisterResponse xmlns:ns2=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:ns3=\"http://xoev.de/datenschutzcockpit/xdatenschutzcockpit/1.1.0\" xmlns:ns4=\"http://www.w3.org/2001/04/xmlenc#\" correlationID=\"ddb4e365-92f8-453f-abd0-b3b398d1e2ae\" nachrichtentyp=\"antwortInhaltsdaten\" version=\"1.1.0\">\n    <ns3:verschluesselteFachnachricht Type=\"http://www.w3.org/2001/04/xmlenc#Content\">\n        <ns4:EncryptionMethod Algorithm=\"http://www.w3.org/2009/xmlenc11#aes256-gcm\"/>\n        <ns4:CipherData>\n            <ns4:CipherValue>cF1PlDfy35XvrGtwUbC//MIZI+QJ/DMu24twDLDYN+F+vaJtXltuk2HfwKWNNft6tEp5AZWz6S5YGkkAHIk3HP0FhNT+0sVKkufQ1/hxZULuvXuLpHWsGyVTZqvr/RqufYn9OM2NRdfKgZJ8YOALeS2Gwny9iPyMPGVTJ/mlK8nqEAJnBbYTNJPMlaK04uG0AKHDoq93tFXpQiPpv+bZ0sjI6J/vw/MLj2pTsObjcfadg2H4pVjftHbQi/GDaqXVJdjXTk9uDIwnktULwVvOqSTZSg1zbMeX5waoE4K8WSsXmFzXmrolzS70mt65DtivS0sLH0YCGCILf9UVBbAMhOJ3Bnz6L9I4JYeJJsbAUsYZADZGnZT7Zj1FtuOpv2n3cmObLAdMG3zSe4fjDeu6+7C645mmZpyMuBZ6GUTve2PIrpcLvYV31ESrSeCSucuhKKnmpCXgBzA7XHfCGt1FIPc3tnmEfjbBx38fvM9U7S1y3ASXxIeL4MARRidI0XMaaVEompDornEc2Lfzbbs6tSt+s3Y49FsoH64sCzS2ZPvujFxjMxh066mf/mJO7r6gjdvEyt5Om+1k50PFZp0CxbZkJkQ8juHCD0mvqVRVxirFztAaJD9sVVhdDVWRi6DseJxkWTDWzt7FnXJSzKoZBegbEngs+OQMgFQs8diD8RROwYoB3RXlrwDB/tEm7fEmldH2OzDkrhVoXmsT4RBug05VOnb6qfHlgPzNzbATgRRc9dGB6jngMIBItNlXF3uP4nfbMn0suKOs3BjvCY5B6V4vB2EhVqvuM7G7JETAPgs+merTBqyPSMr6LDaK6LfaX6doelt4kW0c/vaSM1xpqO0DqeB/ChrzSR3TfrXDsc8BIkzTGIIDq2ZV4GYsz+6RIytNWGzi0CvzuMdS5mQQxQpZx7V33bTGgzVDShv3YkUtKdWUZlZG1G3z96aqC2ziLOsdsAQUfFGaTZYmDXRd+nvhDtJ/YJlWxNy458FfE57XIn+882hGevrznh+Vl5E7rcNXxXR2inXFV4iNpVmaX3g4liPIPXfwZJ3Wyk8dzZNzqtKJfoqrnPb0b1X9zi0hDXqRtptjT2HxnWcAa3/jaE4IimsmlB1Wam4VZ1MTN6Y2T7hUD6CEil99Ld8YP2eyaREc3Db4zeRCgziTlaYzPsTZYTC13LPy8ThQVNJwda7gbo0bt4FmQAppX6eChrzg9Zb99fJ12carJG7pimX+ozBd/S3A19sKsc7TrbF9MWqZtOL4chsgvbTopFuaYc4F7mWYRanSgaeawWhrUhO2QTz18LiRR641v3gfhQ/RUrb6jx7z9uaJPKiW9mU9WWvJ09WdJWO3QgdryRLQ+CKeZIhILj+oMzUVJ24SyISggNWNzqSghJPxSpe6HU6P7tAlZ+tbepisYkIsOhm0ObhXiUtjjjDAWUSv8clEU2eQvdY8dUYgoPBqdw6uhP8XWqEaFhlm17uK6qpWKFlH</ns4:CipherValue>\n        </ns4:CipherData>\n    </ns3:verschluesselteFachnachricht>\n</ns3:RegisterResponse>\n",
+      "standard": {
+        "version": "1.1.0"
+      }
+    },
+    "comparison_body": {
+      "registerId": "097bfdcf-df71-466b-b4d3-99c61fc5d3be",
+      "body": {
+        "_kind": "encrypted_xml_envelope",
+        "root_tag": "RegisterResponse",
+        "version": "1.1.0",
+        "message_type": "antwortInhaltsdaten",
+        "has_encrypted_data": false,
+        "encryption_algorithm": "http://www.w3.org/2009/xmlenc11#aes256-gcm",
+        "encrypted_key_count": 0,
+        "cipher_value_present": true,
+        "cipher_value_length": 1488
+      },
+      "standard": {
+        "version": "1.1.0"
+      }
+    }
+  },
+  "comparison": {
+    "skip_keys": [],
+    "strict": false
+  }
+}
