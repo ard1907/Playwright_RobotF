@@ -6,6 +6,7 @@ robotframework-sshlibrary
 robotframework-databaselibrary
 robotframework-requests
 robotframework-jsonlibrary
+robotframework-pabot
 
 # Hilfsbibliotheken
 requests>=2.31.0

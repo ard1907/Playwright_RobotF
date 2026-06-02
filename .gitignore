@@ -78,10 +78,12 @@ report.html
 *.robot.xml
 results/
 results2/
+results_pabot/
 reports/
 browser/
 screenshots/
 tests/examples/
+.pabotsuitenames
 
 ########################################
 # Coverage Reports
