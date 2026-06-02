@@ -70,7 +70,7 @@ jobs:
             --report report.html \
             --log log.html \
             --xunit xunit.xml \
-            tests/
+            tests/ui/
 
       - name: Upload Results
         uses: actions/upload-artifact@v4

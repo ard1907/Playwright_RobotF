@@ -1,5 +1,5 @@
 # ==============================================================================
-# ts_04_smoke_test_register_selection_bva.robot  –  Smoke Test Suite for the
+# ts_04_register_selection_bva.robot  –  Test Suite for the
 #                                                   Test BVA Register Workflow
 #
 # Target  : https://qs-datenschutzcockpit.dsc.govkg.de/spa/cockpit/datenabfrage
@@ -127,7 +127,7 @@ TC001 - Select Test BVA Register Card Enables Anfrage Starten
     ...
     ...                Demonstrates that Select Register Card By Name works
     ...                generically for any register name (not just BVA).
-    [Tags]             smoke    bva    register-auswahl    selection
+    [Tags]             bva    register-auswahl    selection
     Select Register Card By Name    ${BVA_REGISTER_NAME}
     Wait For Elements State    ${BVA_RA_REQUEST_START_BTN}    visible    timeout=${TIMEOUT}
     ${btn_states}=    Get Element States    ${BVA_RA_REQUEST_START_BTN}
@@ -141,7 +141,7 @@ TC002 - Deselect Test BVA Register Card Returns Empty Selection State
     ...                  • "Anfrage starten" button disappears after deselection
     ...                  • Empty-state hint heading "Bitte wählen Sie mindestens
     ...                    ein Register" becomes visible again
-    [Tags]             smoke    bva    register-auswahl    selection    toggle
+    [Tags]             bva    register-auswahl    selection    toggle
     Select Register Card By Name    ${BVA_REGISTER_NAME}
     Wait For Elements State    ${BVA_RA_REQUEST_START_BTN}    visible    timeout=${TIMEOUT}
     Select Register Card By Name    ${BVA_REGISTER_NAME}
@@ -171,7 +171,7 @@ TC004 - Verify Results Page Shows Correct Statistics For BVA
     ...                  • "Ergebnisse wurden gefunden"
     ...                  • "Register haben keine Einträge"
     ...                  • "Register technisch nicht erreichbar"
-    [Tags]             smoke    bva    datenabfrage    statistics
+    [Tags]             bva    datenabfrage    statistics
     [Setup]    Navigate To BVA Results Setup
     Verify BVA Statistics Counters Are Visible
 
@@ -181,7 +181,7 @@ TC005 - Verify Test BVA Result Entry Is Visible And Collapsed
     ...                initial collapsed state on the datenabfrage results page:
     ...                  • "Test BVA" result entry container is visible
     ...                  • Expand toggle button is visible and enabled
-    [Tags]             smoke    bva    datenabfrage    result-entry
+    [Tags]             bva    datenabfrage    result-entry
     [Setup]    Navigate To BVA Results Setup
     Verify BVA Result Entry Is Visible And Collapsed
 
@@ -193,7 +193,7 @@ TC006 - Expand Test BVA Result Entry Shows Data Tables
     ...                  • "Ergebnis ist geöffnet" container is visible
     ...                  • At least one "Datenübermittlung am …" table heading visible
     ...                  • At least one "Daten einsehen" button is visible and enabled
-    [Tags]             smoke    bva    datenabfrage    result-entry    expand
+    [Tags]             bva    datenabfrage    result-entry    expand
     [Setup]    Navigate To Expanded BVA Result Setup
     Verify BVA Result Entry Is Expanded With Tables
 
@@ -208,7 +208,7 @@ TC007 - Open First Protokolldaten Dialog Shows Initial State
     ...                  • "Wichtiger Hinweis" warning text is visible
     ...                  • "Persönliche Daten anfragen" button is visible + enabled
     ...                  • "Inhalt der Datenübermittlung" section heading is visible
-    [Tags]             smoke    bva    datenabfrage    dialog    protokolldaten
+    [Tags]             bva    datenabfrage    dialog    protokolldaten
     [Setup]    Navigate To Open BVA Dialog Setup
     Verify Protokolldaten Dialog Initial State
 
@@ -221,7 +221,7 @@ TC008 - Request Personal Data Shows Inhaltsdaten In Dialog
     ...                  • "Als PDF speichern" button is visible and enabled
     ...                  • "Inhalt der Datenübermittlung" section heading remains visible
     ...                  • "Zusätzliche Informationen der Behörde" section is visible
-    [Tags]             smoke    bva    datenabfrage    dialog    personal-data
+    [Tags]             bva    datenabfrage    dialog    personal-data
     [Setup]    Navigate To BVA Dialog With Data Setup
     Verify Protokolldaten Dialog After Data Fetch
 
@@ -234,7 +234,7 @@ TC009 - Verify PDF Download Filename Matches Pattern And Timestamp
     ...                    start and 5 minutes after (${SUITE_START_EPOCH})
     ...                  • File is saved to the OS user Downloads directory
     ...                    (Windows: %USERPROFILE%\Downloads, Linux: ~/Downloads)
-    [Tags]             smoke    bva    datenabfrage    dialog    pdf    download
+    [Tags]             bva    datenabfrage    dialog    pdf    download
     [Setup]    Navigate To BVA Dialog With Data Setup
     ${file_obj}=    Download BVA PDF And Get File Info
     ${suggested_name}=    Set Variable    ${file_obj}[suggestedFilename]
@@ -252,7 +252,7 @@ TC010 - Verify PDF Content Contains Current Date As Datenübermittlung Heading
     ...                is present, where DD.MM.YYYY is today's test run date.
     ...
     ...                Requires: pip install pypdf  (declared in requirements.txt)
-    [Tags]             smoke    bva    datenabfrage    dialog    pdf    content
+    [Tags]             bva    datenabfrage    dialog    pdf    content
     [Setup]    Navigate To BVA Dialog With Data Setup
     ${file_obj}=    Download BVA PDF And Get File Info
     Verify PDF Content Contains Datenübermittlung Date    ${file_obj}[saveAs]
@@ -264,7 +264,7 @@ TC011 - Close Protokolldaten Dialog Returns To Results View
     ...                  • The dialog container is detached (fully removed)
     ...                  • The datenabfrage results page is visible again
     ...                  • Page title reverts to "Datenschutzcockpit - Ergebnisse"
-    [Tags]             smoke    bva    datenabfrage    dialog    close
+    [Tags]             bva    datenabfrage    dialog    close
     [Setup]    Navigate To Open BVA Dialog Setup
     Close Protokolldaten Dialog
     Wait For Elements State    ${DA_H1_HEADING}    visible    timeout=${TIMEOUT}
@@ -277,7 +277,7 @@ TC012 - Navigate Back To Register Auswahl Restores Correct URL
     ...                  • URL is exactly ${REGISTER_AUSWAHL_URL}
     ...                  • Page title contains "Registerauswahl"
     ...                  • H1 heading "Wonach wollen Sie suchen?" is visible
-    [Tags]             smoke    bva    datenabfrage    navigation    back
+    [Tags]             bva    datenabfrage    navigation    back
     [Setup]    Navigate To BVA Results Setup
     Navigate Back To Register Auswahl
     ${url}=    Get Url

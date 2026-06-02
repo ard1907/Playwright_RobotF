@@ -208,7 +208,7 @@ Run Register Api Card Verification
     ${fixture}=    Load Api Response Fixture    ${fixture_path}
     ${is_complete}=    Is Api Fixture Completed    ${fixture}
     Skip If    not ${is_complete}
-    ...    API fixture not yet populated by first-run-api: ${fixture_path}\nRun: robot --include first-run-api --variable ENABLE_API_FIRST_RUN_TESTS:True tests/ui/ts_05b_smoke_test_register_cards_generic.robot
+    ...    API fixture not yet populated by first-run-api: ${fixture_path}\nRun: robot --include first-run-api --variable ENABLE_API_FIRST_RUN_TESTS:True tests/ui/ts_05b_register_cards_generic.robot
     ${register_name}=    Get Api Fixture Register Name    ${fixture}
     # ── Run the full workflow and capture the live API response ────────────────
     ${api_response}=    Run Full Register Workflow And Return Api Response    ${register_name}

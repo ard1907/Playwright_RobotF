@@ -21,13 +21,13 @@ There are two styles of tests:
 - specific tests for one fixed case, for example BVA
 - generic tests for many register cards through YAML files
 
-The generic suite is `tests/ui/ts_05_smoke_test_register_cards_generic.robot`.
+The generic suite is `tests/ui/ts_05_register_cards_generic.robot`.
 
 ## Which files belong together?
 
 The core logic is spread across these files:
 
-- `tests/ui/ts_05_smoke_test_register_cards_generic.robot`
+- `tests/ui/ts_05_register_cards_generic.robot`
 - `pages/dsc_register_result_page.robot`
 - `pages/dsc_register_selection_page.robot`
 - `resources/dsc_shared_keywords.robot`
@@ -63,7 +63,7 @@ It compares live dialog data with expected data from the YAML file.
 Example:
 
 ```bash
-robot tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot tests/ui/ts_05_register_cards_generic.robot
 ```
 
 For each register card, the flow is roughly this:
@@ -184,13 +184,13 @@ That mixed verification logic with capture and write logic.
 
 Now the rule is:
 
-- normal `robot tests/ui/ts_05_smoke_test_register_cards_generic.robot` does not run real first-run work
+- normal `robot tests/ui/ts_05_register_cards_generic.robot` does not run real first-run work
 - first-run tests only execute with explicit permission
 
 The required command is:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_register_cards_generic.robot
 ```
 
 Both parts matter:
@@ -224,7 +224,7 @@ Now the rule is:
 If you want to rewrite an already completed fixture on purpose, use:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True --variable FIXTURE_FORCE_REGENERATE:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True --variable FIXTURE_FORCE_REGENERATE:True tests/ui/ts_05_register_cards_generic.robot
 ```
 
 This is useful when real dialog data has changed and the existing YAML should be replaced.
@@ -235,7 +235,7 @@ If a new register card should be tested, follow these steps:
 
 1. Create a new YAML file in `test_data/registers/`.
 2. Fill in the register name and tag.
-3. Add one normal verification test in `ts_05_smoke_test_register_cards_generic.robot`.
+3. Add one normal verification test in `ts_05_register_cards_generic.robot`.
 4. Add one first-run test in the same suite.
 5. Run first-run explicitly.
 6. Review the generated YAML.
@@ -267,25 +267,25 @@ The recommended workflow is:
 Normal run:
 
 ```bash
-robot tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot tests/ui/ts_05_register_cards_generic.robot
 ```
 
 Only one normal test case:
 
 ```bash
-robot --test "Verify Register Card Workflow: Test BVA" tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot --test "Verify Register Card Workflow: Test BVA" tests/ui/ts_05_register_cards_generic.robot
 ```
 
 Explicit first-run:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_register_cards_generic.robot
 ```
 
 Explicit first-run with overwrite of completed fixtures:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True --variable FIXTURE_FORCE_REGENERATE:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True --variable FIXTURE_FORCE_REGENERATE:True tests/ui/ts_05_register_cards_generic.robot
 ```
 
 ## Short summary

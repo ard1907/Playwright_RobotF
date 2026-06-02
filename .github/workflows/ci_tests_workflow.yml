@@ -98,7 +98,7 @@ jobs:
             --report report.html \
             --log log.html \
             --xunit xunit.xml \
-            tests/
+            tests/ui/
 
       # ── 9. Upload test results (always, even on failure) ──────────────────
       # Use @v4 — v3 is deprecated and shows a warning in every run.

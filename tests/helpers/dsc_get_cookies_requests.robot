@@ -43,7 +43,7 @@ Open Application Browser For Cookie Testing
 TC001 - Get Cookies From Authentication Info Page
     [Documentation]    Retrieves and logs all cookies set on the authentication info page. 
     ...                This is a basic check to confirm that cookies are being set as expected when the page loads.
-    [Tags]             smoke    auth    cookies
+    [Tags]             auth    cookies
     Login Into Datenschutzcockpit
     ${cookies}=        Get Cookies
     Log Many           ${cookies}

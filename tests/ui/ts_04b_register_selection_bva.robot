@@ -1,5 +1,5 @@
 # ==============================================================================
-# ts_04b_smoke_test_register_selection_bva.robot  –  Smoke Test Suite for the
+# ts_04b_register_selection_bva.robot  –  Test Suite for the
 #                                                     BVA Register Workflow
 #                                                     (API-Response Verification)
 #
@@ -7,7 +7,7 @@
 # Pattern : Page Object Model (POM) + shared resources
 #
 # ── Relation to ts_04 ──────────────────────────────────────────────────────────
-# This suite mirrors ts_04_smoke_test_register_selection_bva.robot (TC001–TC012)
+# This suite mirrors ts_04_register_selection_bva.robot (TC001–TC012)
 # and adds:
 #
 #   TC013  Verify Test BVA Personal Data API Response Matches Fixture
@@ -24,19 +24,19 @@
 # ── Operating Modes ────────────────────────────────────────────────────────────
 #
 #   Normal run (TC001–TC013):
-#     robot tests/ui/ts_04b_smoke_test_register_selection_bva.robot
+#     robot tests/ui/ts_04b_register_selection_bva.robot
 #     TC013 is skipped when bva.json is not yet populated.
 #
 #   First-run-api (capture JSON fixture):
 #     robot --include first-run-api \
 #           --variable ENABLE_API_FIRST_RUN_TESTS:True \
-#           tests/ui/ts_04b_smoke_test_register_selection_bva.robot
+#           tests/ui/ts_04b_register_selection_bva.robot
 #
 #   First-run-api with forced overwrite:
 #     robot --include first-run-api \
 #           --variable ENABLE_API_FIRST_RUN_TESTS:True \
 #           --variable API_FIXTURE_FORCE_REGENERATE:True \
-#           tests/ui/ts_04b_smoke_test_register_selection_bva.robot
+#           tests/ui/ts_04b_register_selection_bva.robot
 #
 # NOTE: This suite requires a successful eID login via AusweisApp.
 #       On standard CI it is skipped automatically.
@@ -167,7 +167,7 @@ Require Explicit Api First Run Mode
     [Documentation]    Guards first-run-api capture tests so they only execute when
     ...                the suite is explicitly started with first-run-api intent.
     Skip If    not ${ENABLE_API_FIRST_RUN_TESTS}
-    ...    API first-run tests are opt-in. Run with: robot --include first-run-api --variable ENABLE_API_FIRST_RUN_TESTS:True tests/ui/ts_04b_smoke_test_register_selection_bva.robot
+    ...    API first-run tests are opt-in. Run with: robot --include first-run-api --variable ENABLE_API_FIRST_RUN_TESTS:True tests/ui/ts_04b_register_selection_bva.robot
 
 
 Run BVA Api Card First Run Capture
@@ -203,7 +203,7 @@ TC001 - Select Test BVA Register Card Enables Anfrage Starten
     ...                verifies the page transitions to the submit-ready state:
     ...                  • "Anfrage starten" button becomes visible and enabled
     ...                  • Empty-state hint heading is no longer shown
-    [Tags]    smoke    bva    register-auswahl    selection
+    [Tags]    bva    register-auswahl    selection
     Select Register Card By Name    ${BVA_REGISTER_NAME}
     Wait For Elements State    ${BVA_RA_REQUEST_START_BTN}    visible    timeout=${TIMEOUT}
     ${btn_states}=    Get Element States    ${BVA_RA_REQUEST_START_BTN}
@@ -217,7 +217,7 @@ TC002 - Deselect Test BVA Register Card Returns Empty Selection State
     ...                  • "Anfrage starten" button disappears after deselection
     ...                  • Empty-state hint heading "Bitte wählen Sie mindestens
     ...                    ein Register" becomes visible again
-    [Tags]    smoke    bva    register-auswahl    selection    toggle
+    [Tags]    bva    register-auswahl    selection    toggle
     Select Register Card By Name    ${BVA_REGISTER_NAME}
     Wait For Elements State    ${BVA_RA_REQUEST_START_BTN}    visible    timeout=${TIMEOUT}
     Select Register Card By Name    ${BVA_REGISTER_NAME}
@@ -228,7 +228,7 @@ TC002 - Deselect Test BVA Register Card Returns Empty Selection State
 TC003 - Start BVA Request Navigates To Results Page
     [Documentation]    Selects "Test BVA", clicks "Anfrage starten", and verifies
     ...                the SPA navigates to the datenabfrage results route.
-    [Tags]    smoke    bva    datenabfrage    navigation
+    [Tags]    bva    datenabfrage    navigation
     [Setup]    Navigate To BVA Results Setup
     Validate Datenabfrage Results Page
 
@@ -237,7 +237,7 @@ TC004 - Verify Results Page Shows Correct Statistics For BVA
     [Documentation]    Verifies that all four result statistics counter labels are
     ...                visible on the datenabfrage page after a single-register
     ...                BVA query.
-    [Tags]    smoke    bva    datenabfrage    statistics
+    [Tags]    bva    datenabfrage    statistics
     [Setup]    Navigate To BVA Results Setup
     Verify BVA Statistics Counters Are Visible
 
@@ -245,7 +245,7 @@ TC004 - Verify Results Page Shows Correct Statistics For BVA
 TC005 - Verify Test BVA Result Entry Is Visible And Collapsed
     [Documentation]    Verifies that the Test BVA result box appears in its initial
     ...                collapsed state on the datenabfrage results page.
-    [Tags]    smoke    bva    datenabfrage    result-entry
+    [Tags]    bva    datenabfrage    result-entry
     [Setup]    Navigate To BVA Results Setup
     Verify BVA Result Entry Is Visible And Collapsed
 
@@ -254,7 +254,7 @@ TC006 - Expand Test BVA Result Entry Shows Data Tables
     [Documentation]    Clicks the expand toggle on the Test BVA result entry and
     ...                verifies the entry transitions to "Ergebnis ist geöffnet"
     ...                with Datenübermittlung tables and "Daten einsehen" controls.
-    [Tags]    smoke    bva    datenabfrage    result-entry    expand
+    [Tags]    bva    datenabfrage    result-entry    expand
     [Setup]    Navigate To Expanded BVA Result Setup
     Verify BVA Result Entry Is Expanded With Tables
 
@@ -263,7 +263,7 @@ TC007 - Open First Protokolldaten Dialog Shows Initial State
     [Documentation]    Opens the Protokolldaten detail dialog for the first
     ...                Datenübermittlung entry and verifies its initial state
     ...                (before personal data has been fetched).
-    [Tags]    smoke    bva    datenabfrage    dialog    protokolldaten
+    [Tags]    bva    datenabfrage    dialog    protokolldaten
     [Setup]    Navigate To Open BVA Dialog Setup
     Verify Protokolldaten Dialog Initial State
 
@@ -272,7 +272,7 @@ TC008 - Request Personal Data Shows Inhaltsdaten In Dialog
     [Documentation]    Clicks "Persönliche Daten anfragen" inside the Protokolldaten
     ...                dialog and verifies the dialog transitions to the data-loaded
     ...                state (same assertion as ts_04 TC008 – dialog-content based).
-    [Tags]    smoke    bva    datenabfrage    dialog    personal-data
+    [Tags]    bva    datenabfrage    dialog    personal-data
     [Setup]    Navigate To BVA Dialog With Data Setup
     Verify Protokolldaten Dialog After Data Fetch
 
@@ -282,7 +282,7 @@ TC009 - Verify PDF Download Filename Matches Pattern And Timestamp
     ...                  • Filename matches pattern: Datenschutzcockpit-DD_MM_YYYY-HH_MM_uhr.pdf
     ...                  • Date part equals today's date
     ...                  • Time part falls within 30 min before suite start
-    [Tags]    smoke    bva    datenabfrage    dialog    pdf    download
+    [Tags]    bva    datenabfrage    dialog    pdf    download
     [Setup]    Navigate To BVA Dialog With Data Setup
     ${file_obj}=    Download BVA PDF And Get File Info
     ${suggested_name}=    Set Variable    ${file_obj}[suggestedFilename]
@@ -300,7 +300,7 @@ TC010 - Verify PDF Content Contains Current Date As Datenübermittlung Heading
     ...                is present, where DD.MM.YYYY is today's test run date.
     ...
     ...                Requires: pip install pypdf  (declared in requirements.txt)
-    [Tags]    smoke    bva    datenabfrage    dialog    pdf    content
+    [Tags]    bva    datenabfrage    dialog    pdf    content
     [Setup]    Navigate To BVA Dialog With Data Setup
     ${file_obj}=    Download BVA PDF And Get File Info
     Verify PDF Content Contains Datenübermittlung Date    ${file_obj}[saveAs]
@@ -310,7 +310,7 @@ TC011 - Close Protokolldaten Dialog Returns To Results View
     [Documentation]    Closes the Protokolldaten detail dialog via the scoped
     ...                "closeModalBtn" and verifies the datenabfrage results page
     ...                is visible again.
-    [Tags]    smoke    bva    datenabfrage    dialog    close
+    [Tags]    bva    datenabfrage    dialog    close
     [Setup]    Navigate To Open BVA Dialog Setup
     Close Protokolldaten Dialog
     Wait For Elements State    ${DA_H1_HEADING}    visible    timeout=${TIMEOUT}
@@ -320,7 +320,7 @@ TC011 - Close Protokolldaten Dialog Returns To Results View
 TC012 - Navigate Back To Register Auswahl Restores Correct URL
     [Documentation]    Clicks "Zurück zur Registerauswahl" on the datenabfrage page
     ...                and verifies the SPA correctly routes back to register-auswahl.
-    [Tags]    smoke    bva    datenabfrage    navigation    back
+    [Tags]    bva    datenabfrage    navigation    back
     [Setup]    Navigate To BVA Results Setup
     Navigate Back To Register Auswahl
     ${url}=    Get Url
@@ -349,8 +349,8 @@ TC013 - Verify Test BVA Personal Data API Response Matches Fixture
     ...                To generate bva.json run:
     ...                  robot --include first-run-api \
     ...                        --variable ENABLE_API_FIRST_RUN_TESTS:True \
-    ...                        tests/ui/ts_04b_smoke_test_register_selection_bva.robot
-    [Tags]    smoke    bva    api-response    api-verification
+    ...                        tests/ui/ts_04b_register_selection_bva.robot
+    [Tags]    bva    api-response    api-verification
     Run Register Api Card Verification    ${BVA_API_FIXTURE_PATH}
 
 
@@ -359,13 +359,13 @@ TC013 - Verify Test BVA Personal Data API Response Matches Fixture
 # Run with:
 #   robot --include first-run-api \
 #         --variable ENABLE_API_FIRST_RUN_TESTS:True \
-#         tests/ui/ts_04b_smoke_test_register_selection_bva.robot
+#         tests/ui/ts_04b_register_selection_bva.robot
 #
 # Forced overwrite of an existing fixture:
 #   robot --include first-run-api \
 #         --variable ENABLE_API_FIRST_RUN_TESTS:True \
 #         --variable API_FIXTURE_FORCE_REGENERATE:True \
-#         tests/ui/ts_04b_smoke_test_register_selection_bva.robot
+#         tests/ui/ts_04b_register_selection_bva.robot
 #
 # This test is guarded and skips unless ENABLE_API_FIRST_RUN_TESTS=True.
 # ==============================================================================
@@ -378,7 +378,7 @@ API First Run: Capture BVA Personal Data API Response Fixture
     ...                Run once before TC013:
     ...                  robot --include first-run-api \
     ...                        --variable ENABLE_API_FIRST_RUN_TESTS:True \
-    ...                        tests/ui/ts_04b_smoke_test_register_selection_bva.robot
+    ...                        tests/ui/ts_04b_register_selection_bva.robot
     ...
     ...                To overwrite an existing bva.json add:
     ...                        --variable API_FIXTURE_FORCE_REGENERATE:True

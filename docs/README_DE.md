@@ -84,29 +84,29 @@ robot tests/ui
 Eine einzelne Suite starten, wenn nur ein Bereich geprüft werden soll:
 
 ```bash
-robot tests/ui/ts_01_smoke_test_landing_page.robot
-robot tests/ui/ts_02_smoke_test_auth_info_page.robot
-robot tests/ui/ts_03_smoke_test_register_selection.robot
-robot tests/ui/ts_04_smoke_test_register_selection_bva.robot
-robot tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot tests/ui/ts_01_landing_page.robot
+robot tests/ui/ts_02_auth_info_page.robot
+robot tests/ui/ts_03_register_selection.robot
+robot tests/ui/ts_04_register_selection_bva.robot
+robot tests/ui/ts_05_register_cards_generic.robot
 ```
 
 Nur die generische Registerkarten-Verifikation starten:
 
 ```bash
-robot tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot tests/ui/ts_05_register_cards_generic.robot
 ```
 
 Den generischen First-Run explizit starten:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_register_cards_generic.robot
 ```
 
 Bereits abgeschlossene Fixtures bewusst neu erzeugen:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True --variable FIXTURE_FORCE_REGENERATE:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True --variable FIXTURE_FORCE_REGENERATE:True tests/ui/ts_05_register_cards_generic.robot
 ```
 
 Die kleineren Suiten in `tests/helpers/` sind nützlich für fokussierte Prüfungen und Debugging.
@@ -115,6 +115,12 @@ Die kleineren Suiten in `tests/helpers/` sind nützlich für fokussierte Prüfun
 
 Die Suiten verwenden Tags wie `smoke`, `landing`, `auth`, `faq`, `accessibility`, `accordion`, `external-link`, `e2e` und `cookies`. Mit der Tag-Filterung von Robot Framework lässt sich ein gezielter Lauf starten.
 Für die Registerauswahl kommen zusätzlich Tags wie `register-auswahl`, `interaction`, `selection`, `toggle`, `list-view`, `all-registers`, `dialog`, `security`, `session`, `timer` und `reload` hinzu.
+
+Der kuratierte Smoke-Lauf umfasst aktuell 6 repräsentative UI-Testfälle: Landing Page, Authentication Info Page, AusweisApp-Startfluss, Registerauswahl, BVA-Startfluss und die generische BVA-Registerkartenprüfung.
+
+```bash
+robot --include smoke --outputdir results tests/ui
+```
 
 ## Docker- und CI-Optionen
 

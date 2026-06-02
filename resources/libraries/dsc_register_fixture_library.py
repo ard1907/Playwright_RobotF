@@ -67,7 +67,7 @@ class dsc_register_fixture_library:
                 f"Register fixture not found: {fixture_path}\n"
                 "Run the first-run test to generate it:\n"
                 "  robot --include first-run "
-                "tests/ui/ts_05_smoke_test_register_cards_generic.robot"
+                "tests/ui/ts_05_register_cards_generic.robot"
             )
         with open(path, encoding="utf-8") as fh:
             return yaml.safe_load(fh)

@@ -1,6 +1,6 @@
 # ==============================================================================
-# ts_05b_smoke_test_register_cards_generic.robot  –  Generic Register Card
-#                                                     Smoke Test Suite
+# ts_05b_register_cards_generic.robot  –  Generic Register Card
+#                                          Test Suite
 #                                                     (API-Response Verification)
 #
 # Tests any number of register cards by comparing the live
@@ -10,7 +10,7 @@
 #
 # ── Relation to ts_05 ──────────────────────────────────────────────────────────
 # This suite is the API-response counterpart of
-# ts_05_smoke_test_register_cards_generic.robot:
+# ts_05_register_cards_generic.robot:
 #
 #   ts_05  → dialog-content verification against YAML fixtures
 #             (test_data/registers/<tag>.yaml)
@@ -22,7 +22,7 @@
 # ── Two Operating Modes ────────────────────────────────────────────────────────
 #
 #   Normal mode (default run):
-#     robot tests/ui/ts_05b_smoke_test_register_cards_generic.robot
+#     robot tests/ui/ts_05b_register_cards_generic.robot
 #     Loads each JSON fixture and compares the live API response against it.
 #     Requires: fixture populated by a prior first-run-api execution.
 #     Skip note: test is skipped (not failed) when the fixture is absent or
@@ -31,7 +31,7 @@
 #   First-run-api mode (data capture):
 #     robot --include first-run-api \
 #           --variable ENABLE_API_FIRST_RUN_TESTS:True \
-#           tests/ui/ts_05b_smoke_test_register_cards_generic.robot
+#           tests/ui/ts_05b_register_cards_generic.robot
 #     Drives the full workflow, captures the API response body, and writes
 #     (or updates) the JSON fixture.
 #     By default, skips writing when a fixture already exists and is completed.
@@ -40,7 +40,7 @@
 #     robot --include first-run-api \
 #           --variable ENABLE_API_FIRST_RUN_TESTS:True \
 #           --variable API_FIXTURE_FORCE_REGENERATE:True \
-#           tests/ui/ts_05b_smoke_test_register_cards_generic.robot
+#           tests/ui/ts_05b_register_cards_generic.robot
 #
 # ── Fixture File Convention ────────────────────────────────────────────────────
 #   test_data/registers/<tag>.json   (e.g. bva.json, dguv.json)
@@ -128,7 +128,7 @@ Require Explicit Api First Run Mode
     [Documentation]    Guards first-run-api capture tests so they only execute when
     ...                the suite is started with explicit first-run-api intent.
     Skip If    not ${ENABLE_API_FIRST_RUN_TESTS}
-    ...    API first-run tests are opt-in. Run with: robot --include first-run-api --variable ENABLE_API_FIRST_RUN_TESTS:True tests/ui/ts_05b_smoke_test_register_cards_generic.robot
+    ...    API first-run tests are opt-in. Run with: robot --include first-run-api --variable ENABLE_API_FIRST_RUN_TESTS:True tests/ui/ts_05b_register_cards_generic.robot
 
 
 # ── Composite First-Run-Api Keyword ────────────────────────────────────────────
@@ -178,7 +178,7 @@ Verify Register Api Workflow: Test BVA
     ...
     ...                Skip: when bva.json is absent or not yet populated by a
     ...                first-run-api execution.
-    [Tags]    smoke    bva    api-response    generic
+    [Tags]    bva    api-response    generic
     Run Register Api Card Verification    ${API_FIXTURES_DIR}${/}bva.json
 
 Verify Register Api Workflow: Test-DGUV
@@ -188,7 +188,7 @@ Verify Register Api Workflow: Test-DGUV
     ...
     ...                Skip: when dguv.json is absent or not yet populated by a
     ...                first-run-api execution.
-    [Tags]    smoke    dguv    api-response    generic
+    [Tags]    dguv    api-response    generic
     Run Register Api Card Verification    ${API_FIXTURES_DIR}${/}dguv.json
 
 # ── Template for additional register cards ─────────────────────────────────────
@@ -210,7 +210,7 @@ Verify Register Api Workflow: Test-DGUV
 # Run with:
 #   robot --include first-run-api \
 #         --variable ENABLE_API_FIRST_RUN_TESTS:True \
-#         tests/ui/ts_05b_smoke_test_register_cards_generic.robot
+#         tests/ui/ts_05b_register_cards_generic.robot
 # Forced overwrite: add --variable API_FIXTURE_FORCE_REGENERATE:True
 #
 # These tests are guarded and skip unless ENABLE_API_FIRST_RUN_TESTS=True.
@@ -224,13 +224,13 @@ API First Run: Capture And Generate Fixture For Test BVA
     ...                Run once before the normal verification tests:
     ...                  robot --include first-run-api \
     ...                        --variable ENABLE_API_FIRST_RUN_TESTS:True \
-    ...                        tests/ui/ts_05b_smoke_test_register_cards_generic.robot
+    ...                        tests/ui/ts_05b_register_cards_generic.robot
     ...
     ...                To overwrite an existing bva.json:
     ...                  robot --include first-run-api \
     ...                        --variable ENABLE_API_FIRST_RUN_TESTS:True \
     ...                        --variable API_FIXTURE_FORCE_REGENERATE:True \
-    ...                        tests/ui/ts_05b_smoke_test_register_cards_generic.robot
+    ...                        tests/ui/ts_05b_register_cards_generic.robot
     ...
     ...                After the run: review test_data/registers/bva.json and commit.
     [Setup]    Require Explicit Api First Run Mode
@@ -246,13 +246,13 @@ API First Run: Capture And Generate Fixture For Test-DGUV
     ...                Run once before the normal verification tests:
     ...                  robot --include first-run-api \
     ...                        --variable ENABLE_API_FIRST_RUN_TESTS:True \
-    ...                        tests/ui/ts_05b_smoke_test_register_cards_generic.robot
+    ...                        tests/ui/ts_05b_register_cards_generic.robot
     ...
     ...                To overwrite an existing dguv.json:
     ...                  robot --include first-run-api \
     ...                        --variable ENABLE_API_FIRST_RUN_TESTS:True \
     ...                        --variable API_FIXTURE_FORCE_REGENERATE:True \
-    ...                        tests/ui/ts_05b_smoke_test_register_cards_generic.robot
+    ...                        tests/ui/ts_05b_register_cards_generic.robot
     ...
     ...                After the run: review test_data/registers/dguv.json and commit.
     [Setup]    Require Explicit Api First Run Mode

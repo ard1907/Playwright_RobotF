@@ -1,6 +1,6 @@
 # ==============================================================================
-# ts_05_smoke_test_register_cards_generic.robot  –  Generic Register Card
-#                                                    Smoke Test Suite
+# ts_05_register_cards_generic.robot  –  Generic Register Card
+#                                         Test Suite
 #
 # Tests any number of register cards generically against YAML fixture files.
 # Each register card is one test case (static list); adding a new card means
@@ -9,7 +9,7 @@
 # ── Two operating modes ────────────────────────────────────────────────────────
 #
 #   Normal mode (default run):
-#     robot tests/ui/ts_05_smoke_test_register_cards_generic.robot
+#     robot tests/ui/ts_05_register_cards_generic.robot
 #     Loads each fixture YAML and verifies the live dialog against expected data.
 #     Requires: fixture populated by a prior first-run (first_run.completed: true).
 #     Skip note: if a fixture is not yet populated the test is skipped with a
@@ -17,7 +17,7 @@
 #
 #   First-run mode (data capture):
 #     robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True \
-#           tests/ui/ts_05_smoke_test_register_cards_generic.robot
+#           tests/ui/ts_05_register_cards_generic.robot
 #     Drives the full workflow, captures sender + data fields from the live dialog,
 #     and writes/updates the YAML fixture.
 #     By default, skips writing if a fixture already exists.
@@ -25,7 +25,7 @@
 #   First-run with forced overwrite:
 #     robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True \
 #           --variable FIXTURE_FORCE_REGENERATE:True \
-#           tests/ui/ts_05_smoke_test_register_cards_generic.robot
+#           tests/ui/ts_05_register_cards_generic.robot
 #
 # ── Fixture file convention ────────────────────────────────────────────────────
 #   test_data/registers/<tag>.yaml  (e.g. bva.yaml, ba.yaml, kba.yaml)
@@ -109,7 +109,7 @@ Require Explicit First Run Mode
     [Documentation]    Guards first-run capture tests so they only execute when
     ...                the suite is started with explicit first-run intent.
     Skip If    not ${ENABLE_FIRST_RUN_TESTS}
-    ...    First-run tests are opt-in. Run with: robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
+    ...    First-run tests are opt-in. Run with: robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_register_cards_generic.robot
 
 
 # ── Composite Verification Keyword ─────────────────────────────────────────────
@@ -131,7 +131,7 @@ Run Register Card Verification
     ${fixture}=    Load Register Fixture    ${fixture_path}
     ${is_complete}=    Is First Run Completed    ${fixture}
     Skip If    not ${is_complete}
-    ...    Fixture not yet populated by first-run: ${fixture_path}\nRun: robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
+    ...    Fixture not yet populated by first-run: ${fixture_path}\nRun: robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_register_cards_generic.robot
     # Navigate full workflow to the open, data-loaded dialog
     ${register_name}=    Get Register Name    ${fixture}
     Run Full Register Workflow To Dialog Data    ${register_name}
@@ -209,7 +209,7 @@ Verify Register Card Workflow: Test-DGUV
     ...                  • Fields with assert_value:true also have matching values
     ...
     ...                Skip: when dguv.yaml is not yet populated by a first-run.
-    [Tags]    smoke    dguv    register-card    generic
+    [Tags]    dguv    register-card    generic
     Run Register Card Verification    ${FIXTURES_DIR}${/}dguv.yaml
 
 # ── Template for additional register cards ─────────────────────────────────────
@@ -228,7 +228,7 @@ Verify Register Card Workflow: Test-DGUV
 
 # ==============================================================================
 # FIRST-RUN DATA CAPTURE TESTS
-# Run with: robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
+# Run with: robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_register_cards_generic.robot
 # Forced overwrite: add --variable FIXTURE_FORCE_REGENERATE:True
 #
 # These tests are guarded explicitly and skip unless ENABLE_FIRST_RUN_TESTS=True.
@@ -242,13 +242,13 @@ First Run: Capture And Generate Fixture For Test BVA
     ...                Run once before the normal verification tests:
     ...                  robot --include first-run \
     ...                        --variable ENABLE_FIRST_RUN_TESTS:True \
-    ...                        tests/ui/ts_05_smoke_test_register_cards_generic.robot
+    ...                        tests/ui/ts_05_register_cards_generic.robot
     ...
     ...                To overwrite an existing bva.yaml:
     ...                  robot --include first-run \
     ...                        --variable ENABLE_FIRST_RUN_TESTS:True \
     ...                        --variable FIXTURE_FORCE_REGENERATE:True \
-    ...                        tests/ui/ts_05_smoke_test_register_cards_generic.robot
+    ...                        tests/ui/ts_05_register_cards_generic.robot
     ...
     ...                After the run: review the generated YAML and commit it.
     [Setup]    Require Explicit First Run Mode
@@ -263,13 +263,13 @@ First Run: Capture And Generate Fixture For Test-DGUV
     ...                Run once before the normal verification tests:
     ...                  robot --include first-run \
     ...                        --variable ENABLE_FIRST_RUN_TESTS:True \
-    ...                        tests/ui/ts_05_smoke_test_register_cards_generic.robot
+    ...                        tests/ui/ts_05_register_cards_generic.robot
     ...
     ...                To overwrite an existing dguv.yaml:
     ...                  robot --include first-run \
     ...                        --variable ENABLE_FIRST_RUN_TESTS:True \
     ...                        --variable FIXTURE_FORCE_REGENERATE:True \
-    ...                        tests/ui/ts_05_smoke_test_register_cards_generic.robot
+    ...                        tests/ui/ts_05_register_cards_generic.robot
     ...
     ...                After the run: review the generated YAML and commit it.
     [Setup]    Require Explicit First Run Mode

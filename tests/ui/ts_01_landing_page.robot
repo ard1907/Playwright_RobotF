@@ -1,5 +1,5 @@
 # ==============================================================================
-# smoke_tests.robot  –  Main Smoke Test Suite
+# ts_01_landing_page.robot  –  Main Landing Page Test Suite
 #
 # Target  : https://qs-datenschutzcockpit.dsc.govkg.de/spa/
 # Pattern : Page Object Model (POM) + shared resources
@@ -65,7 +65,7 @@ TC002 - Verify Header Accessibility Buttons Are Present On Landing Page
     ...                  • Bund.de Datenschutzcockpit Beta Logo (link)
     ...                  • Das Datenschutzcockpit in Leichter Sprache (button)
     ...                  • Zum Gebärdensprache-Video (button)
-    [Tags]             smoke    landing    accessibility
+    [Tags]             landing    accessibility
     Verify Landing Page Header Accessibility Buttons
 
 
@@ -75,7 +75,7 @@ TC003 - Navigate To Leichte Sprache And Validate
     ...                Leichte Sprache assertions: title change, dialog visibility,
     ...                H1 heading, body content references, and close button.
     ...                Finally closes the dialog and verifies the page is restored.
-    [Tags]             smoke    auth    leichte-sprache    accessibility
+    [Tags]             auth    leichte-sprache    accessibility
     Open Leichte Sprache Dialog
     Validate Leichte Sprache Page
     Validate Internal Links For Leichte Sprache Dialog
@@ -90,7 +90,7 @@ TC004 - Navigate To Gebärdensprache And Validate
     ...                assertions: title change, dialog visibility, H1 heading,
     ...                content reference, video element, and close button.
     ...                Finally closes the dialog and verifies the page is restored.
-    [Tags]             smoke    auth    gebaerdensprache    accessibility
+    [Tags]             auth    gebaerdensprache    accessibility
     Open Gebaerdensprache Dialog
     Validate Gebaerdensprache Page
     Validate External URLs For Gebaerdensprache Dialog
@@ -103,7 +103,7 @@ TC005 - Navigate To FAQ And Validate
     [Documentation]    Opens the FAQ dialog via the floating FAQ button and
     ...                checks: dialog visibility, page title change, H1, both
     ...                H2 section headings, and all seven accordion entries.
-    [Tags]             smoke    faq
+    [Tags]             faq
     Open FAQ Dialog
     Validate FAQ Page
     Close FAQ Dialog
@@ -112,7 +112,7 @@ TC006 - Verify All FAQ Cards Are Rendered On Landing Page
     [Documentation]    Confirms the "Häufige Fragen" section and all four FAQ
     ...                accordion cards are visible in their default closed state
     ...                without opening any of them.
-    [Tags]             smoke    landing    faq    accordion
+    [Tags]             landing    faq    accordion
     Verify Landing Page FAQ Cards Are Rendered
 
 
@@ -125,7 +125,7 @@ TC007 - Verify FAQ Card 'Was ist das Datenschutzcockpit' And Validate Content
     ...                  3. SPA tab title updates to reflect the open card
     ...                  4. URL remains on the landing page (no navigation)
     ...                  5. All three remaining FAQ cards are still rendered
-    [Tags]             smoke    landing    faq    accordion
+    [Tags]             landing    faq    accordion
     Verify Landing Page FAQ Card "Was Ist Das Datenschutzcockpit ..."
     Validate External URLs For Card - Was ist das Datenschutzcockpit ...
     Close Currently Open Dialog
@@ -141,7 +141,7 @@ TC008 - Verify FAQ Card 'Was sehe ich im Datenschutzcockpit' And Validate Conten
     ...                  4. SPA tab title updates to reflect the open card
     ...                  5. URL remains on the landing page (no navigation)
     ...                  6. All three remaining FAQ cards are still rendered
-    [Tags]             smoke    landing    faq    accordion
+    [Tags]             landing    faq    accordion
     Verify Landing Page FAQ Card "Was Sehe Ich Im Datenschutzcockpit ..."
     Close Currently Open Dialog
 
@@ -156,7 +156,7 @@ TC009 - Verify FAQ Card 'Wer betreibt das Datenschutzcockpit' And Validate Conte
     ...                  4. SPA tab title updates to reflect the open card
     ...                  5. URL remains on the landing page (no navigation)
     ...                  6. All three remaining FAQ cards are still rendered
-    [Tags]             smoke    landing    faq    accordion
+    [Tags]             landing    faq    accordion
     Verify Landing Page FAQ Card "Wer Betreibt Das Datenschutzcockpit ..."
     Close Currently Open Dialog
 
@@ -170,7 +170,7 @@ TC010 - Verify FAQ Card 'Weitere Informationen' And Validate Content
     ...                  3. SPA tab title updates to reflect the open card
     ...                  4. URL remains on the landing page (no navigation)
     ...                  5. All three remaining FAQ cards are still rendered
-    [Tags]             smoke    landing    faq    accordion
+    [Tags]             landing    faq    accordion
     Verify Landing Page FAQ Card "Weitere Informationen ..."
     Validate External URLs For Card - Weitere Informationen ...
     Close Currently Open Dialog
@@ -181,7 +181,7 @@ TC011 - Navigate To Impressum And Validate
     ...                checks: dialog visibility, page title change, H1, all
     ...                four H2 section headings, the three key organisations,
     ...                and all four email link href values.
-    [Tags]             smoke    impressum
+    [Tags]             impressum
     Open Impressum Dialog
     Validate Impressum Page
     Validate External URLs For Impressum Dialog
@@ -193,7 +193,7 @@ TC012 - Navigate To Datenschutz And Validate
     ...                checks: dialog visibility, page title change, H1, four
     ...                numbered section headings, DSGVO reference, BVA mention,
     ...                and IDNr reference.
-    [Tags]             smoke    datenschutz
+    [Tags]             datenschutz
     Open Datenschutz Dialog
     Validate Datenschutz Page
     Close Datenschutz Dialog
@@ -204,7 +204,7 @@ TC013 - Navigate To Barrierefreiheit And Validate
     ...                checks: dialog visibility, page title change, H1, two H2
     ...                headings, three H3 headings, BITV reference, contact
     ...                email presence, and all external link href values.
-    [Tags]             smoke    barrierefreiheit
+    [Tags]             barrierefreiheit
     Open Barrierefreiheit Dialog
     Validate Barrierefreiheit Page
     Validate External URLs For Barrierefreiheit Dialog
@@ -217,7 +217,7 @@ TC014 - Full SPA User Journey
     ...                spot-checked, and closed before the next one is opened –
     ...                mimicking natural navigation behaviour.
     ...                Step 8 expands all four Landing Page FAQ cards in sequence.
-    [Tags]             smoke    e2e    journey
+    [Tags]             e2e    journey
 
     # ── 1. Assert the landing page is healthy ─────────────────────────────────
     Validate Landing Page

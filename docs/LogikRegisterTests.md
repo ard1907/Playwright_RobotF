@@ -21,13 +21,13 @@ Es gibt dafuer zwei Arten von Tests:
 - spezifische Tests fuer einen festen Fall, zum Beispiel BVA
 - generische Tests fuer mehrere Registerkarten ueber YAML-Dateien
 
-Die generische Suite ist `tests/ui/ts_05_smoke_test_register_cards_generic.robot`.
+Die generische Suite ist `tests/ui/ts_05_register_cards_generic.robot`.
 
 ## Welche Dateien gehoeren zusammen?
 
 Die wichtigste Logik liegt in diesen Dateien:
 
-- `tests/ui/ts_05_smoke_test_register_cards_generic.robot`
+- `tests/ui/ts_05_register_cards_generic.robot`
 - `pages/dsc_register_result_page.robot`
 - `pages/dsc_register_selection_page.robot`
 - `resources/dsc_shared_keywords.robot`
@@ -63,7 +63,7 @@ Er vergleicht Live-Daten aus dem Dialog mit den erwarteten Daten aus der YAML-Da
 Beispiel:
 
 ```bash
-robot tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot tests/ui/ts_05_register_cards_generic.robot
 ```
 
 Dabei passiert fuer jede Registerkarte grob dies:
@@ -184,13 +184,13 @@ Dann wurden Daten capture- oder Schreiblogik ausgefuehrt, obwohl man nur normal 
 
 Jetzt gilt:
 
-- normales `robot tests/ui/ts_05_smoke_test_register_cards_generic.robot` startet keinen echten First-Run
+- normales `robot tests/ui/ts_05_register_cards_generic.robot` startet keinen echten First-Run
 - First-Run-Tests laufen nur mit expliziter Freigabe
 
 Der notwendige Befehl ist:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_register_cards_generic.robot
 ```
 
 Beides ist wichtig:
@@ -224,7 +224,7 @@ Jetzt gilt:
 Wenn ein bereits fertiges Fixture bewusst neu geschrieben werden soll, nutze:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True --variable FIXTURE_FORCE_REGENERATE:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True --variable FIXTURE_FORCE_REGENERATE:True tests/ui/ts_05_register_cards_generic.robot
 ```
 
 Das ist sinnvoll, wenn sich echte Dialogdaten geaendert haben und die vorhandene YAML bewusst ersetzt werden soll.
@@ -235,7 +235,7 @@ Wenn eine neue Registerkarte getestet werden soll, gehe so vor:
 
 1. Neue YAML-Datei in `test_data/registers/` anlegen.
 2. Dort Name und Tag der Registerkarte eintragen.
-3. In `ts_05_smoke_test_register_cards_generic.robot` einen normalen Verifikationstest anlegen.
+3. In `ts_05_register_cards_generic.robot` einen normalen Verifikationstest anlegen.
 4. Dort auch einen First-Run-Test anlegen.
 5. Den First-Run bewusst starten.
 6. Das erzeugte YAML pruefen.
@@ -267,25 +267,25 @@ Die Empfehlung ist deshalb:
 Normaler Lauf:
 
 ```bash
-robot tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot tests/ui/ts_05_register_cards_generic.robot
 ```
 
 Nur ein normaler Testfall:
 
 ```bash
-robot --test "Verify Register Card Workflow: Test BVA" tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot --test "Verify Register Card Workflow: Test BVA" tests/ui/ts_05_register_cards_generic.robot
 ```
 
 Expliziter First-Run:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_register_cards_generic.robot
 ```
 
 Expliziter First-Run mit Ueberschreiben fertiger Fixtures:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True --variable FIXTURE_FORCE_REGENERATE:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True --variable FIXTURE_FORCE_REGENERATE:True tests/ui/ts_05_register_cards_generic.robot
 ```
 
 ## Kurzfassung

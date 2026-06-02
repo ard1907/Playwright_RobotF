@@ -26,9 +26,9 @@ The documentation is split into language-specific README files, test overviews, 
 
 ## Most important suites
 
-- `tests/ui/ts_03_smoke_test_register_selection.robot` - authenticated register-selection smoke tests
-- `tests/ui/ts_04_smoke_test_register_selection_bva.robot` - BVA-specific result workflow
-- `tests/ui/ts_05_smoke_test_register_cards_generic.robot` - generic register-card verification via YAML fixtures
+- `tests/ui/ts_03_register_selection.robot` - authenticated register-selection smoke tests
+- `tests/ui/ts_04_register_selection_bva.robot` - BVA-specific result workflow
+- `tests/ui/ts_05_register_cards_generic.robot` - generic register-card verification via YAML fixtures
 
 ## Typical commands
 
@@ -50,26 +50,33 @@ Run all UI suites:
 robot tests/ui
 ```
 
+Run the curated smoke selection only:
+
+```bash
+robot --include smoke --outputdir results tests/ui
+```
+
 Run only the generic register-card suite:
 
 ```bash
-robot tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot tests/ui/ts_05_register_cards_generic.robot
 ```
 
 Run generic first-run capture explicitly:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_register_cards_generic.robot
 ```
 
 Force regeneration of completed generic fixtures:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True --variable FIXTURE_FORCE_REGENERATE:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True --variable FIXTURE_FORCE_REGENERATE:True tests/ui/ts_05_register_cards_generic.robot
 ```
 
 ## Notes
 
+- The curated smoke run currently covers 6 representative UI cases: landing page, authentication info page, AusweisApp start flow, register selection, BVA start flow, and generic BVA register-card verification.
 - The generic register-card suite has a normal verification mode and a separate first-run capture mode.
 - First-run is intentionally opt-in and requires `ENABLE_FIRST_RUN_TESTS=True`.
 - New register-card logic documentation is available in both German and English via the files linked above.

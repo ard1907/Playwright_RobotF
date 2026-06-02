@@ -17,7 +17,7 @@ Dieses Dokument fasst die Robot Framework Testsuiten, Testfälle sowie die wicht
 
 ## 1) Testsuiten (nach Datei)
 
-- `tests/ui/ts_01_smoke_test_landing_page.robot`
+- `tests/ui/ts_01_landing_page.robot`
   - Suite-Setup: `Open Application Browser`
   - Test-Setup: `Navigate To Landing Page`
   - Suite-Teardown: `Close Application Browser`
@@ -45,7 +45,7 @@ Dieses Dokument fasst die Robot Framework Testsuiten, Testfälle sowie die wicht
     - TC014 — Full SPA User Journey
       - End-to-end Rauchtest: öffnet Dialoge nacheinander, führt Stichprobenprüfungen durch und schließt Dialoge, erweitert FAQ-Karten.
 
-- `tests/ui/ts_02_smoke_test_auth_info_page.robot`
+- `tests/ui/ts_02_auth_info_page.robot`
   - Suite-Setup: `Open Application Browser ${AUTH_INFO_URL}`
   - Test-Setup: `Navigate To Authentication Info Page`
   - Suite-Teardown: `Close Application Browser`
@@ -65,7 +65,7 @@ Dieses Dokument fasst die Robot Framework Testsuiten, Testfälle sowie die wicht
     - TC009 — Full Login Page User Journey
       - End-to-end-Lauf für Auth-Info-Interaktionen und FAQ/Karten-Flows.
 
-- `tests/ui/ts_03_smoke_test_register_selection.robot`
+- `tests/ui/ts_03_register_selection.robot`
   - Suite-Setup: `Open Browser And Login For AusweisApp Suite ${AUTH_INFO_URL}`
   - Test-Setup: `Navigate To Register Auswahl Page`
   - Suite-Teardown: `Close Browser After AusweisApp Suite`
@@ -107,7 +107,7 @@ Dieses Dokument fasst die Robot Framework Testsuiten, Testfälle sowie die wicht
     - TC018 — Toggle All Registers In List View Select And Deselect
       - Wechselt in die Listenansicht und validiert das globale Auswahl- und Abwahlverhalten.
 
-- `tests/ui/ts_04_smoke_test_register_selection_bva.robot`
+- `tests/ui/ts_04_register_selection_bva.robot`
   - Suite-Setup: `Open Browser And Login For BVA Suite`
   - Test-Setup: `Open Register Auswahl In Default Grid View`
   - Suite-Teardown: `Close Browser After AusweisApp Suite`
@@ -119,7 +119,7 @@ Dieses Dokument fasst die Robot Framework Testsuiten, Testfälle sowie die wicht
     - TC007..TC012 — BVA-Detaildialog und PDF-Prüfungen
       - Validieren Protokolldaten-Dialog, Abruf personenbezogener Daten, PDF-Prüfungen, Schließen des Dialogs und Rücknavigation.
 
-- `tests/ui/ts_05_smoke_test_register_cards_generic.robot`
+- `tests/ui/ts_05_register_cards_generic.robot`
   - Suite-Setup: `Open Browser And Login For Generic Register Suite`
   - Test-Setup: `Open Register Auswahl In Default Grid View`
   - Suite-Teardown: `Close Browser After Generic Register Suite`
@@ -128,9 +128,9 @@ Dieses Dokument fasst die Robot Framework Testsuiten, Testfälle sowie die wicht
     - Nutzt pro Registerkarte einen Testfall für die normale Verifikation.
     - Nutzt separate First-Run-Tests, um Fixture-Daten zu erzeugen oder zu aktualisieren.
   - Laufmodi:
-    - Normalmodus: `robot tests/ui/ts_05_smoke_test_register_cards_generic.robot`
+    - Normalmodus: `robot tests/ui/ts_05_register_cards_generic.robot`
       - Lädt ein Fixture, überspringt bei `first_run.completed = false` und prüft den Live-Dialog gegen die erwarteten Daten.
-    - First-Run-Modus: `robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_smoke_test_register_cards_generic.robot`
+    - First-Run-Modus: `robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_register_cards_generic.robot`
       - Erfasst Live-Sender- und Felddaten und schreibt daraus Fixture-Inhalt.
       - Unvollständige Fixtures werden automatisch neu erzeugt.
       - Bereits abgeschlossene Fixtures werden nur mit `FIXTURE_FORCE_REGENERATE=True` überschrieben.

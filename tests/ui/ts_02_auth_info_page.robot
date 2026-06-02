@@ -1,5 +1,5 @@
 # ==============================================================================
-# smoke_test_login_page.robot  –  Smoke Test Suite for the Authentication Info Page
+# ts_02_auth_info_page.robot  –  Test Suite for the Authentication Info Page
 #
 # Target  : https://qs-datenschutzcockpit.dsc.govkg.de/spa/authentication-info
 # Pattern : Page Object Model (POM) + shared resources
@@ -62,7 +62,7 @@ TC002 - Verify Header Accessibility And Navigation Buttons Are Present
     ...                  • Impressum (footer button)
     ...                  • Datenschutz (footer button)
     ...                  • Barrierefreiheit (footer button)
-    [Tags]             smoke    auth    accessibility
+    [Tags]             auth    accessibility
     Verify Auth Page Header Accessibility Buttons
     Verify Auth Page FAQ Float Button
     Verify Auth Page Footer Navigation
@@ -77,7 +77,7 @@ TC003 - AusweisApp Link Navigates To External Page
     ...                  -- Title contains "AusweisApp"
     ...                  -- At least one H1 heading is visible
     ...                After verification the new tab is closed and focus returns.
-    [Tags]             smoke    auth    external-link    ausweisapp
+    [Tags]             auth    external-link    ausweisapp
     # Open AusweisApp External Tab And Validate
     Validate External URL For AusweisApp
 
@@ -90,7 +90,7 @@ TC004 - Kompatibles Lesegerät Link Navigates To External Page
     ...                  -- Page title is not empty
     ...                  -- At least one heading is visible
     ...                After verification the new tab is closed and focus returns.
-    [Tags]             smoke    auth    external-link    lesegeraet
+    [Tags]             auth    external-link    lesegeraet
     # Open Lesegeraet External Tab And Validate
     Validate External URL For Lesegeraet
 
@@ -120,7 +120,7 @@ TC006 - Verify FAQ Card 'Was benötige ich' And Validate Content
     ...                  3. "AusweisApp" is mentioned in the expanded content
     ...                  4. Page URL has not changed (still on auth-info)
     ...                  5. The other two FAQ cards are still present
-    [Tags]             smoke    auth    faq    accordion
+    [Tags]             auth    faq    accordion
     Verify Auth Page FAQ Card "Was Benötige Ich ..."
     # Open External Tab And Validate                        PIN
     Validate External URLs For Card - Was Benötige Ich ...
@@ -135,7 +135,7 @@ TC007 - Verify FAQ Card 'Wie melde ich mich' And Validate Content
     ...                  3. "AusweisApp" is mentioned in the expanded content
     ...                  4. Page URL has not changed (still on auth-info)
     ...                  5. The other two FAQ accordions are still present
-    [Tags]             smoke    auth    faq    accordion
+    [Tags]             auth    faq    accordion
     Verify Auth Page FAQ Card "Wie Melde Ich Mich ..."
     # Open External Tab And Validate Just URL                     AusweisAppHome
     # Open External Tab And Validate Just URL                     Personalausweisportal
@@ -153,7 +153,7 @@ TC008 - Verify FAQ Card 'Wie sicher ist das Cockpit' And Validate Content
     ...                  5. H2 "Ihre Abmeldung" section heading is visible
     ...                  6. Page URL has not changed (still on auth-info)
     ...                  7. The other two FAQ accordions are still present
-    [Tags]             smoke    auth    faq    accordion
+    [Tags]             auth    faq    accordion
     Verify Auth Page FAQ Card "Wie Sicher Ist Das Cockpit ..."
     Close Currently Open Dialog
     
@@ -162,7 +162,7 @@ TC009 - Full Login Page User Journey
     [Documentation]    End-to-end smoke run simulating a user arriving at the
     ...                auth-info page and exploring all its key interactions in
     ...                sequence – mirroring real navigation behaviour.
-    [Tags]             smoke    auth    e2e    journey
+    [Tags]             auth    e2e    journey
 
     # ── 1. Verify the auth-info page is healthy ────────────────────────────────
     Validate Authentication Info Page

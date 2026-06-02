@@ -3,7 +3,7 @@ Generiert: 2026-04-23
 
 Dieses Dokument fasst die UI-Testsuiten im Ordner `tests/ui/` zusammen und listet die enthaltenen Testfälle je Suite in kompakter Form auf.
 
-## 1) `tests/ui/ts_01_smoke_test_landing_page.robot`
+## 1) `tests/ui/ts_01_landing_page.robot`
 
 - `TC001 - Validate Landing Page` - Prüft die Startseite auf Titel, H1, Einleitung, CTA, FAQ-Bereich, Footer-Navigation, Floating-FAQ-Button und Versionsstring.
 - `TC002 - Verify Header Accessibility Buttons Are Present On Landing Page` - Prüft Logo und Header-Buttons für Leichte Sprache und Gebärdensprache.
@@ -20,7 +20,7 @@ Dieses Dokument fasst die UI-Testsuiten im Ordner `tests/ui/` zusammen und liste
 - `TC013 - Navigate To Barrierefreiheit And Validate` - Öffnet die Barrierefreiheit und prüft Überschriften, Kontaktangaben und externe Links.
 - `TC014 - Full SPA User Journey` - Führt einen vollständigen Smoke-Flow durch alle wichtigen SPA-Ansichten und FAQ-Karten aus.
 
-## 2) `tests/ui/ts_02_smoke_test_auth_info_page.robot`
+## 2) `tests/ui/ts_02_auth_info_page.robot`
 
 - `TC001 - Validate Authentication Info Page` - Prüft die Authentifizierungs-Info-Seite auf Titel, H1, Logo, Barrierefreiheits-Buttons, Footer, Version, AusweisApp-Hinweise und FAQ-Inhalte.
 - `TC002 - Verify Header Accessibility And Navigation Buttons Are Present` - Prüft Header-Buttons, Floating-FAQ und Footer-Navigation auf Sichtbarkeit und Aktivität.
@@ -32,7 +32,7 @@ Dieses Dokument fasst die UI-Testsuiten im Ordner `tests/ui/` zusammen und liste
 - `TC008 - Verify FAQ Card 'Wie sicher ist das Cockpit' And Validate Content` - Öffnet die dritte FAQ-Karte und prüft Sicherheitsinhalte sowie Abschnittsüberschriften.
 - `TC009 - Full Login Page User Journey` - Führt einen kompletten Smoke-Flow über die Auth-Info-Seite und ihre FAQ-Inhalte aus.
 
-## 3) `tests/ui/ts_03_smoke_test_register_selection.robot`
+## 3) `tests/ui/ts_03_register_selection.robot`
 
 - `TC001 - Validate Register Selection Page` - Prüft die Registerauswahl auf Titel, H1/H2, maskierte IDNr, Session-Timer, Logout-Button und Einführungstext.
 - `TC002 - Verify Header Accessibility And Navigation Buttons Are Present` - Prüft Header-Buttons, Floating-FAQ, Footer-Navigation und die Versionsanzeige.
@@ -57,7 +57,7 @@ Dieses Dokument fasst die UI-Testsuiten im Ordner `tests/ui/` zusammen und liste
 
 Die Registerauswahl-Suite ist nur nach erfolgreichem Login erreichbar. Einzelne Intro- und Mehr-Info-Elemente können je nach Umgebung als nicht-klassische Klickziele gerendert werden; die Suite berücksichtigt das mit kontrollierten Fallbacks. Die Suite deckt außerdem Grid- und Listenansicht ab.
 
-## 4) `tests/ui/ts_04_smoke_test_register_selection_bva.robot`
+## 4) `tests/ui/ts_04_register_selection_bva.robot`
 
 - `TC001 - Select Test BVA Register Card Enables Anfrage Starten` - Wählt das BVA-Register aus und prüft den Status des Anfrage-Buttons.
 - `TC002 - Deselect Test BVA Register Card Returns Empty Selection State` - Prüft, dass die BVA-Karte sauber wieder abgewählt werden kann.
@@ -72,7 +72,7 @@ Die Registerauswahl-Suite ist nur nach erfolgreichem Login erreichbar. Einzelne 
 - `TC011 - Close Protokolldaten Dialog Returns To Results View` - Prüft das Schließen des Dialogs.
 - `TC012 - Navigate Back To Register Auswahl Restores Correct URL` - Prüft den Rückweg von der Ergebnisseite.
 
-## 5) `tests/ui/ts_05_smoke_test_register_cards_generic.robot`
+## 5) `tests/ui/ts_05_register_cards_generic.robot`
 
 - `Verify Register Card Workflow: Test BVA` - Prüft den generischen BVA-Registerkarten-Flow gegen `test_data/registers/bva.yaml`.
 - `Verify Register Card Workflow: Test-DGUV` - Prüft den generischen DGUV-Registerkarten-Flow gegen `test_data/registers/dguv.yaml`.

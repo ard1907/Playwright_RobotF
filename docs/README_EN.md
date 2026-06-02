@@ -84,29 +84,29 @@ robot tests/ui
 Run a single suite when you only want one area:
 
 ```bash
-robot tests/ui/ts_01_smoke_test_landing_page.robot
-robot tests/ui/ts_02_smoke_test_auth_info_page.robot
-robot tests/ui/ts_03_smoke_test_register_selection.robot
-robot tests/ui/ts_04_smoke_test_register_selection_bva.robot
-robot tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot tests/ui/ts_01_landing_page.robot
+robot tests/ui/ts_02_auth_info_page.robot
+robot tests/ui/ts_03_register_selection.robot
+robot tests/ui/ts_04_register_selection_bva.robot
+robot tests/ui/ts_05_register_cards_generic.robot
 ```
 
 Run only the generic register-card verification suite:
 
 ```bash
-robot tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot tests/ui/ts_05_register_cards_generic.robot
 ```
 
 Run the generic first-run capture mode explicitly:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_register_cards_generic.robot
 ```
 
 Force regeneration of already completed fixtures:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True --variable FIXTURE_FORCE_REGENERATE:True tests/ui/ts_05_smoke_test_register_cards_generic.robot
+robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True --variable FIXTURE_FORCE_REGENERATE:True tests/ui/ts_05_register_cards_generic.robot
 ```
 
 The smaller suites in `tests/helpers/` are useful for focused checks and debugging.
@@ -115,6 +115,12 @@ The smaller suites in `tests/helpers/` are useful for focused checks and debuggi
 
 The suites use tags such as `smoke`, `landing`, `auth`, `faq`, `accessibility`, `accordion`, `external-link`, `e2e`, and `cookies`. Use Robot Framework tag filtering when you want a narrower run.
 The register-selection suite also uses tags such as `register-auswahl`, `interaction`, `selection`, `toggle`, `list-view`, `all-registers`, `dialog`, `security`, `session`, `timer`, and `reload`.
+
+The curated smoke run currently covers 6 representative UI cases: landing page, authentication info page, AusweisApp start flow, register selection, BVA start flow, and generic BVA register-card verification.
+
+```bash
+robot --include smoke --outputdir results tests/ui
+```
 
 ## Docker and CI options
 

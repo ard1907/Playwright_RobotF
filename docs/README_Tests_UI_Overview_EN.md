@@ -3,7 +3,7 @@ Generated: 2026-04-23
 
 This document summarizes the UI test suites in `tests/ui/` and lists the contained test cases per suite in a compact form.
 
-## 1) `tests/ui/ts_01_smoke_test_landing_page.robot`
+## 1) `tests/ui/ts_01_landing_page.robot`
 
 - `TC001 - Validate Landing Page` - Checks the landing page title, H1, intro text, CTA, FAQ section, footer navigation, floating FAQ button, and version string.
 - `TC002 - Verify Header Accessibility Buttons Are Present On Landing Page` - Verifies the logo and the header buttons for Leichte Sprache and Gebärdensprache.
@@ -20,7 +20,7 @@ This document summarizes the UI test suites in `tests/ui/` and lists the contain
 - `TC013 - Navigate To Barrierefreiheit And Validate` - Opens the accessibility dialog and checks headings, contact details, and outbound links.
 - `TC014 - Full SPA User Journey` - Runs a full smoke flow through the key SPA views and FAQ cards.
 
-## 2) `tests/ui/ts_02_smoke_test_auth_info_page.robot`
+## 2) `tests/ui/ts_02_auth_info_page.robot`
 
 - `TC001 - Validate Authentication Info Page` - Checks the authentication info page for title, H1, logo, accessibility buttons, footer, version, AusweisApp references, and FAQ content.
 - `TC002 - Verify Header Accessibility And Navigation Buttons Are Present` - Checks header buttons, the floating FAQ button, and footer navigation for visibility and state.
@@ -32,7 +32,7 @@ This document summarizes the UI test suites in `tests/ui/` and lists the contain
 - `TC008 - Verify FAQ Card 'Wie sicher ist das Cockpit' And Validate Content` - Opens the third FAQ card and checks security-related content and headings.
 - `TC009 - Full Login Page User Journey` - Runs a complete smoke flow across the auth-info page and its FAQ content.
 
-## 3) `tests/ui/ts_03_smoke_test_register_selection.robot`
+## 3) `tests/ui/ts_03_register_selection.robot`
 
 - `TC001 - Validate Register Selection Page` - Checks the register-selection page for title, H1/H2, masked ID number, session timer, logout button, and intro text.
 - `TC002 - Verify Header Accessibility And Navigation Buttons Are Present` - Checks the header buttons, floating FAQ button, footer navigation, and version display.
@@ -57,7 +57,7 @@ This document summarizes the UI test suites in `tests/ui/` and lists the contain
 
 The register-selection suite is only reachable after a successful login. Some intro and more-info elements can be rendered as non-standard click targets depending on the environment; the suite handles that with controlled fallbacks. The suite also covers both grid and list views.
 
-## 4) `tests/ui/ts_04_smoke_test_register_selection_bva.robot`
+## 4) `tests/ui/ts_04_register_selection_bva.robot`
 
 - `TC001 - Select Test BVA Register Card Enables Anfrage Starten` - Selects the BVA register and verifies the request button state.
 - `TC002 - Deselect Test BVA Register Card Returns Empty Selection State` - Verifies the BVA card can be toggled off cleanly.
@@ -72,7 +72,7 @@ The register-selection suite is only reachable after a successful login. Some in
 - `TC011 - Close Protokolldaten Dialog Returns To Results View` - Verifies dialog close behavior.
 - `TC012 - Navigate Back To Register Auswahl Restores Correct URL` - Verifies returning from the result page.
 
-## 5) `tests/ui/ts_05_smoke_test_register_cards_generic.robot`
+## 5) `tests/ui/ts_05_register_cards_generic.robot`
 
 - `Verify Register Card Workflow: Test BVA` - Verifies the generic BVA register-card workflow against `test_data/registers/bva.yaml`.
 - `Verify Register Card Workflow: Test-DGUV` - Verifies the generic DGUV register-card workflow against `test_data/registers/dguv.yaml`.

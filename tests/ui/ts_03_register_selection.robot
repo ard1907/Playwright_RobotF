@@ -1,5 +1,5 @@
 # ==============================================================================
-# ts_03_smoke_test_register_selection.robot  –  Smoke Test Suite for the
+# ts_03_register_selection.robot  –  Test Suite for the
 #                                               Register Auswahl Page
 #
 # Target  : https://qs-datenschutzcockpit.dsc.govkg.de/spa/cockpit/register-auswahl
@@ -93,7 +93,7 @@ TC002 - Verify Header Accessibility And Navigation Buttons Are Present
     ...                  • Datenschutz (footer button)
     ...                  • Barrierefreiheit (footer button)
     ...                  • Datenschutzcockpit Version ${APP_VERSION} (footer text)
-    [Tags]             smoke    register-auswahl    accessibility    cockpit
+    [Tags]             register-auswahl    accessibility    cockpit
     Verify RA Header Accessibility Buttons
     Verify RA FAQ Float Button
     Verify RA Footer Navigation
@@ -109,7 +109,7 @@ TC003 - Verify Register List Elements Are Rendered
     ...                  • List view toggle is present
     ...                  • Hint heading "Bitte wählen Sie mindestens ein Register" visible
     ...                  • Hint instruction paragraph visible
-    [Tags]             smoke    register-auswahl    register-list    cockpit
+    [Tags]             register-auswahl    register-list    cockpit
     Verify RA Register List Is Rendered
 
 
@@ -119,7 +119,7 @@ TC004 - Verify Intro Content Links Are Present
     ...                corresponding FAQ dialog overlays:
     ...                  • "Was sehe ich im Datenschutzcockpit?" button
     ...                  • "Was ist das Datenschutzcockpit?" button
-    [Tags]             smoke    register-auswahl    content    cockpit
+    [Tags]             register-auswahl    content    cockpit
     Verify RA Intro Content Buttons
 
 
@@ -128,7 +128,7 @@ TC005 - Verify Feedback Button Is Present
     ...                action sidebar is visible and enabled. This button is
     ...                exclusive to the authenticated cockpit pages and therefore
     ...                not tested in the landing-page or auth-info test suites.
-    [Tags]             smoke    register-auswahl    feedback    cockpit
+    [Tags]             register-auswahl    feedback    cockpit
     Verify RA Feedback Button
 
 
@@ -138,7 +138,7 @@ TC006 - Select Single Register Enables Request Start
     ...                Assertions:
     ...                  • "Anfrage starten" button becomes visible and enabled
     ...                  • Empty-state hint heading is no longer shown
-    [Tags]             smoke    register-auswahl    interaction    selection
+    [Tags]             register-auswahl    interaction    selection
     Select First Register And Verify Anfrage Starten
 
 
@@ -148,14 +148,14 @@ TC007 - Toggle Single Register Returns Empty State
     ...                Assertions:
     ...                  • "Anfrage starten" disappears after deselection
     ...                  • Empty-state hint heading + paragraph are visible again
-    [Tags]             smoke    register-auswahl    interaction    toggle
+    [Tags]             register-auswahl    interaction    toggle
     Toggle First Register Off And Verify Empty Hint
 
 
 TC008 - Toggle All Registers Select And Deselect
     [Documentation]    Verifies the global selection toggle behaviour of
     ...                "Alle Register auswählen" and "Alle Register abwählen".
-    [Tags]             smoke    register-auswahl    interaction    all-registers
+    [Tags]             register-auswahl    interaction    all-registers
     Toggle Alle Register Select And Deselect
 
 
@@ -163,7 +163,7 @@ TC009 - Intro Dialog "Was sehe ich" Opens And Closes
     [Documentation]    Opens the inline intro dialog for
     ...                "Was sehe ich im Datenschutzcockpit?" and verifies
     ...                title and close behaviour.
-    [Tags]             smoke    register-auswahl    dialog    intro
+    [Tags]             register-auswahl    dialog    intro
     Open Intro Dialog Was Sehe Ich And Close
 
 
@@ -171,35 +171,35 @@ TC010 - Intro Dialog "Was ist das DSC" Opens And Closes
     [Documentation]    Opens the inline intro dialog for
     ...                "Was ist das Datenschutzcockpit?" and verifies
     ...                title and close behaviour.
-    [Tags]             smoke    register-auswahl    dialog    intro
+    [Tags]             register-auswahl    dialog    intro
     Open Intro Dialog Was Ist And Close
 
 
 TC011 - Floating FAQ Dialog Opens And Closes
     [Documentation]    Opens the FAQ dialog from the floating action bar,
     ...                verifies the FAQ heading/title, then closes it.
-    [Tags]             smoke    register-auswahl    dialog    faq
+    [Tags]             register-auswahl    dialog    faq
     Open RA FAQ Dialog And Close
 
 
 TC012 - Verify IDNr Is Masked By Default
     [Documentation]    Confirms the IDNr area is present in masked form and
     ...                the reveal button is available.
-    [Tags]             smoke    register-auswahl    security    idnr
+    [Tags]             register-auswahl    security    idnr
     Verify RA IDNr Is Masked By Default
 
 
 TC013 - Verify Session Timer Counts Down
     [Documentation]    Reads the session timer twice with a short delay and
     ...                verifies that the value changes.
-    [Tags]             smoke    register-auswahl    session    timer
+    [Tags]             register-auswahl    session    timer
     Verify RA Session Timer Counts Down
 
 
 TC014 - Verify Register Cards Count And More-Info Buttons
     [Documentation]    Verifies at least one register card exists and all the
     ...                "Mehr zum Register lesen" buttons are present.
-    [Tags]             smoke    register-auswahl    register-list    content
+    [Tags]             register-auswahl    register-list    content
     Verify Register Cards Count And Link "Mehr zum Register lesen"
 
 
@@ -210,7 +210,7 @@ TC015 - Verify Register List View Elements Are Rendered
     ...                  • List view toggle can be activated
     ...                  • Each register entry renders a checkbox in list view
     ...                  • Empty-state hint remains visible while nothing is selected
-    [Tags]             smoke    register-auswahl    register-list    list-view
+    [Tags]             register-auswahl    register-list    list-view
     Verify RA Register List View Is Rendered
 
 
@@ -220,7 +220,7 @@ TC016 - Select Single Register In List View Enables Request Start
     ...                Assertions:
     ...                  • "Anfrage starten" button becomes visible and enabled
     ...                  • Empty-state hint disappears after the selection
-    [Tags]             smoke    register-auswahl    register-list    list-view    selection
+    [Tags]             register-auswahl    register-list    list-view    selection
     Select First Register In List View And Verify Anfrage Starten
 
 
@@ -231,7 +231,7 @@ TC017 - Toggle All Registers In List View Select And Deselect
     ...                  • "Alle Register auswählen" switches to "Alle Register abwählen"
     ...                  • "Anfrage starten" becomes visible while all are selected
     ...                  • Empty-state hint returns after deselecting all entries
-    [Tags]             smoke    register-auswahl    register-list    list-view    all-registers
+    [Tags]             register-auswahl    register-list    list-view    all-registers
     Toggle Alle Register In List View And Deselect
 
 
@@ -239,5 +239,5 @@ TC017 - Toggle All Registers In List View Select And Deselect
 TC018 - Reload Keeps Registerauswahl Stable
     [Documentation]    Reloads the page and verifies that core components are
     ...                still visible and the route remains stable.
-    [Tags]             smoke    register-auswahl    stability    reload
+    [Tags]             register-auswahl    stability    reload
     Reload Register Auswahl And Verify Core Content

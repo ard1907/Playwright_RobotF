@@ -103,7 +103,7 @@ class dsc_register_api_fixture_library:
                 "Run the first-run-api test to generate it:\n"
                 "  robot --include first-run-api "
                 "--variable ENABLE_API_FIRST_RUN_TESTS:True "
-                "tests/ui/ts_05b_smoke_test_register_cards_generic.robot"
+                "tests/ui/ts_05b_register_cards_generic.robot"
             )
         with open(path, encoding="utf-8") as fh:
             return json.load(fh)
