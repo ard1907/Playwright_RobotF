@@ -4,9 +4,10 @@
 #                                                     (API-Response Verification)
 #
 # Tests any number of register cards by comparing the live
-# "Persönliche Daten anfragen" API response against a stored JSON fixture.
+# "Persönliche Daten anfragen" API response after browser-side decryption
+# against stored JSON fixtures.
 # Each register card is one test case (static list); adding a new card means
-# adding one verification test + one first-run-api test + one JSON fixture.
+# adding one verification test + one first-run-api test + two JSON fixtures.
 #
 # ── Relation to ts_05 ──────────────────────────────────────────────────────────
 # This suite is the API-response counterpart of
@@ -14,10 +15,12 @@
 #
 #   ts_05  → dialog-content verification against YAML fixtures
 #             (test_data/registers/<tag>.yaml)
-#   ts_05b → API-response verification against JSON fixtures
-#             (test_data/registers/<tag>.json)
+#   ts_05b → API-response verification against decrypted JSON fixtures
+#             (test_data/registers/<tag>.json + <tag>_raw.json)
 #
 # Both suites exist independently; neither modifies the other.
+# The decryption uses a BrowserLibrary JS extension to capture XHR traffic
+# and crypto.subtle.decrypt calls from the app's main thread.
 #
 # ── Two Operating Modes ────────────────────────────────────────────────────────
 #
@@ -32,8 +35,8 @@
 #     robot --include first-run-api \
 #           --variable ENABLE_API_FIRST_RUN_TESTS:True \
 #           tests/ui/ts_05b_register_cards_generic.robot
-#     Drives the full workflow, captures the API response body, and writes
-#     (or updates) the JSON fixture.
+#     Drives the full workflow, captures the encrypted API response, decrypts it
+#     in the browser, and writes (or updates) the JSON fixture pair.
 #     By default, skips writing when a fixture already exists and is completed.
 #
 #   First-run-api with forced overwrite:
@@ -43,14 +46,15 @@
 #           tests/ui/ts_05b_register_cards_generic.robot
 #
 # ── Fixture File Convention ────────────────────────────────────────────────────
-#   test_data/registers/<tag>.json   (e.g. bva.json, dguv.json)
+#   test_data/registers/<tag>.json       processed decrypted key/value payload
+#   test_data/registers/<tag>_raw.json   verbatim decrypted XML payload
 #   Same directory as YAML fixtures; different extension.
 #
 # ── Adding a New Register Card ─────────────────────────────────────────────────
 #   1. Add one "Verify Register Api Workflow: <Name>" test case below
 #   2. Add one "API First Run: Capture … <Name>" test case below
-#   3. Run first-run-api to populate the JSON fixture, review, and commit.
-#   (No YAML file needed for this suite; only the JSON fixture.)
+#   3. Run first-run-api to populate both JSON fixtures, review, and commit.
+#   (No YAML file needed for this suite; only the JSON fixture pair.)
 #
 # ── Suite Lifecycle ────────────────────────────────────────────────────────────
 #   Suite Setup     → Login once (AusweisApp eID)
@@ -135,8 +139,9 @@ Require Explicit Api First Run Mode
 
 Run Register Api Card First Run Capture
     [Documentation]    Drives the full register card workflow, captures the live
-    ...                "Persönliche Daten anfragen" API response, and writes the
-    ...                response body to the given JSON fixture file.
+    ...                "Persönliche Daten anfragen" API response, decrypts it in
+    ...                the browser, and writes both the processed fixture and the
+    ...                companion raw decrypted XML fixture.
     ...
     ...                By default, skips writing when the fixture already exists and
     ...                is marked as completed.
@@ -155,7 +160,8 @@ Run Register Api Card First Run Capture
     ...    fixture_path=${fixture_path}
     ...    force_regenerate=${API_FIXTURE_FORCE_REGENERATE}
     Close Register Protokolldaten Dialog
-    Log    API first-run complete. Please review the fixture and commit: ${fixture_path}
+    ${raw_fixture_path}=    Replace String    ${fixture_path}    .json    _raw.json
+    Log    API first-run complete. Please review the fixtures and commit: ${fixture_path} | ${raw_fixture_path}
 
 
 *** Test Cases ***
@@ -171,7 +177,7 @@ Run Register Api Card First Run Capture
 Verify Register Api Workflow: Test BVA
     [Documentation]    Loads test_data/registers/bva.json and verifies the live
     ...                BVA "Persönliche Daten anfragen" API response against the
-    ...                stored reference body:
+    ...                stored decrypted reference body:
     ...                  • Full workflow is driven (same as ts_05 BVA test)
     ...                  • Live API response body is compared against the fixture
     ...                  • Volatile keys (tokens, timestamps …) are excluded
@@ -184,7 +190,7 @@ Verify Register Api Workflow: Test BVA
 Verify Register Api Workflow: Test-DGUV
     [Documentation]    Loads test_data/registers/dguv.json and verifies the live
     ...                DGUV "Persönliche Daten anfragen" API response against the
-    ...                stored reference body.
+    ...                stored decrypted reference body.
     ...
     ...                Skip: when dguv.json is absent or not yet populated by a
     ...                first-run-api execution.
@@ -218,8 +224,9 @@ Verify Register Api Workflow: Test-DGUV
 
 API First Run: Capture And Generate Fixture For Test BVA
     [Documentation]    Drives the full BVA register card workflow, intercepts the
-    ...                "Persönliche Daten anfragen" API response, and writes it to
-    ...                test_data/registers/bva.json.
+    ...                "Persönliche Daten anfragen" API response, decrypts it in
+    ...                the browser, and writes it to test_data/registers/bva.json
+    ...                plus test_data/registers/bva_raw.json.
     ...
     ...                Run once before the normal verification tests:
     ...                  robot --include first-run-api \
@@ -232,7 +239,8 @@ API First Run: Capture And Generate Fixture For Test BVA
     ...                        --variable API_FIXTURE_FORCE_REGENERATE:True \
     ...                        tests/ui/ts_05b_register_cards_generic.robot
     ...
-    ...                After the run: review test_data/registers/bva.json and commit.
+    ...                After the run: review test_data/registers/bva.json and
+    ...                test_data/registers/bva_raw.json, then commit.
     [Setup]    Require Explicit Api First Run Mode
     [Tags]    first-run-api    bva
     Run Register Api Card First Run Capture
@@ -240,8 +248,9 @@ API First Run: Capture And Generate Fixture For Test BVA
 
 API First Run: Capture And Generate Fixture For Test-DGUV
     [Documentation]    Drives the full Test-DGUV register card workflow, intercepts
-    ...                the "Persönliche Daten anfragen" API response, and writes it
-    ...                to test_data/registers/dguv.json.
+    ...                the "Persönliche Daten anfragen" API response, decrypts it
+    ...                in the browser, and writes it to test_data/registers/dguv.json
+    ...                plus test_data/registers/dguv_raw.json.
     ...
     ...                Run once before the normal verification tests:
     ...                  robot --include first-run-api \
@@ -254,7 +263,8 @@ API First Run: Capture And Generate Fixture For Test-DGUV
     ...                        --variable API_FIXTURE_FORCE_REGENERATE:True \
     ...                        tests/ui/ts_05b_register_cards_generic.robot
     ...
-    ...                After the run: review test_data/registers/dguv.json and commit.
+    ...                After the run: review test_data/registers/dguv.json and
+    ...                test_data/registers/dguv_raw.json, then commit.
     [Setup]    Require Explicit Api First Run Mode
     [Tags]    first-run-api    dguv
     Run Register Api Card First Run Capture

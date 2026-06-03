@@ -10,9 +10,10 @@
 #
 #   First-run-api mode (data capture):
 #     Drives the full register card workflow, intercepts the
-#     "Persönliche Daten anfragen" API response, and writes the full response
-#     body to a JSON fixture file:
-#       test_data/registers/<tag>.json
+#     "Persönliche Daten anfragen" API response, decrypts it in the browser
+#     using a persistent JS extension hook, and writes two JSON fixture files:
+#       test_data/registers/<tag>.json      (processed decrypted payload)
+#       test_data/registers/<tag>_raw.json  (verbatim decrypted XML)
 #
 #   Verification mode (default):
 #     Loads the stored JSON fixture, re-runs the full workflow, intercepts the
@@ -21,7 +22,9 @@
 #     the comparison automatically.
 #
 # ── Fixture File Convention ────────────────────────────────────────────────────
-#   test_data/registers/<tag>.json   (e.g. bva.json, dguv.json)
+#   test_data/registers/<tag>.json       processed decrypted key/value payload
+#   test_data/registers/<tag>_raw.json   verbatim decrypted XML payload
+#   (e.g. bva.json + bva_raw.json, dguv.json + dguv_raw.json)
 #   Same directory as the YAML fixtures; different extension.
 #
 # ── Dependencies ───────────────────────────────────────────────────────────────
@@ -29,6 +32,8 @@
 #     → shared navigation, dialog, and API-response keywords / variables
 #   resources/libraries/dsc_register_api_fixture_library.py
 #     → JSON fixture I/O and response comparison logic
+#   resources/libraries/InterceptCryptLibrary.py
+#     → Browser JS extension for capturing and decrypting API responses
 #
 # ── New Keywords ───────────────────────────────────────────────────────────────
 #   Fetch Personal Data And Return Api Response
@@ -48,6 +53,7 @@
 *** Settings ***
 Library     Browser
 Library     OperatingSystem
+Library     String
 Library     Collections
 
 Resource    ../resources/dsc_variables.robot
@@ -55,12 +61,14 @@ Resource    ../resources/dsc_shared_keywords.robot
 Resource    ../pages/dsc_register_result_page.robot
 
 Library     ../resources/libraries/dsc_register_api_fixture_library.py
+Library     ../resources/libraries/InterceptCryptLibrary.py
 
 
 *** Variables ***
 
 ${REG_DIALOG_DATA_API_RESPONSE_MATCHER}
 ...    response => response.url().endsWith('/api/register-inhalts-data') && response.request().method() === 'POST'
+${REG_DIALOG_DATA_API_DECRYPT_MATCHER}    **/api/register-inhalts-data
 
 
 *** Keywords ***
@@ -71,7 +79,8 @@ Fetch Personal Data And Return Api Response
     [Documentation]    Clicks "Persönliche Daten anfragen" inside the open
     ...                Protokolldaten dialog, captures the API response, waits
     ...                for the "Daten abgerufen" confirmation state, and returns
-    ...                the raw Browser Library response object.
+    ...                the raw Browser response plus the browser-side decrypted
+    ...                payload captured via InterceptCrypt.
     ...
     ...                This is a variant of "Fetch Personal Data In Register Dialog"
     ...                (from dsc_register_result_page.robot) that additionally
@@ -85,6 +94,8 @@ Fetch Personal Data And Return Api Response
     ...                  ${register_name}  – Register card name (for error/skip msgs)
     [Arguments]    ${register_name}=Unknown Register
     Wait For Elements State    ${REG_DIALOG_ANFRAGEN_BTN}    visible    timeout=${TIMEOUT}
+    Start Crypt Intercept    ${REG_DIALOG_DATA_API_DECRYPT_MATCHER}
+    Clear Crypt Events
     ${response_promise}=    Promise To    Wait For Response
     ...    ${REG_DIALOG_DATA_API_RESPONSE_MATCHER}
     ...    timeout=30s
@@ -101,7 +112,31 @@ Fetch Personal Data And Return Api Response
         ...    ${api_response}
     END
     Wait For Personal Data Or Skip On Known Error    ${register_name}    ${api_response}
-    RETURN    ${api_response}
+    ${crypt_response}=    Wait For Crypt Response
+    ...    matcher=${REG_DIALOG_DATA_API_DECRYPT_MATCHER}
+    ...    timeout=10s
+    ${decrypted_response}=    Create Dictionary
+    ...    request=${api_response}[request]
+    ...    headers=${api_response}[headers]
+    ...    body=${api_response}[body]
+    ...    ok=${api_response}[ok]
+    ...    status=${api_response}[status]
+    ...    url=${api_response}[url]
+    ...    method=${crypt_response}[method]
+    ...    content_type=${crypt_response}[content_type]
+    ...    encrypted_response_body=${crypt_response}[encrypted_response_body]
+    ...    algorithm=${crypt_response}[algorithm]
+    ...    key_type=${crypt_response}[key_type]
+    ...    key_algorithm=${crypt_response}[key_algorithm]
+    ...    plaintext_xml=${crypt_response}[plaintext_xml]
+    ...    plaintext_json=${crypt_response}[plaintext_json]
+    ...    decrypt_events=${crypt_response}[decrypt_events]
+    ...    errors=${crypt_response}[errors]
+    IF    $decrypted_response["plaintext_json"] is None
+        Fail
+        ...    Decrypted API payload for "${register_name}" could not be parsed as XML. Check InterceptCryptLibrary and the live response payload.
+    END
+    RETURN    ${decrypted_response}
 
 
 # ── Composite Workflow: Full Run Returning API Response ────────────────────────
@@ -134,8 +169,10 @@ Run Full Register Workflow And Return Api Response
 # ── First-Run: Save API Response as JSON Fixture ───────────────────────────────
 
 Generate Register Api Fixture From Response
-    [Documentation]    Saves the captured Browser Library API response to a JSON
-    ...                fixture file (test_data/registers/<tag>.json).
+    [Documentation]    Saves the decrypted register payload into the primary JSON
+    ...                fixture file (test_data/registers/<tag>.json) and writes a
+    ...                companion raw fixture with the verbatim decrypted XML to
+    ...                test_data/registers/<tag>_raw.json.
     ...
     ...                By default skips writing when the fixture already exists and
     ...                is marked as completed.  Pass ${force_regenerate}=${True}
@@ -145,8 +182,8 @@ Generate Register Api Fixture From Response
     ...                regenerated without explicit force_regenerate.
     ...
     ...                Arguments:
-    ...                  ${api_response}     – Browser Library response object
-    ...                                        (must not be ${None})
+    ...                  ${api_response}     – response dictionary returned by
+    ...                                        Fetch Personal Data And Return Api Response
     ...                  ${register_name}    – Exact register card h3 text
     ...                  ${register_tag}     – Short tag (e.g. "bva")
     ...                  ${fixture_path}     – Absolute path to the .json output file
@@ -170,15 +207,31 @@ Generate Register Api Fixture From Response
     IF    ${exists} and not ${is_complete}
         Log    API fixture exists but is incomplete; regenerating: ${fixture_path}    WARN
     END
-    ${fixture_data}=    Build Api First Run Fixture
+    ${raw_fixture_path}=    Replace String    ${fixture_path}    .json    _raw.json
+    ${fixture_data}=    Build Decrypted Api First Run Fixture
     ...    register_name=${register_name}
     ...    register_tag=${register_tag}
     ...    response_status=${api_response}[status]
     ...    response_url=${api_response}[url]
-    ...    body_bytes=${api_response}[body]
+    ...    plaintext_json=${api_response}[plaintext_json]
+    ...    raw_fixture_path=${raw_fixture_path}
     ...    existing_fixture=${existing}
+    ${raw_fixture_data}=    Build Decrypted Api Raw Fixture
+    ...    register_name=${register_name}
+    ...    register_tag=${register_tag}
+    ...    response_status=${api_response}[status]
+    ...    response_url=${api_response}[url]
+    ...    encrypted_response_body=${api_response}[encrypted_response_body]
+    ...    plaintext_xml=${api_response}[plaintext_xml]
+    ...    plaintext_json=${api_response}[plaintext_json]
+    ...    algorithm=${api_response}[algorithm]
+    ...    key_type=${api_response}[key_type]
+    ...    key_algorithm=${api_response}[key_algorithm]
+    ...    decrypt_events=${api_response}[decrypt_events]
+    ...    errors=${api_response}[errors]
     Write Api Fixture    ${fixture_path}    ${fixture_data}
-    Log    API first-run: fixture written to ${fixture_path} – please review and commit.
+    Write Api Fixture    ${raw_fixture_path}    ${raw_fixture_data}
+    Log    API first-run: fixtures written to ${fixture_path} and ${raw_fixture_path} – please review and commit.
 
 
 # ── Verification: Compare API Response Against Fixture ─────────────────────────
@@ -209,6 +262,9 @@ Run Register Api Card Verification
     ${is_complete}=    Is Api Fixture Completed    ${fixture}
     Skip If    not ${is_complete}
     ...    API fixture not yet populated by first-run-api: ${fixture_path}\nRun: robot --include first-run-api --variable ENABLE_API_FIRST_RUN_TESTS:True tests/ui/ts_05b_register_cards_generic.robot
+    ${is_decrypted_fixture}=    Is Decrypted Api Fixture    ${fixture}
+    Skip If    not ${is_decrypted_fixture}
+    ...    API fixture still uses the legacy encrypted-envelope format: ${fixture_path}\nRe-run first-run-api to regenerate the decrypted fixture pair.
     ${register_name}=    Get Api Fixture Register Name    ${fixture}
     # ── Run the full workflow and capture the live API response ────────────────
     ${api_response}=    Run Full Register Workflow And Return Api Response    ${register_name}
@@ -218,7 +274,7 @@ Run Register Api Card Verification
     END
     # ── Compare bodies ─────────────────────────────────────────────────────────
     ${reference_body}=    Get Api Response Body    ${fixture}
-    ${current_body}=    Parse Api Response Body Bytes    ${api_response}[body]
+    ${current_body}=    Set Variable    ${api_response}[plaintext_json]
     ${extra_skip_keys}=    Get Comparison Skip Keys    ${fixture}
     ${diffs}=    Compare Api Response Bodies
     ...    ${reference_body}

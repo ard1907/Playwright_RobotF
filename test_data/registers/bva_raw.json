@@ -1,0 +1,853 @@
+{
+  "register": {
+    "name": "Test BVA",
+    "tag": "bva"
+  },
+  "first_run": {
+    "completed": true,
+    "captured_at": "2026-06-03T12:46:30",
+    "phase": "personal_data_request"
+  },
+  "api_response": {
+    "format": "decrypted_xml_raw",
+    "status": 200,
+    "url": "https://qs-datenschutzcockpit.dsc.govkg.de/api/register-inhalts-data",
+    "algorithm": "AES-GCM",
+    "key_type": "secret",
+    "key_algorithm": "AES-GCM",
+    "encrypted_response_body": "{\"registerId\":\"3e8872de-e611-4245-836e-f256ed125533\",\"body\":\"<?xml version=\\\"1.0\\\" encoding=\\\"UTF-8\\\" standalone=\\\"no\\\"?><ns2:antwortInhaltsdaten xmlns:ns2=\\\"http://xoev.de/datenschutzcockpit/xdatenschutzcockpit/transport_http/1.0.1\\\" xmlns=\\\"http://xoev.de/datenschutzcockpit/xdatenschutzcockpit/datentypen_xml/1.0.1\\\" xmlns:ns3=\\\"http://xoev.de/datenschutzcockpit/xdatenschutzcockpit/transport_http/0.1.0-pilot\\\" version=\\\"1.0.1\\\"><xenc:EncryptedData xmlns:xenc=\\\"http://www.w3.org/2001/04/xmlenc#\\\" Type=\\\"http://www.w3.org/2001/04/xmlenc#Content\\\"><xenc:EncryptionMethod Algorithm=\\\"http://www.w3.org/2009/xmlenc11#aes256-gcm\\\"/><xenc:CipherData><xenc:CipherValue>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</xenc:CipherValue></xenc:CipherData></xenc:EncryptedData></ns2:antwortInhaltsdaten>\",\"standard\":{\"version\":\"1.0.1\"}}",
+    "plaintext_xml": "<responseAbfrageInhaltsdaten correlationID=\"31c9cb36-1933-4317-a576-33d64e71077b\"><inhaltsdaten><gruppeInhaltsdaten><label>Antwortnachricht - Abruf mit Personendaten</label><inhaltsdaten><gruppeInhaltsdaten><label>Metadaten</label><inhaltsdaten><inhaltsdatenBeschreibung><label>Produkt</label></inhaltsdatenBeschreibung><inhalt>IDA</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Produkthersteller</label></inhaltsdatenBeschreibung><inhalt>Bundesverwaltungsamt, Registermodernisierungsbehörde</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Produktversion</label></inhaltsdatenBeschreibung><inhalt>33.0.0</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Standard</label></inhaltsdatenBeschreibung><inhalt>XBasisdaten</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Test</label></inhaltsdatenBeschreibung><inhalt>true</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Version</label></inhaltsdatenBeschreibung><inhalt>1.5</inhalt></inhaltsdaten></gruppeInhaltsdaten></inhaltsdaten><inhaltsdaten><gruppeInhaltsdaten><label>Identifikation der Nachricht</label><inhaltsdaten><inhaltsdatenBeschreibung><label>Nachrichten-UUID</label></inhaltsdatenBeschreibung><inhalt>93d148d4-0fdd-410c-82f0-4426a3772d3c</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Nachrichtentyp</label></inhaltsdatenBeschreibung><inhalt>0102 (urn:xoev-de:xbasisdaten:codeliste:nachrichtentypen_3)</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Erstellungszeitpunkt</label></inhaltsdatenBeschreibung><inhalt>2026-06-03T10:46:24.429</inhalt></inhaltsdaten></gruppeInhaltsdaten></inhaltsdaten><inhaltsdaten><gruppeInhaltsdaten><label>Autor</label><inhaltsdaten><inhaltsdatenBeschreibung><label>Verzeichnisdienst</label></inhaltsdatenBeschreibung><inhalt>IDA-BHVZ (urn:xoev-de:kosit:codeliste:verzeichnisdienst_3)</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Kennung</label></inhaltsdatenBeschreibung><inhalt>100100</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Name</label></inhaltsdatenBeschreibung><inhalt>Bundesverwaltungsamt, Registermodernisierungsbehörde</inhalt></inhaltsdaten></gruppeInhaltsdaten></inhaltsdaten><inhaltsdaten><gruppeInhaltsdaten><label>Leser</label><inhaltsdaten><inhaltsdatenBeschreibung><label>Verzeichnisdienst</label></inhaltsdatenBeschreibung><inhalt>IDA-BHVZ (urn:xoev-de:kosit:codeliste:verzeichnisdienst_3)</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Kennung</label></inhaltsdatenBeschreibung><inhalt>100101</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Name</label></inhaltsdatenBeschreibung><inhalt>Datenschutzcockpit</inhalt></inhaltsdaten></gruppeInhaltsdaten></inhaltsdaten><inhaltsdaten><gruppeInhaltsdaten><label>Angaben zur Person</label><inhaltsdaten><inhaltsdatenBeschreibung><label>Identifikationsnummer</label></inhaltsdatenBeschreibung><inhalt>08214967384</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Geburtstag</label></inhaltsdatenBeschreibung><inhalt>1964-08-12</inhalt></inhaltsdaten></gruppeInhaltsdaten></inhaltsdaten></gruppeInhaltsdaten></inhaltsdaten></responseAbfrageInhaltsdaten>",
+    "plaintext_json": {
+      "tag": "responseAbfrageInhaltsdaten",
+      "attributes": {
+        "correlationID": "31c9cb36-1933-4317-a576-33d64e71077b"
+      },
+      "children": {
+        "inhaltsdaten": {
+          "tag": "inhaltsdaten",
+          "children": {
+            "gruppeInhaltsdaten": {
+              "tag": "gruppeInhaltsdaten",
+              "children": {
+                "label": {
+                  "tag": "label",
+                  "text": "Antwortnachricht - Abruf mit Personendaten"
+                },
+                "inhaltsdaten": [
+                  {
+                    "tag": "inhaltsdaten",
+                    "children": {
+                      "gruppeInhaltsdaten": {
+                        "tag": "gruppeInhaltsdaten",
+                        "children": {
+                          "label": {
+                            "tag": "label",
+                            "text": "Metadaten"
+                          },
+                          "inhaltsdaten": [
+                            {
+                              "tag": "inhaltsdaten",
+                              "children": {
+                                "inhaltsdatenBeschreibung": {
+                                  "tag": "inhaltsdatenBeschreibung",
+                                  "children": {
+                                    "label": {
+                                      "tag": "label",
+                                      "text": "Produkt"
+                                    }
+                                  }
+                                },
+                                "inhalt": {
+                                  "tag": "inhalt",
+                                  "text": "IDA"
+                                }
+                              }
+                            },
+                            {
+                              "tag": "inhaltsdaten",
+                              "children": {
+                                "inhaltsdatenBeschreibung": {
+                                  "tag": "inhaltsdatenBeschreibung",
+                                  "children": {
+                                    "label": {
+                                      "tag": "label",
+                                      "text": "Produkthersteller"
+                                    }
+                                  }
+                                },
+                                "inhalt": {
+                                  "tag": "inhalt",
+                                  "text": "Bundesverwaltungsamt, Registermodernisierungsbehörde"
+                                }
+                              }
+                            },
+                            {
+                              "tag": "inhaltsdaten",
+                              "children": {
+                                "inhaltsdatenBeschreibung": {
+                                  "tag": "inhaltsdatenBeschreibung",
+                                  "children": {
+                                    "label": {
+                                      "tag": "label",
+                                      "text": "Produktversion"
+                                    }
+                                  }
+                                },
+                                "inhalt": {
+                                  "tag": "inhalt",
+                                  "text": "33.0.0"
+                                }
+                              }
+                            },
+                            {
+                              "tag": "inhaltsdaten",
+                              "children": {
+                                "inhaltsdatenBeschreibung": {
+                                  "tag": "inhaltsdatenBeschreibung",
+                                  "children": {
+                                    "label": {
+                                      "tag": "label",
+                                      "text": "Standard"
+                                    }
+                                  }
+                                },
+                                "inhalt": {
+                                  "tag": "inhalt",
+                                  "text": "XBasisdaten"
+                                }
+                              }
+                            },
+                            {
+                              "tag": "inhaltsdaten",
+                              "children": {
+                                "inhaltsdatenBeschreibung": {
+                                  "tag": "inhaltsdatenBeschreibung",
+                                  "children": {
+                                    "label": {
+                                      "tag": "label",
+                                      "text": "Test"
+                                    }
+                                  }
+                                },
+                                "inhalt": {
+                                  "tag": "inhalt",
+                                  "text": "true"
+                                }
+                              }
+                            },
+                            {
+                              "tag": "inhaltsdaten",
+                              "children": {
+                                "inhaltsdatenBeschreibung": {
+                                  "tag": "inhaltsdatenBeschreibung",
+                                  "children": {
+                                    "label": {
+                                      "tag": "label",
+                                      "text": "Version"
+                                    }
+                                  }
+                                },
+                                "inhalt": {
+                                  "tag": "inhalt",
+                                  "text": "1.5"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "tag": "inhaltsdaten",
+                    "children": {
+                      "gruppeInhaltsdaten": {
+                        "tag": "gruppeInhaltsdaten",
+                        "children": {
+                          "label": {
+                            "tag": "label",
+                            "text": "Identifikation der Nachricht"
+                          },
+                          "inhaltsdaten": [
+                            {
+                              "tag": "inhaltsdaten",
+                              "children": {
+                                "inhaltsdatenBeschreibung": {
+                                  "tag": "inhaltsdatenBeschreibung",
+                                  "children": {
+                                    "label": {
+                                      "tag": "label",
+                                      "text": "Nachrichten-UUID"
+                                    }
+                                  }
+                                },
+                                "inhalt": {
+                                  "tag": "inhalt",
+                                  "text": "93d148d4-0fdd-410c-82f0-4426a3772d3c"
+                                }
+                              }
+                            },
+                            {
+                              "tag": "inhaltsdaten",
+                              "children": {
+                                "inhaltsdatenBeschreibung": {
+                                  "tag": "inhaltsdatenBeschreibung",
+                                  "children": {
+                                    "label": {
+                                      "tag": "label",
+                                      "text": "Nachrichtentyp"
+                                    }
+                                  }
+                                },
+                                "inhalt": {
+                                  "tag": "inhalt",
+                                  "text": "0102 (urn:xoev-de:xbasisdaten:codeliste:nachrichtentypen_3)"
+                                }
+                              }
+                            },
+                            {
+                              "tag": "inhaltsdaten",
+                              "children": {
+                                "inhaltsdatenBeschreibung": {
+                                  "tag": "inhaltsdatenBeschreibung",
+                                  "children": {
+                                    "label": {
+                                      "tag": "label",
+                                      "text": "Erstellungszeitpunkt"
+                                    }
+                                  }
+                                },
+                                "inhalt": {
+                                  "tag": "inhalt",
+                                  "text": "2026-06-03T10:46:24.429"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "tag": "inhaltsdaten",
+                    "children": {
+                      "gruppeInhaltsdaten": {
+                        "tag": "gruppeInhaltsdaten",
+                        "children": {
+                          "label": {
+                            "tag": "label",
+                            "text": "Autor"
+                          },
+                          "inhaltsdaten": [
+                            {
+                              "tag": "inhaltsdaten",
+                              "children": {
+                                "inhaltsdatenBeschreibung": {
+                                  "tag": "inhaltsdatenBeschreibung",
+                                  "children": {
+                                    "label": {
+                                      "tag": "label",
+                                      "text": "Verzeichnisdienst"
+                                    }
+                                  }
+                                },
+                                "inhalt": {
+                                  "tag": "inhalt",
+                                  "text": "IDA-BHVZ (urn:xoev-de:kosit:codeliste:verzeichnisdienst_3)"
+                                }
+                              }
+                            },
+                            {
+                              "tag": "inhaltsdaten",
+                              "children": {
+                                "inhaltsdatenBeschreibung": {
+                                  "tag": "inhaltsdatenBeschreibung",
+                                  "children": {
+                                    "label": {
+                                      "tag": "label",
+                                      "text": "Kennung"
+                                    }
+                                  }
+                                },
+                                "inhalt": {
+                                  "tag": "inhalt",
+                                  "text": "100100"
+                                }
+                              }
+                            },
+                            {
+                              "tag": "inhaltsdaten",
+                              "children": {
+                                "inhaltsdatenBeschreibung": {
+                                  "tag": "inhaltsdatenBeschreibung",
+                                  "children": {
+                                    "label": {
+                                      "tag": "label",
+                                      "text": "Name"
+                                    }
+                                  }
+                                },
+                                "inhalt": {
+                                  "tag": "inhalt",
+                                  "text": "Bundesverwaltungsamt, Registermodernisierungsbehörde"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "tag": "inhaltsdaten",
+                    "children": {
+                      "gruppeInhaltsdaten": {
+                        "tag": "gruppeInhaltsdaten",
+                        "children": {
+                          "label": {
+                            "tag": "label",
+                            "text": "Leser"
+                          },
+                          "inhaltsdaten": [
+                            {
+                              "tag": "inhaltsdaten",
+                              "children": {
+                                "inhaltsdatenBeschreibung": {
+                                  "tag": "inhaltsdatenBeschreibung",
+                                  "children": {
+                                    "label": {
+                                      "tag": "label",
+                                      "text": "Verzeichnisdienst"
+                                    }
+                                  }
+                                },
+                                "inhalt": {
+                                  "tag": "inhalt",
+                                  "text": "IDA-BHVZ (urn:xoev-de:kosit:codeliste:verzeichnisdienst_3)"
+                                }
+                              }
+                            },
+                            {
+                              "tag": "inhaltsdaten",
+                              "children": {
+                                "inhaltsdatenBeschreibung": {
+                                  "tag": "inhaltsdatenBeschreibung",
+                                  "children": {
+                                    "label": {
+                                      "tag": "label",
+                                      "text": "Kennung"
+                                    }
+                                  }
+                                },
+                                "inhalt": {
+                                  "tag": "inhalt",
+                                  "text": "100101"
+                                }
+                              }
+                            },
+                            {
+                              "tag": "inhaltsdaten",
+                              "children": {
+                                "inhaltsdatenBeschreibung": {
+                                  "tag": "inhaltsdatenBeschreibung",
+                                  "children": {
+                                    "label": {
+                                      "tag": "label",
+                                      "text": "Name"
+                                    }
+                                  }
+                                },
+                                "inhalt": {
+                                  "tag": "inhalt",
+                                  "text": "Datenschutzcockpit"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  },
+                  {
+                    "tag": "inhaltsdaten",
+                    "children": {
+                      "gruppeInhaltsdaten": {
+                        "tag": "gruppeInhaltsdaten",
+                        "children": {
+                          "label": {
+                            "tag": "label",
+                            "text": "Angaben zur Person"
+                          },
+                          "inhaltsdaten": [
+                            {
+                              "tag": "inhaltsdaten",
+                              "children": {
+                                "inhaltsdatenBeschreibung": {
+                                  "tag": "inhaltsdatenBeschreibung",
+                                  "children": {
+                                    "label": {
+                                      "tag": "label",
+                                      "text": "Identifikationsnummer"
+                                    }
+                                  }
+                                },
+                                "inhalt": {
+                                  "tag": "inhalt",
+                                  "text": "08214967384"
+                                }
+                              }
+                            },
+                            {
+                              "tag": "inhaltsdaten",
+                              "children": {
+                                "inhaltsdatenBeschreibung": {
+                                  "tag": "inhaltsdatenBeschreibung",
+                                  "children": {
+                                    "label": {
+                                      "tag": "label",
+                                      "text": "Geburtstag"
+                                    }
+                                  }
+                                },
+                                "inhalt": {
+                                  "tag": "inhalt",
+                                  "text": "1964-08-12"
+                                }
+                              }
+                            }
+                          ]
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "decrypt_events": [
+      {
+        "ts": "2026-06-03T10:46:30.544Z",
+        "algorithm": "AES-GCM",
+        "key_type": "secret",
+        "key_algorithm": "AES-GCM",
+        "cipher_bytes": 3295,
+        "plaintext_bytes": 3279,
+        "plaintext_xml": "<responseAbfrageInhaltsdaten correlationID=\"31c9cb36-1933-4317-a576-33d64e71077b\"><inhaltsdaten><gruppeInhaltsdaten><label>Antwortnachricht - Abruf mit Personendaten</label><inhaltsdaten><gruppeInhaltsdaten><label>Metadaten</label><inhaltsdaten><inhaltsdatenBeschreibung><label>Produkt</label></inhaltsdatenBeschreibung><inhalt>IDA</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Produkthersteller</label></inhaltsdatenBeschreibung><inhalt>Bundesverwaltungsamt, Registermodernisierungsbehörde</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Produktversion</label></inhaltsdatenBeschreibung><inhalt>33.0.0</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Standard</label></inhaltsdatenBeschreibung><inhalt>XBasisdaten</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Test</label></inhaltsdatenBeschreibung><inhalt>true</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Version</label></inhaltsdatenBeschreibung><inhalt>1.5</inhalt></inhaltsdaten></gruppeInhaltsdaten></inhaltsdaten><inhaltsdaten><gruppeInhaltsdaten><label>Identifikation der Nachricht</label><inhaltsdaten><inhaltsdatenBeschreibung><label>Nachrichten-UUID</label></inhaltsdatenBeschreibung><inhalt>93d148d4-0fdd-410c-82f0-4426a3772d3c</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Nachrichtentyp</label></inhaltsdatenBeschreibung><inhalt>0102 (urn:xoev-de:xbasisdaten:codeliste:nachrichtentypen_3)</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Erstellungszeitpunkt</label></inhaltsdatenBeschreibung><inhalt>2026-06-03T10:46:24.429</inhalt></inhaltsdaten></gruppeInhaltsdaten></inhaltsdaten><inhaltsdaten><gruppeInhaltsdaten><label>Autor</label><inhaltsdaten><inhaltsdatenBeschreibung><label>Verzeichnisdienst</label></inhaltsdatenBeschreibung><inhalt>IDA-BHVZ (urn:xoev-de:kosit:codeliste:verzeichnisdienst_3)</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Kennung</label></inhaltsdatenBeschreibung><inhalt>100100</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Name</label></inhaltsdatenBeschreibung><inhalt>Bundesverwaltungsamt, Registermodernisierungsbehörde</inhalt></inhaltsdaten></gruppeInhaltsdaten></inhaltsdaten><inhaltsdaten><gruppeInhaltsdaten><label>Leser</label><inhaltsdaten><inhaltsdatenBeschreibung><label>Verzeichnisdienst</label></inhaltsdatenBeschreibung><inhalt>IDA-BHVZ (urn:xoev-de:kosit:codeliste:verzeichnisdienst_3)</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Kennung</label></inhaltsdatenBeschreibung><inhalt>100101</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Name</label></inhaltsdatenBeschreibung><inhalt>Datenschutzcockpit</inhalt></inhaltsdaten></gruppeInhaltsdaten></inhaltsdaten><inhaltsdaten><gruppeInhaltsdaten><label>Angaben zur Person</label><inhaltsdaten><inhaltsdatenBeschreibung><label>Identifikationsnummer</label></inhaltsdatenBeschreibung><inhalt>08214967384</inhalt></inhaltsdaten><inhaltsdaten><inhaltsdatenBeschreibung><label>Geburtstag</label></inhaltsdatenBeschreibung><inhalt>1964-08-12</inhalt></inhaltsdaten></gruppeInhaltsdaten></inhaltsdaten></gruppeInhaltsdaten></inhaltsdaten></responseAbfrageInhaltsdaten>",
+        "plaintext_json": {
+          "tag": "responseAbfrageInhaltsdaten",
+          "attributes": {
+            "correlationID": "31c9cb36-1933-4317-a576-33d64e71077b"
+          },
+          "children": {
+            "inhaltsdaten": {
+              "tag": "inhaltsdaten",
+              "children": {
+                "gruppeInhaltsdaten": {
+                  "tag": "gruppeInhaltsdaten",
+                  "children": {
+                    "label": {
+                      "tag": "label",
+                      "text": "Antwortnachricht - Abruf mit Personendaten"
+                    },
+                    "inhaltsdaten": [
+                      {
+                        "tag": "inhaltsdaten",
+                        "children": {
+                          "gruppeInhaltsdaten": {
+                            "tag": "gruppeInhaltsdaten",
+                            "children": {
+                              "label": {
+                                "tag": "label",
+                                "text": "Metadaten"
+                              },
+                              "inhaltsdaten": [
+                                {
+                                  "tag": "inhaltsdaten",
+                                  "children": {
+                                    "inhaltsdatenBeschreibung": {
+                                      "tag": "inhaltsdatenBeschreibung",
+                                      "children": {
+                                        "label": {
+                                          "tag": "label",
+                                          "text": "Produkt"
+                                        }
+                                      }
+                                    },
+                                    "inhalt": {
+                                      "tag": "inhalt",
+                                      "text": "IDA"
+                                    }
+                                  }
+                                },
+                                {
+                                  "tag": "inhaltsdaten",
+                                  "children": {
+                                    "inhaltsdatenBeschreibung": {
+                                      "tag": "inhaltsdatenBeschreibung",
+                                      "children": {
+                                        "label": {
+                                          "tag": "label",
+                                          "text": "Produkthersteller"
+                                        }
+                                      }
+                                    },
+                                    "inhalt": {
+                                      "tag": "inhalt",
+                                      "text": "Bundesverwaltungsamt, Registermodernisierungsbehörde"
+                                    }
+                                  }
+                                },
+                                {
+                                  "tag": "inhaltsdaten",
+                                  "children": {
+                                    "inhaltsdatenBeschreibung": {
+                                      "tag": "inhaltsdatenBeschreibung",
+                                      "children": {
+                                        "label": {
+                                          "tag": "label",
+                                          "text": "Produktversion"
+                                        }
+                                      }
+                                    },
+                                    "inhalt": {
+                                      "tag": "inhalt",
+                                      "text": "33.0.0"
+                                    }
+                                  }
+                                },
+                                {
+                                  "tag": "inhaltsdaten",
+                                  "children": {
+                                    "inhaltsdatenBeschreibung": {
+                                      "tag": "inhaltsdatenBeschreibung",
+                                      "children": {
+                                        "label": {
+                                          "tag": "label",
+                                          "text": "Standard"
+                                        }
+                                      }
+                                    },
+                                    "inhalt": {
+                                      "tag": "inhalt",
+                                      "text": "XBasisdaten"
+                                    }
+                                  }
+                                },
+                                {
+                                  "tag": "inhaltsdaten",
+                                  "children": {
+                                    "inhaltsdatenBeschreibung": {
+                                      "tag": "inhaltsdatenBeschreibung",
+                                      "children": {
+                                        "label": {
+                                          "tag": "label",
+                                          "text": "Test"
+                                        }
+                                      }
+                                    },
+                                    "inhalt": {
+                                      "tag": "inhalt",
+                                      "text": "true"
+                                    }
+                                  }
+                                },
+                                {
+                                  "tag": "inhaltsdaten",
+                                  "children": {
+                                    "inhaltsdatenBeschreibung": {
+                                      "tag": "inhaltsdatenBeschreibung",
+                                      "children": {
+                                        "label": {
+                                          "tag": "label",
+                                          "text": "Version"
+                                        }
+                                      }
+                                    },
+                                    "inhalt": {
+                                      "tag": "inhalt",
+                                      "text": "1.5"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "tag": "inhaltsdaten",
+                        "children": {
+                          "gruppeInhaltsdaten": {
+                            "tag": "gruppeInhaltsdaten",
+                            "children": {
+                              "label": {
+                                "tag": "label",
+                                "text": "Identifikation der Nachricht"
+                              },
+                              "inhaltsdaten": [
+                                {
+                                  "tag": "inhaltsdaten",
+                                  "children": {
+                                    "inhaltsdatenBeschreibung": {
+                                      "tag": "inhaltsdatenBeschreibung",
+                                      "children": {
+                                        "label": {
+                                          "tag": "label",
+                                          "text": "Nachrichten-UUID"
+                                        }
+                                      }
+                                    },
+                                    "inhalt": {
+                                      "tag": "inhalt",
+                                      "text": "93d148d4-0fdd-410c-82f0-4426a3772d3c"
+                                    }
+                                  }
+                                },
+                                {
+                                  "tag": "inhaltsdaten",
+                                  "children": {
+                                    "inhaltsdatenBeschreibung": {
+                                      "tag": "inhaltsdatenBeschreibung",
+                                      "children": {
+                                        "label": {
+                                          "tag": "label",
+                                          "text": "Nachrichtentyp"
+                                        }
+                                      }
+                                    },
+                                    "inhalt": {
+                                      "tag": "inhalt",
+                                      "text": "0102 (urn:xoev-de:xbasisdaten:codeliste:nachrichtentypen_3)"
+                                    }
+                                  }
+                                },
+                                {
+                                  "tag": "inhaltsdaten",
+                                  "children": {
+                                    "inhaltsdatenBeschreibung": {
+                                      "tag": "inhaltsdatenBeschreibung",
+                                      "children": {
+                                        "label": {
+                                          "tag": "label",
+                                          "text": "Erstellungszeitpunkt"
+                                        }
+                                      }
+                                    },
+                                    "inhalt": {
+                                      "tag": "inhalt",
+                                      "text": "2026-06-03T10:46:24.429"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "tag": "inhaltsdaten",
+                        "children": {
+                          "gruppeInhaltsdaten": {
+                            "tag": "gruppeInhaltsdaten",
+                            "children": {
+                              "label": {
+                                "tag": "label",
+                                "text": "Autor"
+                              },
+                              "inhaltsdaten": [
+                                {
+                                  "tag": "inhaltsdaten",
+                                  "children": {
+                                    "inhaltsdatenBeschreibung": {
+                                      "tag": "inhaltsdatenBeschreibung",
+                                      "children": {
+                                        "label": {
+                                          "tag": "label",
+                                          "text": "Verzeichnisdienst"
+                                        }
+                                      }
+                                    },
+                                    "inhalt": {
+                                      "tag": "inhalt",
+                                      "text": "IDA-BHVZ (urn:xoev-de:kosit:codeliste:verzeichnisdienst_3)"
+                                    }
+                                  }
+                                },
+                                {
+                                  "tag": "inhaltsdaten",
+                                  "children": {
+                                    "inhaltsdatenBeschreibung": {
+                                      "tag": "inhaltsdatenBeschreibung",
+                                      "children": {
+                                        "label": {
+                                          "tag": "label",
+                                          "text": "Kennung"
+                                        }
+                                      }
+                                    },
+                                    "inhalt": {
+                                      "tag": "inhalt",
+                                      "text": "100100"
+                                    }
+                                  }
+                                },
+                                {
+                                  "tag": "inhaltsdaten",
+                                  "children": {
+                                    "inhaltsdatenBeschreibung": {
+                                      "tag": "inhaltsdatenBeschreibung",
+                                      "children": {
+                                        "label": {
+                                          "tag": "label",
+                                          "text": "Name"
+                                        }
+                                      }
+                                    },
+                                    "inhalt": {
+                                      "tag": "inhalt",
+                                      "text": "Bundesverwaltungsamt, Registermodernisierungsbehörde"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "tag": "inhaltsdaten",
+                        "children": {
+                          "gruppeInhaltsdaten": {
+                            "tag": "gruppeInhaltsdaten",
+                            "children": {
+                              "label": {
+                                "tag": "label",
+                                "text": "Leser"
+                              },
+                              "inhaltsdaten": [
+                                {
+                                  "tag": "inhaltsdaten",
+                                  "children": {
+                                    "inhaltsdatenBeschreibung": {
+                                      "tag": "inhaltsdatenBeschreibung",
+                                      "children": {
+                                        "label": {
+                                          "tag": "label",
+                                          "text": "Verzeichnisdienst"
+                                        }
+                                      }
+                                    },
+                                    "inhalt": {
+                                      "tag": "inhalt",
+                                      "text": "IDA-BHVZ (urn:xoev-de:kosit:codeliste:verzeichnisdienst_3)"
+                                    }
+                                  }
+                                },
+                                {
+                                  "tag": "inhaltsdaten",
+                                  "children": {
+                                    "inhaltsdatenBeschreibung": {
+                                      "tag": "inhaltsdatenBeschreibung",
+                                      "children": {
+                                        "label": {
+                                          "tag": "label",
+                                          "text": "Kennung"
+                                        }
+                                      }
+                                    },
+                                    "inhalt": {
+                                      "tag": "inhalt",
+                                      "text": "100101"
+                                    }
+                                  }
+                                },
+                                {
+                                  "tag": "inhaltsdaten",
+                                  "children": {
+                                    "inhaltsdatenBeschreibung": {
+                                      "tag": "inhaltsdatenBeschreibung",
+                                      "children": {
+                                        "label": {
+                                          "tag": "label",
+                                          "text": "Name"
+                                        }
+                                      }
+                                    },
+                                    "inhalt": {
+                                      "tag": "inhalt",
+                                      "text": "Datenschutzcockpit"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      },
+                      {
+                        "tag": "inhaltsdaten",
+                        "children": {
+                          "gruppeInhaltsdaten": {
+                            "tag": "gruppeInhaltsdaten",
+                            "children": {
+                              "label": {
+                                "tag": "label",
+                                "text": "Angaben zur Person"
+                              },
+                              "inhaltsdaten": [
+                                {
+                                  "tag": "inhaltsdaten",
+                                  "children": {
+                                    "inhaltsdatenBeschreibung": {
+                                      "tag": "inhaltsdatenBeschreibung",
+                                      "children": {
+                                        "label": {
+                                          "tag": "label",
+                                          "text": "Identifikationsnummer"
+                                        }
+                                      }
+                                    },
+                                    "inhalt": {
+                                      "tag": "inhalt",
+                                      "text": "08214967384"
+                                    }
+                                  }
+                                },
+                                {
+                                  "tag": "inhaltsdaten",
+                                  "children": {
+                                    "inhaltsdatenBeschreibung": {
+                                      "tag": "inhaltsdatenBeschreibung",
+                                      "children": {
+                                        "label": {
+                                          "tag": "label",
+                                          "text": "Geburtstag"
+                                        }
+                                      }
+                                    },
+                                    "inhalt": {
+                                      "tag": "inhalt",
+                                      "text": "1964-08-12"
+                                    }
+                                  }
+                                }
+                              ]
+                            }
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    ],
+    "errors": []
+  }
+}

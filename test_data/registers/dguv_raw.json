@@ -1,0 +1,175 @@
+{
+  "register": {
+    "name": "Test-DGUV",
+    "tag": "dguv"
+  },
+  "first_run": {
+    "completed": true,
+    "captured_at": "2026-06-03T12:47:12",
+    "phase": "personal_data_request"
+  },
+  "api_response": {
+    "format": "decrypted_xml_raw",
+    "status": 200,
+    "url": "https://qs-datenschutzcockpit.dsc.govkg.de/api/register-inhalts-data",
+    "algorithm": "AES-GCM",
+    "key_type": "secret",
+    "key_algorithm": "AES-GCM",
+    "encrypted_response_body": "{\"registerId\":\"097bfdcf-df71-466b-b4d3-99c61fc5d3be\",\"body\":\"\\n<ns3:RegisterResponse xmlns:ns2=\\\"http://www.w3.org/2000/09/xmldsig#\\\" xmlns:ns3=\\\"http://xoev.de/datenschutzcockpit/xdatenschutzcockpit/1.1.0\\\" xmlns:ns4=\\\"http://www.w3.org/2001/04/xmlenc#\\\" correlationID=\\\"0fb94d4e-c4c9-4be7-8386-1157682f1b77\\\" nachrichtentyp=\\\"antwortInhaltsdaten\\\" version=\\\"1.1.0\\\">\\n    <ns3:verschluesselteFachnachricht Type=\\\"http://www.w3.org/2001/04/xmlenc#Content\\\">\\n        <ns4:EncryptionMethod Algorithm=\\\"http://www.w3.org/2009/xmlenc11#aes256-gcm\\\"/>\\n        <ns4:CipherData>\\n            <ns4:CipherValue>JTrvD8HfN1F1p3xppGezXuw4yqIz3R73PqIq5f3ri7oUJqIKc3gudg9MVpZiIP1txYbTseIVjMSMz6JLz/bbNMHlrQXDLwI2gBbUHUhK/oy0giE/5LFZgOG8dDvKPv4O48q2I6dMBSPoeYJSHyqqGk88tezx5l4pHxWuQp43HxyGsmK5f8BEJQ72khAq4SJN+xtG6bxXp2gNkq81tbisiUgBQV1q6W5+XZj7mzrAu8b7Yl+6HGMZN++XZ/GOK+YYMFQASEVEj7+oOd9XjpKEETQM/Ab2By7LUJQYhMQUGlHrP/JyY6cJax6b1FGCjZl+EdCKi0IbB/BwNpCZWgga/8Dbe8Zf1+nnn5FISeH4fCUp0XcJLyDi7rmF5z9n/PPftQx407Qd1czCduYxjGKCUtDPFIusKBLGA+ABezkcZ2+hH/V42PXL4kcefhRR3BTx1velUE/uS54KzKmF8hBsy2obAy0MQ/n/fRSzWhN0D1pbdrV164nlguyqzvFjK7FbOTZ9//uCbChaqlk1VCxkXSbV2NchoeBZR0Fzg8XpMkJuLUQr7s4pXGAK5xoUe04nhCF7QCSS2nldJm8DoiTLXQqis6Qz/fhQGINe3I5j6hh1Wyk4SGeLSnXRGJtfuWxn+SuXtw7YY5D9DnDE86cLTG9n+2Dz1fJuOdtVFpIW2p7eetrSORxeMnF7ody51x4jRMRsotcD2ljjEdzOFdiMC47LQW2npqZZ6bRUcoXgy6Dlm0NV5aOGaHwN5+5PGoaiXuVbC4sh8RCFZOqNImWQBWM/zz+C0eJgeWzGMzs2kup6V/dEcVCK+VTOC744/mDDZCOBFva9VMeZGOnMPHW1BILa6jrnm5mFx9TLoa0aJD7VZTsUhEwqaQJf/yDf2HWjJ9VVq3DiZ9/u/UwswmZYcXCkC7VTv6XOpYsWWoVWTzph7noEPpbb3Lry1gNA6hg0hnn9PqDkY8X1qdIsI02w5Y6zcJ6kLyzRe8QjHnr8WHNttvc1sW+cz2ZhO0C4oaX0Z3bUnuiHH9sp39aDGgsinBZCQxWy5qu51eNjt9LFSG4tZojudabGKQamWKN2eHcUj3enIKHSGoduWqXqzQO/rcaA+I6VTZQ44gxF7sMF8BOLgoXDH+wgdliAffqf0kKWyEyQFAb58pTTGt3d5S9v0OByvpX4TeJCsUisbkhY634ZrwoOtA0jGMHOGtnfBaSXdchmKQI3/oEcKlm/36B2L10+eODSm30yrt0mvLvH06lyFcY0pLs5ZEDcNH6BhCKnJrfYK+FoCAMmvrZeiuFmc+ZBFIL5eY4WzRNNA5fWicDGfTQRSX2GJiqg9W/JQdg5CKu+lb8RPNa9xuwBAuz+h/QK6QtKZp1dyB8a8zjJa3PmFFC4+L9pplwI+ne80sgsBnhWT+DZCUiWZtLtM7M1Qr0ThbIoOzRLn0y3puQSGN8LzbrAqL4znhIkOOjkrfXnZQi+T6ZpZG3D+Yn6</ns4:CipherValue>\\n        </ns4:CipherData>\\n    </ns3:verschluesselteFachnachricht>\\n</ns3:RegisterResponse>\\n\",\"standard\":{\"version\":\"1.1.0\"}}",
+    "plaintext_xml": "\n<ns3:antwortInhaltsdaten xmlns:ns2=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:ns3=\"http://xoev.de/datenschutzcockpit/xdatenschutzcockpit/1.1.0\" xmlns:ns4=\"http://www.w3.org/2001/04/xmlenc#\">\n    <ns3:inhaltsdaten>\n        <ns3:gruppeInhaltsdaten>\n            <ns3:label>Lebensdaten</ns3:label>\n            <ns3:inhaltsdaten>\n                <ns3:inhaltsdatenBeschreibung>\n                    <ns3:label>Geburtsdatum</ns3:label>\n                </ns3:inhaltsdatenBeschreibung>\n                <ns3:inhalt>1964-08-12</ns3:inhalt>\n            </ns3:inhaltsdaten>\n        </ns3:gruppeInhaltsdaten>\n    </ns3:inhaltsdaten>\n    <ns3:inhaltsdaten>\n        <ns3:gruppeInhaltsdaten>\n            <ns3:label>Identitätsdaten</ns3:label>\n            <ns3:inhaltsdaten>\n                <ns3:inhaltsdatenBeschreibung>\n                    <ns3:label>Identifikationsnummer</ns3:label>\n                </ns3:inhaltsdatenBeschreibung>\n                <ns3:inhalt>08214967384</ns3:inhalt>\n            </ns3:inhaltsdaten>\n        </ns3:gruppeInhaltsdaten>\n    </ns3:inhaltsdaten>\n</ns3:antwortInhaltsdaten>\n",
+    "plaintext_json": {
+      "tag": "antwortInhaltsdaten",
+      "children": {
+        "inhaltsdaten": [
+          {
+            "tag": "inhaltsdaten",
+            "children": {
+              "gruppeInhaltsdaten": {
+                "tag": "gruppeInhaltsdaten",
+                "children": {
+                  "label": {
+                    "tag": "label",
+                    "text": "Lebensdaten"
+                  },
+                  "inhaltsdaten": {
+                    "tag": "inhaltsdaten",
+                    "children": {
+                      "inhaltsdatenBeschreibung": {
+                        "tag": "inhaltsdatenBeschreibung",
+                        "children": {
+                          "label": {
+                            "tag": "label",
+                            "text": "Geburtsdatum"
+                          }
+                        }
+                      },
+                      "inhalt": {
+                        "tag": "inhalt",
+                        "text": "1964-08-12"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          {
+            "tag": "inhaltsdaten",
+            "children": {
+              "gruppeInhaltsdaten": {
+                "tag": "gruppeInhaltsdaten",
+                "children": {
+                  "label": {
+                    "tag": "label",
+                    "text": "Identitätsdaten"
+                  },
+                  "inhaltsdaten": {
+                    "tag": "inhaltsdaten",
+                    "children": {
+                      "inhaltsdatenBeschreibung": {
+                        "tag": "inhaltsdatenBeschreibung",
+                        "children": {
+                          "label": {
+                            "tag": "label",
+                            "text": "Identifikationsnummer"
+                          }
+                        }
+                      },
+                      "inhalt": {
+                        "tag": "inhalt",
+                        "text": "08214967384"
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        ]
+      }
+    },
+    "decrypt_events": [
+      {
+        "ts": "2026-06-03T10:47:12.538Z",
+        "algorithm": "AES-GCM",
+        "key_type": "secret",
+        "key_algorithm": "AES-GCM",
+        "cipher_bytes": 1104,
+        "plaintext_bytes": 1088,
+        "plaintext_xml": "\n<ns3:antwortInhaltsdaten xmlns:ns2=\"http://www.w3.org/2000/09/xmldsig#\" xmlns:ns3=\"http://xoev.de/datenschutzcockpit/xdatenschutzcockpit/1.1.0\" xmlns:ns4=\"http://www.w3.org/2001/04/xmlenc#\">\n    <ns3:inhaltsdaten>\n        <ns3:gruppeInhaltsdaten>\n            <ns3:label>Lebensdaten</ns3:label>\n            <ns3:inhaltsdaten>\n                <ns3:inhaltsdatenBeschreibung>\n                    <ns3:label>Geburtsdatum</ns3:label>\n                </ns3:inhaltsdatenBeschreibung>\n                <ns3:inhalt>1964-08-12</ns3:inhalt>\n            </ns3:inhaltsdaten>\n        </ns3:gruppeInhaltsdaten>\n    </ns3:inhaltsdaten>\n    <ns3:inhaltsdaten>\n        <ns3:gruppeInhaltsdaten>\n            <ns3:label>Identitätsdaten</ns3:label>\n            <ns3:inhaltsdaten>\n                <ns3:inhaltsdatenBeschreibung>\n                    <ns3:label>Identifikationsnummer</ns3:label>\n                </ns3:inhaltsdatenBeschreibung>\n                <ns3:inhalt>08214967384</ns3:inhalt>\n            </ns3:inhaltsdaten>\n        </ns3:gruppeInhaltsdaten>\n    </ns3:inhaltsdaten>\n</ns3:antwortInhaltsdaten>\n",
+        "plaintext_json": {
+          "tag": "antwortInhaltsdaten",
+          "children": {
+            "inhaltsdaten": [
+              {
+                "tag": "inhaltsdaten",
+                "children": {
+                  "gruppeInhaltsdaten": {
+                    "tag": "gruppeInhaltsdaten",
+                    "children": {
+                      "label": {
+                        "tag": "label",
+                        "text": "Lebensdaten"
+                      },
+                      "inhaltsdaten": {
+                        "tag": "inhaltsdaten",
+                        "children": {
+                          "inhaltsdatenBeschreibung": {
+                            "tag": "inhaltsdatenBeschreibung",
+                            "children": {
+                              "label": {
+                                "tag": "label",
+                                "text": "Geburtsdatum"
+                              }
+                            }
+                          },
+                          "inhalt": {
+                            "tag": "inhalt",
+                            "text": "1964-08-12"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              },
+              {
+                "tag": "inhaltsdaten",
+                "children": {
+                  "gruppeInhaltsdaten": {
+                    "tag": "gruppeInhaltsdaten",
+                    "children": {
+                      "label": {
+                        "tag": "label",
+                        "text": "Identitätsdaten"
+                      },
+                      "inhaltsdaten": {
+                        "tag": "inhaltsdaten",
+                        "children": {
+                          "inhaltsdatenBeschreibung": {
+                            "tag": "inhaltsdatenBeschreibung",
+                            "children": {
+                              "label": {
+                                "tag": "label",
+                                "text": "Identifikationsnummer"
+                              }
+                            }
+                          },
+                          "inhalt": {
+                            "tag": "inhalt",
+                            "text": "08214967384"
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            ]
+          }
+        }
+      }
+    ],
+    "errors": []
+  }
+}

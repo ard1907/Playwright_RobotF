@@ -24,8 +24,11 @@ Keyword mapping (underscore → space):
   get_api_response_body           → Get Api Response Body
   get_api_response_status         → Get Api Response Status
   get_comparison_skip_keys        → Get Comparison Skip Keys
+    is_decrypted_api_fixture        → Is Decrypted Api Fixture
   parse_api_response_body_bytes   → Parse Api Response Body Bytes
   build_api_first_run_fixture     → Build Api First Run Fixture
+    build_decrypted_api_first_run_fixture → Build Decrypted Api First Run Fixture
+    build_decrypted_api_raw_fixture → Build Decrypted Api Raw Fixture
   write_api_fixture               → Write Api Fixture
   compare_api_response_bodies     → Compare Api Response Bodies
 """
@@ -83,6 +86,11 @@ class dsc_register_api_fixture_library:
         "traceId",
     })
 
+    _VOLATILE_FIELD_LABELS = frozenset({
+        "nachrichtenuuid",
+        "erstellungszeitpunkt",
+    })
+
     # ── Existence and Loading ──────────────────────────────────────────────────
 
     def api_fixture_exists(self, fixture_path: str) -> bool:
@@ -138,6 +146,10 @@ class dsc_register_api_fixture_library:
         Returns an empty list when not configured so callers always receive a list.
         """
         return fixture.get("comparison", {}).get("skip_keys", [])
+
+    def is_decrypted_api_fixture(self, fixture: dict) -> bool:
+        """Return True when the fixture uses the decrypted XML payload format."""
+        return fixture.get("api_response", {}).get("format") == "decrypted_xml"
 
     # ── Parsing ────────────────────────────────────────────────────────────────
 
@@ -228,6 +240,91 @@ class dsc_register_api_fixture_library:
             "comparison": comparison,
         }
 
+    def build_decrypted_api_first_run_fixture(
+        self,
+        register_name: str,
+        register_tag: str,
+        response_status,
+        response_url: str,
+        plaintext_json,
+        raw_fixture_path: str,
+        existing_fixture: dict = None,
+    ) -> dict:
+        """Build the primary fixture from the decrypted register payload."""
+        comparison_body = self._normalize_for_comparison(plaintext_json)
+
+        default_comparison = {
+            "skip_keys": [],
+            "strict": False,
+        }
+        comparison = (
+            existing_fixture.get("comparison", default_comparison)
+            if existing_fixture
+            else default_comparison
+        )
+
+        return {
+            "register": {
+                "name": str(register_name),
+                "tag": str(register_tag),
+            },
+            "first_run": {
+                "completed": True,
+                "captured_at": datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
+                "phase": "personal_data_request",
+            },
+            "api_response": {
+                "format": "decrypted_xml",
+                "status": int(response_status),
+                "url": str(response_url),
+                "body": plaintext_json,
+                "comparison_body": comparison_body,
+                "raw_fixture_path": str(raw_fixture_path),
+            },
+            "comparison": comparison,
+        }
+
+    def build_decrypted_api_raw_fixture(
+        self,
+        register_name: str,
+        register_tag: str,
+        response_status,
+        response_url: str,
+        encrypted_response_body,
+        plaintext_xml: str,
+        plaintext_json,
+        algorithm: str = "",
+        key_type: str = "",
+        key_algorithm: str = "",
+        decrypt_events=None,
+        errors=None,
+    ) -> dict:
+        """Build the companion raw fixture with the decrypted XML kept verbatim."""
+        return {
+            "register": {
+                "name": str(register_name),
+                "tag": str(register_tag),
+            },
+            "first_run": {
+                "completed": True,
+                "captured_at": datetime.now().strftime("%Y-%m-%dT%H:%M:%S"),
+                "phase": "personal_data_request",
+            },
+            "api_response": {
+                "format": "decrypted_xml_raw",
+                "status": int(response_status),
+                "url": str(response_url),
+                "algorithm": str(algorithm or ""),
+                "key_type": str(key_type or ""),
+                "key_algorithm": str(key_algorithm or ""),
+                "encrypted_response_body": encrypted_response_body,
+                "plaintext_xml": str(plaintext_xml or ""),
+                "plaintext_json": plaintext_json,
+                "decrypt_events": list(decrypt_events or []),
+                "errors": list(errors or []),
+            },
+        }
+
     def write_api_fixture(self, fixture_path: str, fixture_data: dict) -> None:
         """
         Write a register API fixture dict to the given JSON file.
@@ -297,6 +394,9 @@ class dsc_register_api_fixture_library:
         envelope and XML metadata only.
         """
         if isinstance(value, dict):
+            volatile_field = self._normalize_volatile_labeled_field(value)
+            if volatile_field is not None:
+                return volatile_field
             return {k: self._normalize_for_comparison(v) for k, v in value.items()}
         if isinstance(value, list):
             return [self._normalize_for_comparison(item) for item in value]
@@ -311,6 +411,49 @@ class dsc_register_api_fixture_library:
                 if xml_summary:
                     return xml_summary
         return value
+
+    def _normalize_volatile_labeled_field(self, value: dict):
+        children = value.get("children")
+        if not isinstance(children, dict):
+            return None
+
+        description = self._extract_nested_label_text(children.get("inhaltsdatenBeschreibung"))
+        label_key = self._normalize_label_key(description)
+        if label_key not in self._VOLATILE_FIELD_LABELS:
+            return None
+
+        normalized = {k: self._normalize_for_comparison(v) for k, v in value.items()}
+        normalized_children = normalized.get("children")
+        if not isinstance(normalized_children, dict):
+            return normalized
+
+        content_node = normalized_children.get("inhalt")
+        if isinstance(content_node, dict) and "text" in content_node:
+            updated_content = dict(content_node)
+            updated_content["text"] = f"<volatile:{label_key}>"
+            normalized_children = dict(normalized_children)
+            normalized_children["inhalt"] = updated_content
+            normalized["children"] = normalized_children
+
+        return normalized
+
+    def _extract_nested_label_text(self, value):
+        if not isinstance(value, dict):
+            return ""
+
+        children = value.get("children")
+        if not isinstance(children, dict):
+            return ""
+
+        label = children.get("label")
+        if not isinstance(label, dict):
+            return ""
+
+        text = label.get("text")
+        return text if isinstance(text, str) else ""
+
+    def _normalize_label_key(self, value: str) -> str:
+        return "".join(character.lower() for character in str(value) if character.isalnum())
 
     def _summarize_encrypted_xml(self, xml_text: str):
         """Summarize encrypted XML into stable metadata for comparison."""
