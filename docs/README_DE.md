@@ -1,168 +1,93 @@
 # Playwright_RobotF
 
-Robot-Framework- und Playwright-basierte End-to-End-Smoke-Tests für die Datenschutzcockpit-SPA.
+Dieses Repository automatisiert Tests fuer die Datenschutzcockpit-SPA mit Robot Framework, Python und der Browser Library auf Basis von Playwright.
+Der Schwerpunkt liegt auf UI-Tests fuer oeffentliche Seiten, Login-nahe Cockpit-Flows, Registerauswahl sowie Ergebnis- und Registerdialoge nach erfolgreicher AusweisApp-Anmeldung.
 
-Dieses Repository konzentriert sich auf automatisierte UI-Prüfungen der Startseite, der Anmelde-/Info-Seite, von Dialogen, FAQ-Inhalten, Impressum, Datenschutzerklärung, Barrierefreiheit, externen Links sowie ausgewählten Login- und Logout-Flows.
-Zusätzlich umfasst es eigene Suiten für den authentifizierten Cockpit-Bereich: die Registerauswahl, einen BVA-spezifischen Ergebnis-Flow und einen generischen Registerkarten-Flow, der mehrere Registerkarten über YAML-Fixtures prüfen kann.
+## Kurzueberblick
 
-## Inhalt dieses Repositories
+- `tests/ui/` enthaelt die sieben zentralen UI-Suiten.
+- `tests/helpers/` enthaelt kleine Hilfssuiten fuer Basischecks und Cookie-Analyse.
+- `tests/api/` enthaelt eine Demo-Suite fuer den InterceptCrypt-Ansatz.
+- `tests/lup/` enthaelt Last- und Parallel-Probes fuer die Produktiv-Landingpage.
+- `pages/` bildet das Page Object Model fuer Seiten, Dialoge und Ergebnisfluesse.
+- `resources/` kapselt Setup, Teardown, gemeinsame Navigation, Variablen und Python-Hilfsbibliotheken.
+- `test_data/registers/` enthaelt YAML- und JSON-Fixtures fuer generische Registertests.
+- `docker/sdk/`, `docker/tests/` und `docker/runner/` bilden die Docker-Stacks fuer SDK, Testausfuehrung und Self-hosted-Runner.
 
-- `tests/ui/` enthält die Haupt-Smoke-Suiten.
-- `tests/helpers/` enthält kleinere Hilfssuiten und fokussierte Prüfungen.
-- `tests/examples/` enthält Beispiel- und Explorationssuiten.
-- `pages/` enthält Keyword- und Selektor-Definitionen im Page-Object-Stil.
-- `resources/` enthält gemeinsames Browser-Setup, Navigations-Keywords und Variablen.
-- `docker/sdk/`, `docker/tests/` und `docker/runner/` enthalten Container-Setups für lokale Ausführung, CI-nahe Läufe und den Self-hosted-Runner.
-- `tools/` enthält Hilfsskripte für die Arbeit mit Testergebnissen.
-- `results/`, `results2/`, `log.html`, `report.html` und `output.xml` sind generierte Test-Artefakte.
+## Tech-Stack
 
-## Zentrale Testabdeckung
+- Python 3.11 als Laufzeit fuer Robot Framework und die Projektbibliotheken
+- Robot Framework als Keyword-Driven-Testframework
+- `robotframework-browser` als Playwright-basierte Browser-Anbindung
+- `robotframework-requests`, `robotframework-jsonlibrary`, `robotframework-seleniumlibrary`, `robotframework-sshlibrary`, `robotframework-databaselibrary`, `robotframework-pabot`
+- `PyYAML` fuer YAML-Fixtures und `pypdf` fuer PDF-Pruefungen im BVA-Flow
 
-Die Suiten decken derzeit ab:
+## Wichtige UI-Suiten
 
-- die Startseite und den FAQ-Dialog
-- die Authentifizierungs-/Anmeldungs-Info-Seite
-- Barrierefreiheits-Header-Buttons und Footer-Navigation
-- die Dialoge für Leichte Sprache und Gebärdensprache
-- Impressum, Datenschutzerklärung und Barrierefreiheit
-- externe Links zu AusweisApp und kompatiblen Lesegerät-Seiten
-- die Registerauswahl-Seite nach erfolgreichem Login inklusive Grid-/Listenansicht, Auswahl-, Dialog-, FAQ-, Timer- und Reload-Verhalten
-- den generischen Registerkarten-Ergebnis-Flow nach Login inklusive fixture-basierter Verifikation und kontrollierter First-Run-Generierung
-- einen sicheren Cookie-Erfassungs-Flow und zugehörige Login-Helpers
+- `ts_01_landing_page.robot`: Landingpage, Dialoge, FAQ, Footer und kompletter oeffentlicher Journey-Flow
+- `ts_02_auth_info_page.robot`: Authentifizierungs-Info-Seite, FAQ, externe Links und AusweisApp-Startbutton
+- `ts_03_register_selection.robot`: Registerauswahl nach Login, Grid-/Listenansicht, Dialoge, Timer, Feedback und Stabilitaet
+- `ts_04_register_selection_bva.robot`: fester BVA-Workflow inkl. Ergebnisseite, Dialog, PDF-Download und Ruecknavigation
+- `ts_04b_register_selection_bva.robot`: BVA-Workflow plus API-Response-Verifikation gegen JSON-Fixture
+- `ts_05_register_cards_generic.robot`: generische Registerkarten-Pruefung gegen YAML-Fixtures
+- `ts_05b_register_cards_generic.robot`: generische Registerkarten-Pruefung gegen entschluesselte API-Responses in JSON-Fixtures
 
-Eine dateiweise Übersicht der Suiten und Keywords findest du in `README_Tests_Overview_DE.md`.
-Eine einfache Beschreibung der Registerkarten-Testlogik findest du in `LogikRegisterTests.md`.
+## Typische Befehle
 
-## Voraussetzungen
-
-Das Projekt verwendet:
-
-- Python
-- Robot Framework
-- `robotframework-browser`
-- weitere Bibliotheken wie `robotframework-requests`, `robotframework-jsonlibrary`, `robotframework-seleniumlibrary`, `robotframework-sshlibrary` und `robotframework-databaselibrary`
-
-Die Python-Abhängigkeiten installierst du mit:
+Abhaengigkeiten installieren:
 
 ```bash
 pip install -r requirements.txt
 ```
 
-Falls die Laufzeitumgebung der Browser-Library noch nicht eingerichtet ist, sollte vor dem Ausführen der Suiten die übliche Robot-Framework-Browser-Installation für die jeweilige Plattform durchgeführt werden.
-
-## Konfiguration
-
-Gemeinsame Laufzeit-Einstellungen liegen in `resources/dsc_variables.robot`.
-
-Wichtige Variablen sind:
-
-- `BASE_URL` für die Basisroute der Datenschutzcockpit-SPA
-- `AUTH_INFO_URL` für die Anmelde-/Info-Seite
-- `BROWSER` zur Auswahl des Browsers
-- `HEADLESS` für sichtbaren oder Headless-Betrieb
-- `TIMEOUT` für Wartezeiten und Prüfungen
-- `SLOW_MOTION` für langsamere lokale Läufe
-- `AUSWEISAPP_URL` für den AusweisApp-SDK-Endpunkt
-- `CHROMIUM_EXECUTABLE` für eine lokal installierte Chromium-Binary
-
-Die Standard-URL in diesem Repository zeigt auf die Qualitätsumgebung:
-
-```text
-https://qs-datenschutzcockpit.dsc.govkg.de/spa/
-```
-
-## Tests ausführen
-
-Die Haupt-Smoke-Suiten liegen in `tests/ui/`.
-
-Typische Beispiele:
+Alle UI-Suiten ausfuehren:
 
 ```bash
 robot tests/ui
 ```
 
-Eine einzelne Suite starten, wenn nur ein Bereich geprüft werden soll:
-
-```bash
-robot tests/ui/ts_01_landing_page.robot
-robot tests/ui/ts_02_auth_info_page.robot
-robot tests/ui/ts_03_register_selection.robot
-robot tests/ui/ts_04_register_selection_bva.robot
-robot tests/ui/ts_05_register_cards_generic.robot
-```
-
-Nur die generische Registerkarten-Verifikation starten:
-
-```bash
-robot tests/ui/ts_05_register_cards_generic.robot
-```
-
-Den generischen First-Run explizit starten:
-
-```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_register_cards_generic.robot
-```
-
-Bereits abgeschlossene Fixtures bewusst neu erzeugen:
-
-```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True --variable FIXTURE_FORCE_REGENERATE:True tests/ui/ts_05_register_cards_generic.robot
-```
-
-Die kleineren Suiten in `tests/helpers/` sind nützlich für fokussierte Prüfungen und Debugging.
-
-### Ausführung über Tags
-
-Die Suiten verwenden Tags wie `smoke`, `landing`, `auth`, `faq`, `accessibility`, `accordion`, `external-link`, `e2e` und `cookies`. Mit der Tag-Filterung von Robot Framework lässt sich ein gezielter Lauf starten.
-Für die Registerauswahl kommen zusätzlich Tags wie `register-auswahl`, `interaction`, `selection`, `toggle`, `list-view`, `all-registers`, `dialog`, `security`, `session`, `timer` und `reload` hinzu.
-
-Der kuratierte Smoke-Lauf umfasst aktuell 6 repräsentative UI-Testfälle: Landing Page, Authentication Info Page, AusweisApp-Startfluss, Registerauswahl, BVA-Startfluss und die generische BVA-Registerkartenprüfung.
+Kuratierte Smoke-Auswahl ausfuehren:
 
 ```bash
 robot --include smoke --outputdir results tests/ui
 ```
 
-## Docker- und CI-Optionen
-
-Dieses Repository enthält mehrere Container-Setups:
-
-- `docker/sdk/` stellt den AusweisApp-SDK-Simulator-Stack bereit.
-- `docker/tests/` stellt den lokalen Test-Stack mit `ausweisapp-sdk` und `robot-tests` bereit.
-- `docker/runner/` enthält die Konfiguration für einen selbst gehosteten GitHub-Actions-Runner.
-
-Der Docker-basierte Testlauf verwendet typischerweise `CI=True`, `HEADLESS=True`, `BROWSER=chromium` und `AUSWEISAPP_URL=http://127.0.0.1:24727` oder eine passende Host-Gateway-Variante.
-
-Um nach einem Workflow-Lauf die Ergebnisse aus dem Runner-Container zu kopieren, verwende:
+Nur die generische Dialog-/YAML-Pruefung ausfuehren:
 
 ```bash
-./tools/docker/get-results.sh
+robot tests/ui/ts_05_register_cards_generic.robot
 ```
 
-## Generierte Artefakte
+YAML-First-Run explizit aktivieren:
 
-Nach einem Lauf schreibt Robot Framework die Standard-Reports und Logs, zum Beispiel:
+```bash
+robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_register_cards_generic.robot
+```
 
-- `report.html`
-- `log.html`
-- `output.xml`
+API-First-Run explizit aktivieren:
 
-Wenn Artefakte bewusst im Unterordner `results/` abgelegt werden sollen, kann der Lauf mit `robot --outputdir results ...` gestartet werden.
+```bash
+robot --include first-run-api --variable ENABLE_API_FIRST_RUN_TESTS:True tests/ui/ts_05b_register_cards_generic.robot
+```
 
-Die Verzeichnisse `results/` und `results2/` enthalten gespeicherte Artefakte früherer Läufe und eignen sich für Debugging oder Vergleiche.
+## Docker und CI/CD
 
-## Projektstruktur auf einen Blick
+- `docker/sdk/docker-compose.yml` startet einen lokalen AusweisApp-SDK-Simulator auf Port `24727`.
+- `docker/tests/docker-compose.yml` startet `ausweisapp-sdk` und den Non-Root-Container `robot-tests` fuer CI-nahe Testlaeufe.
+- `docker/runner/docker-compose.yml` startet einen gepinnten Self-hosted-GitHub-Actions-Runner als Container.
+- `.github/workflows/ci_tests_workflow.yml` fuehrt die UI-Suiten auf `ubuntu-latest` aus, installiert Browser-Abhaengigkeiten und laedt Robot-Artefakte hoch.
+- `.github/workflows/ci_tests_workflow_selfhosted.yml` startet auf dem Self-hosted-Runner den Docker-Teststack und kopiert Ergebnisse aus dem `robot-tests`-Container.
 
-- `tests/ui/` - Haupt-Smoke-Suiten
-- `tests/helpers/` - fokussierte Hilfssuiten
-- `tests/examples/` - Beispiel- und Explorationssuiten
-- `pages/` - Page Objects und Assertions
-- `resources/` - gemeinsames Setup, Navigation und Variablen
-- `docker/sdk/`, `docker/tests/`, `docker/runner/` - Docker- und CI-Hilfsdateien
-- `tools/` - Hilfen für Ergebnisverarbeitung
+## Artefakte und Fixtures
 
-## Verwandte Dokumentation
+- Standard-Reports: `report.html`, `log.html`, `output.xml`
+- Alternative Workflow-Ausgabe: `results/` und `results2/`
+- Dialog-Fixtures: `test_data/registers/*.yaml`
+- API-Fixtures: `test_data/registers/*.json` und `*_raw.json`
 
-- `README_Tests_Overview_EN.md`
-- `README_Tests_Overview_DE.md`
-- `LogicRegisterTests.md`
-- `LogikRegisterTests.md`
+## Weitere Dokumentation
+
+- `README_Tests_Overview_DE.md`: Gesamtueberblick ueber Testbereiche, Pages und Resources
+- `README_Tests_UI_Overview_DE.md`: alle UI-Suiten und Testfaelle im Detail
+- `LogikRegisterTests.md`: Registertest-Logik fuer YAML- und API-basierte Verifikation
+- `presentation.md`: kurze Projektpraesentation in einfacher Sprache

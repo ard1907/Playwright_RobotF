@@ -1,262 +1,195 @@
-# Register Card Test Logic
+# Register Test Logic
 
-This document explains the register-card test logic in simple language.
-It is both documentation and a practical guide.
+This document explains the register-testing logic used by three related suites:
 
-## What is this about?
+- `ts_04b_register_selection_bva.robot`
+- `ts_05_register_cards_generic.robot`
+- `ts_05b_register_cards_generic.robot`
 
-The Datenschutzcockpit UI contains register cards.
-Each card stands for one register, for example `Test BVA` or `Test-DGUV`.
+The difference is simple:
 
-The tests should answer these questions:
+- `ts_04b` proves the API-based approach on one fixed example: BVA.
+- `ts_05` validates registers through visible dialog content and YAML fixtures.
+- `ts_05b` generalizes the API-based approach for multiple registers and uses JSON fixtures.
 
-- Can the register card be selected?
-- Can the test reach the result page?
-- Can the correct result entry be opened?
-- Can the detail dialog be opened?
-- Does the dialog show the expected data?
+## What the logic is meant to verify
 
-There are two styles of tests:
+The register tests should not only click through the UI.
+They should also verify the business flow:
 
-- specific tests for one fixed case, for example BVA
-- generic tests for many register cards through YAML files
+- was the correct register selected?
+- did the user reach the expected results page?
+- was the right result block opened?
+- can the detail dialog be opened?
+- do the shown or delivered data match the expected register?
 
-The generic suite is `tests/ui/ts_05_register_cards_generic.robot`.
+## Main building blocks
 
-## Which files belong together?
+The core files are:
 
-The core logic is spread across these files:
-
-- `tests/ui/ts_05_register_cards_generic.robot`
-- `pages/dsc_register_result_page.robot`
 - `pages/dsc_register_selection_page.robot`
+- `pages/dsc_register_result_page.robot`
+- `pages/dsc_register_result_page_api.robot`
 - `resources/dsc_shared_keywords.robot`
-- `resources/libraries/dsc_register_fixture_library.py`
 - `test_data/registers/*.yaml`
+- `test_data/registers/*.json`
+- `test_data/registers/*_raw.json`
 
 In short:
 
-- the suite starts the test cases
-- the page objects click through the UI
-- the Python library reads and writes YAML fixtures
-- the YAML files store the expected data for each register card
+- the suite controls the overall flow
+- the page objects encapsulate the UI steps
+- Python helpers read and write fixtures
+- fixtures provide the comparison baseline for normal verification
 
-## Main idea of the generic suite
+## Variant 1: generic dialog verification with YAML
 
-The generic suite should avoid building a completely new flow for every new register card.
-Instead, each register card gets:
+`ts_05_register_cards_generic.robot` is the everyday suite.
+It works with YAML files such as `bva.yaml` or `dguv.yaml`.
 
-- one YAML file in `test_data/registers/`
+The flow is:
+
+1. Load the fixture.
+2. Check whether `first_run.completed` is set.
+3. Reset the register-selection page into a clean state.
+4. Select the target register card.
+5. Start the request.
+6. Open the matching result block.
+7. Open the detail dialog.
+8. Request personal data.
+9. Compare sender and data fields with the YAML fixture.
+
+The YAML fixture describes, for example:
+
+- the technical register tag
+- the visible register name
+- the expected sender
+- expected field keys and optional values
+- optional PDF verification settings
+
+## Why the suite resets the selection first
+
+The application can keep UI state between actions.
+If a previous test left another register selected, the next test might see the wrong result.
+
+That is why the suites enforce:
+
+- fresh navigation to register selection
+- switching back to grid view
+- restoring the empty selection state
+
+This keeps the tests deterministic.
+
+## Variant 2: API-based verification with JSON
+
+The API-based variant focuses less on visible layout and more on the business payload.
+It hooks into the moment when the dialog requests personal data.
+
+Important detail:
+
+- the application does not simply receive finished plain text
+- the response is processed and decrypted inside the browser
+- the suite attaches itself to that browser-side flow
+
+The JSON fixtures then store two views:
+
+- `<tag>.json`: processed, comparison-friendly business data
+- `<tag>_raw.json`: raw decrypted XML payload kept as evidence
+
+## The role of `ts_04b`
+
+`ts_04b_register_selection_bva.robot` is the controlled entry point into API verification.
+It uses exactly one known case: BVA.
+
+That makes sense because the new approach is first stabilized on a fixed workflow:
+
+- the same business flow as in `ts_04`
+- plus an extra API comparison against `bva.json`
+- plus a dedicated `first-run-api` test to generate the first reference fixture
+
+So `ts_04b` is the bridge between a fixed single-suite workflow and the later generic approach.
+
+## The role of `ts_05b`
+
+`ts_05b_register_cards_generic.robot` turns the BVA pattern into a reusable standard.
+It is no longer limited to BVA, as long as a JSON fixture exists for the target register.
+
+At the moment the suite covers:
+
+- `bva.json`
+- `dguv.json`
+
+For each register there are two types of test cases:
+
 - one normal verification test
-- optionally one first-run test for creating or refreshing the YAML data
+- one `first-run-api` test that creates or refreshes the JSON files
 
-Examples:
+## Why volatile fields are excluded
 
-- `bva.yaml`
-- `dguv.yaml`
+API responses often include values that legitimately change on every run.
+Examples are:
 
-## The normal run
+- tokens
+- timestamps
+- technical IDs
 
-The normal run is the day-to-day mode.
-It compares live dialog data with expected data from the YAML file.
+If those values were compared one-to-one, the tests would be unnecessarily unstable.
+That is why the API comparison excludes known volatile fields.
 
-Example:
+The goal is not byte-for-byte equality.
+The goal is stable business equality.
 
-```bash
-robot tests/ui/ts_05_register_cards_generic.robot
-```
+## First-run and first-run-api
 
-For each register card, the flow is roughly this:
+Both modes are intentionally opt-in.
+They do not run just because somebody starts the suite normally.
 
-1. Load the YAML fixture.
-2. Check whether `first_run.completed` is `true`.
-3. If not, skip the test cleanly.
-4. Navigate to the register-selection page.
-5. Reset the page to a clean empty selection state.
-6. Click the target register card.
-7. Click `Anfrage starten`.
-8. On the result page, find the result entry for exactly that register card.
-9. Expand exactly that result entry.
-10. Open the first detail dialog inside exactly that result entry.
-11. Fetch the personal data.
-12. Verify sender and data fields.
-
-## Why is the selection reset first?
-
-The cockpit can keep UI state.
-For example, a previous test may have left another register card selected.
-
-If that happens, the generic flow might:
-
-- submit multiple registers at once
-- see the wrong result entry
-- open the wrong dialog
-
-That is why the flow now resets the state before selecting the target card:
-
-- switch to grid view
-- restore the empty selection state
-- only then select the target register card
-
-This makes the test more deterministic.
-
-## The YAML fixtures
-
-Each YAML file describes one register card.
-
-Example structure:
-
-```yaml
-register:
-  name: Test BVA
-  tag: bva
-first_run:
-  completed: true
-  captured_at: '2026-04-29T10:15:51'
-dialog:
-  sender: Bundesverwaltungsamt, Registermodernisierungsbehoerde
-  assert_sender: true
-  data_fields:
-    - key: Identifikationsnummer
-      value: '08214967384'
-      assert_value: true
-pdf:
-  verify: false
-```
-
-Important fields:
-
-- `register.name`: exact card name in the UI
-- `register.tag`: short technical name
-- `first_run.completed`: was the fixture successfully filled?
-- `dialog.sender`: expected sender text
-- `dialog.data_fields`: expected fields in the dialog
-
-## How does field verification work?
-
-Earlier, the test only checked this:
-
-- does the key text appear anywhere?
-- does the value text appear anywhere?
-
-That was too weak.
-A value could belong to the wrong key and the test could still pass.
-
-Now the logic is stricter.
-
-There are two levels:
-
-1. First, the visible dialog text is normalized.
-2. Then the test checks whether key and value appear in the correct sequence.
-
-If the DOM structure is unusual, there is a fallback:
-
-- JavaScript reads structured key/value pairs from the dialog
-- those pairs are used as a secondary verification source
-
-This keeps the check robust, but more meaningful than before.
-
-## What is first-run?
-
-First-run is a special mode.
-It is not meant for every normal test execution.
-
-First-run does this:
-
-1. It drives the same UI flow into the detail dialog.
-2. It reads sender and field data from the live dialog.
-3. It writes that data into a YAML file.
-
-This is useful when:
-
-- a new register card is added
-- a YAML file is still empty or incomplete
-- real dialog data has changed
-
-## Important rule: first-run is now opt-in
-
-First-run no longer executes just because the suite is started normally.
-
-That is intentional.
-
-Before this change, first-run tests could accidentally run during a normal suite execution.
-That mixed verification logic with capture and write logic.
-
-Now the rule is:
-
-- normal `robot tests/ui/ts_05_register_cards_generic.robot` does not run real first-run work
-- first-run tests only execute with explicit permission
-
-The required command is:
+Dialog/YAML first-run:
 
 ```bash
 robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_register_cards_generic.robot
 ```
 
-Both parts matter:
-
-- `--include first-run`
-- `--variable ENABLE_FIRST_RUN_TESTS:True`
-
-Using the tag alone is intentionally not enough.
-
-## What happens with incomplete fixtures?
-
-A fixture file can exist but still be incomplete.
-
-Example:
-
-- the file is already there
-- but `first_run.completed` is still `false`
-
-Earlier this caused a problem.
-The logic only checked whether the file existed.
-That meant the write step could be skipped even though the fixture was not finished.
-
-Now the rule is:
-
-- if the fixture does not exist: create it
-- if it exists but is incomplete: regenerate it during first-run
-- if it exists and is completed: only overwrite it with force-regenerate
-
-## Force-regenerate
-
-If you want to rewrite an already completed fixture on purpose, use:
+API first-run:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True --variable FIXTURE_FORCE_REGENERATE:True tests/ui/ts_05_register_cards_generic.robot
+robot --include first-run-api --variable ENABLE_API_FIRST_RUN_TESTS:True tests/ui/ts_05b_register_cards_generic.robot
 ```
 
-This is useful when real dialog data has changed and the existing YAML should be replaced.
+Optional overwrite of existing data:
 
-## How to add a new register card
+- `FIXTURE_FORCE_REGENERATE:True` for YAML
+- `API_FIXTURE_FORCE_REGENERATE:True` for JSON
 
-If a new register card should be tested, follow these steps:
+## When to use which suite
 
-1. Create a new YAML file in `test_data/registers/`.
-2. Fill in the register name and tag.
-3. Add one normal verification test in `ts_05_register_cards_generic.robot`.
-4. Add one first-run test in the same suite.
-5. Run first-run explicitly.
-6. Review the generated YAML.
-7. Clean up the YAML manually if needed.
-8. Run the normal verification mode.
+- `ts_04`: when you need a fixed BVA end-to-end flow with UI and PDF checks
+- `ts_04b`: when that same BVA flow should also be verified through the API payload
+- `ts_05`: when multiple registers should be verified through visible dialog data
+- `ts_05b`: when multiple registers should be verified through stable API business data
 
-## Why does generated YAML sometimes need manual review?
+## Adding a new register card
 
-Not every dialog uses the same DOM structure.
-Some dialogs are clean and structured.
-Others join several texts together.
+For the dialog-based path:
 
-Because of that, an automatically generated fixture can still need small cleanup.
+1. Create a YAML file under `test_data/registers/`.
+2. Add a verification test in `ts_05`.
+3. Add an optional `first-run` test in `ts_05`.
+4. Run `first-run` explicitly and review the result.
 
-Typical cases:
+For the API-based path:
 
-- a section title is glued to a field key
-- a value is glued to the key
-- the technical capture is correct enough, but not easy to read
+1. Add a verification test in `ts_05b`.
+2. Add a `first-run-api` test in `ts_05b`.
+3. Run `first-run-api` explicitly.
+4. Review `json` and `raw.json` and commit them.
 
-The recommended workflow is:
+## Practical rule of thumb
+
+If the visible dialog layout is stable and sufficient, `ts_05` is often enough.
+If the business payload matters more and the layout may change, `ts_05b` is usually more robust.
+
+That is why both lines exist side by side.
 
 - run first-run
 - read the YAML once
