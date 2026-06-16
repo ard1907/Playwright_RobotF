@@ -43,31 +43,43 @@ pip install -r requirements.txt
 Alle UI-Suiten ausfuehren:
 
 ```bash
-robot tests/ui
+robotcode --profile default robot
 ```
 
 Kuratierte Smoke-Auswahl ausfuehren:
 
 ```bash
-robot --include smoke --outputdir results tests/ui
+robotcode --profile default --profile smoke robot
 ```
 
 Nur die generische Dialog-/YAML-Pruefung ausfuehren:
 
 ```bash
-robot tests/ui/ts_05_register_cards_generic.robot
+robotcode --profile default robot --by-longname "Ui.Ts 05 Register Cards Generic"
 ```
 
 YAML-First-Run explizit aktivieren:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_register_cards_generic.robot
+robotcode --profile default --profile first-run robot --by-longname "Ui.Ts 05 Register Cards Generic"
 ```
 
 API-First-Run explizit aktivieren:
 
 ```bash
-robot --include first-run-api --variable ENABLE_API_FIRST_RUN_TESTS:True tests/ui/ts_05b_register_cards_generic.robot
+robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 05B Register Cards Generic"
+```
+
+GitHub-hosted CI gegen Prod ausfuehren:
+
+```bash
+robotcode --profile default --profile ci-github-hosted robot
+```
+
+Self-hosted CI gegen QS ausfuehren:
+
+```bash
+robotcode --profile default --profile ci-selfhosted robot
 ```
 
 ## Docker und CI/CD

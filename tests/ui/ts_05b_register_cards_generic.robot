@@ -25,25 +25,22 @@
 # ── Two Operating Modes ────────────────────────────────────────────────────────
 #
 #   Normal mode (default run):
-#     robot tests/ui/ts_05b_register_cards_generic.robot
+#     robotcode --profile default robot --by-longname "Ui.Ts 05B Register Cards Generic"
 #     Loads each JSON fixture and compares the live API response against it.
 #     Requires: fixture populated by a prior first-run-api execution.
 #     Skip note: test is skipped (not failed) when the fixture is absent or
 #                not yet marked as completed.
 #
 #   First-run-api mode (data capture):
-#     robot --include first-run-api \
-#           --variable ENABLE_API_FIRST_RUN_TESTS:True \
-#           tests/ui/ts_05b_register_cards_generic.robot
+#     robotcode --profile default --profile first-run-api robot \
+#           --by-longname "Ui.Ts 05B Register Cards Generic"
 #     Drives the full workflow, captures the encrypted API response, decrypts it
 #     in the browser, and writes (or updates) the JSON fixture pair.
 #     By default, skips writing when a fixture already exists and is completed.
 #
 #   First-run-api with forced overwrite:
-#     robot --include first-run-api \
-#           --variable ENABLE_API_FIRST_RUN_TESTS:True \
-#           --variable API_FIXTURE_FORCE_REGENERATE:True \
-#           tests/ui/ts_05b_register_cards_generic.robot
+#     robotcode --profile default --profile first-run-api-force robot \
+#           --by-longname "Ui.Ts 05B Register Cards Generic"
 #
 # ── Fixture File Convention ────────────────────────────────────────────────────
 #   test_data/registers/<tag>.json       processed decrypted key/value payload
@@ -93,12 +90,11 @@ Test Setup      Open Register Auswahl In Default Grid View
 ${API_FIXTURES_DIR}                  ${CURDIR}${/}..${/}..${/}test_data${/}registers
 
 # ── First-run-api Control ──────────────────────────────────────────────────────
-# Set to True on the command line to overwrite existing complete fixtures:
-#   --variable API_FIXTURE_FORCE_REGENERATE:True
+# Overwrite existing complete fixtures via the first-run-api-force profile.
 ${API_FIXTURE_FORCE_REGENERATE}      ${False}
 
 # Explicit opt-in so first-run-api tests never execute during a default run:
-#   --include first-run-api --variable ENABLE_API_FIRST_RUN_TESTS:True
+#   robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 05B Register Cards Generic"
 ${ENABLE_API_FIRST_RUN_TESTS}        ${False}
 
 
@@ -132,7 +128,7 @@ Require Explicit Api First Run Mode
     [Documentation]    Guards first-run-api capture tests so they only execute when
     ...                the suite is started with explicit first-run-api intent.
     Skip If    not ${ENABLE_API_FIRST_RUN_TESTS}
-    ...    API first-run tests are opt-in. Run with: robot --include first-run-api --variable ENABLE_API_FIRST_RUN_TESTS:True tests/ui/ts_05b_register_cards_generic.robot
+    ...    API first-run tests are opt-in. Run with: robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 05B Register Cards Generic"
 
 
 # ── Composite First-Run-Api Keyword ────────────────────────────────────────────
@@ -145,7 +141,7 @@ Run Register Api Card First Run Capture
     ...
     ...                By default, skips writing when the fixture already exists and
     ...                is marked as completed.
-    ...                Pass --variable API_FIXTURE_FORCE_REGENERATE:True to overwrite.
+    ...                Use the first-run-api-force profile to overwrite.
     ...
     ...                Arguments:
     ...                  ${register_name}  – Exact h3 text of the register card
@@ -214,10 +210,9 @@ Verify Register Api Workflow: Test-DGUV
 # ==============================================================================
 # FIRST-RUN-API DATA CAPTURE TESTS
 # Run with:
-#   robot --include first-run-api \
-#         --variable ENABLE_API_FIRST_RUN_TESTS:True \
-#         tests/ui/ts_05b_register_cards_generic.robot
-# Forced overwrite: add --variable API_FIXTURE_FORCE_REGENERATE:True
+#   robotcode --profile default --profile first-run-api robot \
+#         --by-longname "Ui.Ts 05B Register Cards Generic"
+# Forced overwrite: use --profile first-run-api-force instead
 #
 # These tests are guarded and skip unless ENABLE_API_FIRST_RUN_TESTS=True.
 # ==============================================================================
@@ -229,15 +224,12 @@ API First Run: Capture And Generate Fixture For Test BVA
     ...                plus test_data/registers/bva_raw.json.
     ...
     ...                Run once before the normal verification tests:
-    ...                  robot --include first-run-api \
-    ...                        --variable ENABLE_API_FIRST_RUN_TESTS:True \
-    ...                        tests/ui/ts_05b_register_cards_generic.robot
+    ...                  robotcode --profile default --profile first-run-api robot \
+    ...                        --by-longname "Ui.Ts 05B Register Cards Generic"
     ...
     ...                To overwrite an existing bva.json:
-    ...                  robot --include first-run-api \
-    ...                        --variable ENABLE_API_FIRST_RUN_TESTS:True \
-    ...                        --variable API_FIXTURE_FORCE_REGENERATE:True \
-    ...                        tests/ui/ts_05b_register_cards_generic.robot
+    ...                  robotcode --profile default --profile first-run-api-force robot \
+    ...                        --by-longname "Ui.Ts 05B Register Cards Generic"
     ...
     ...                After the run: review test_data/registers/bva.json and
     ...                test_data/registers/bva_raw.json, then commit.
@@ -253,15 +245,12 @@ API First Run: Capture And Generate Fixture For Test-DGUV
     ...                plus test_data/registers/dguv_raw.json.
     ...
     ...                Run once before the normal verification tests:
-    ...                  robot --include first-run-api \
-    ...                        --variable ENABLE_API_FIRST_RUN_TESTS:True \
-    ...                        tests/ui/ts_05b_register_cards_generic.robot
+    ...                  robotcode --profile default --profile first-run-api robot \
+    ...                        --by-longname "Ui.Ts 05B Register Cards Generic"
     ...
     ...                To overwrite an existing dguv.json:
-    ...                  robot --include first-run-api \
-    ...                        --variable ENABLE_API_FIRST_RUN_TESTS:True \
-    ...                        --variable API_FIXTURE_FORCE_REGENERATE:True \
-    ...                        tests/ui/ts_05b_register_cards_generic.robot
+    ...                  robotcode --profile default --profile first-run-api-force robot \
+    ...                        --by-longname "Ui.Ts 05B Register Cards Generic"
     ...
     ...                After the run: review test_data/registers/dguv.json and
     ...                test_data/registers/dguv_raw.json, then commit.

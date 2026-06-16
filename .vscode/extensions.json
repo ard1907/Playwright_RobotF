@@ -27,6 +27,7 @@
 	"vscode-icons-team.vscode-icons",
 	"redhat.vscode-yaml",
 	"esbenp.prettier-vscode",
-	"christian-kohler.npm-intellisense"
+	"christian-kohler.npm-intellisense",
+	"tamasfe.even-better-toml"
   ]
 }

@@ -24,19 +24,16 @@
 # ── Operating Modes ────────────────────────────────────────────────────────────
 #
 #   Normal run (TC001–TC013):
-#     robot tests/ui/ts_04b_register_selection_bva.robot
+#     robotcode --profile default robot --by-longname "Ui.Ts 04B Register Selection Bva"
 #     TC013 is skipped when bva.json is not yet populated.
 #
 #   First-run-api (capture JSON fixture):
-#     robot --include first-run-api \
-#           --variable ENABLE_API_FIRST_RUN_TESTS:True \
-#           tests/ui/ts_04b_register_selection_bva.robot
+#     robotcode --profile default --profile first-run-api robot \
+#           --by-longname "Ui.Ts 04B Register Selection Bva"
 #
 #   First-run-api with forced overwrite:
-#     robot --include first-run-api \
-#           --variable ENABLE_API_FIRST_RUN_TESTS:True \
-#           --variable API_FIXTURE_FORCE_REGENERATE:True \
-#           tests/ui/ts_04b_register_selection_bva.robot
+#     robotcode --profile default --profile first-run-api-force robot \
+#           --by-longname "Ui.Ts 04B Register Selection Bva"
 #
 # NOTE: This suite requires a successful eID login via AusweisApp.
 #       On standard CI it is skipped automatically.
@@ -94,12 +91,11 @@ ${SUITE_START_EPOCH}        ${EMPTY}
 ${BVA_API_FIXTURE_PATH}     ${CURDIR}${/}..${/}..${/}test_data${/}registers${/}bva.json
 
 # ── First-run-api control ──────────────────────────────────────────────────────
-# Set to True on the command line to overwrite an existing complete fixture:
-#   --variable API_FIXTURE_FORCE_REGENERATE:True
+# Overwrite an existing complete fixture via the first-run-api-force profile.
 ${API_FIXTURE_FORCE_REGENERATE}    ${False}
 
 # Explicit opt-in so first-run-api tests never run during a default suite run:
-#   --include first-run-api --variable ENABLE_API_FIRST_RUN_TESTS:True
+#   robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 04B Register Selection Bva"
 ${ENABLE_API_FIRST_RUN_TESTS}      ${False}
 
 
@@ -167,7 +163,7 @@ Require Explicit Api First Run Mode
     [Documentation]    Guards first-run-api capture tests so they only execute when
     ...                the suite is explicitly started with first-run-api intent.
     Skip If    not ${ENABLE_API_FIRST_RUN_TESTS}
-    ...    API first-run tests are opt-in. Run with: robot --include first-run-api --variable ENABLE_API_FIRST_RUN_TESTS:True tests/ui/ts_04b_register_selection_bva.robot
+    ...    API first-run tests are opt-in. Run with: robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 04B Register Selection Bva"
 
 
 Run BVA Api Card First Run Capture
@@ -347,9 +343,8 @@ TC013 - Verify Test BVA Personal Data API Response Matches Fixture
     ...                Skip: when bva.json is not yet populated by a first-run-api.
     ...
     ...                To generate bva.json run:
-    ...                  robot --include first-run-api \
-    ...                        --variable ENABLE_API_FIRST_RUN_TESTS:True \
-    ...                        tests/ui/ts_04b_register_selection_bva.robot
+    ...                  robotcode --profile default --profile first-run-api robot \
+    ...                        --by-longname "Ui.Ts 04B Register Selection Bva"
     [Tags]    bva    api-response    api-verification
     Run Register Api Card Verification    ${BVA_API_FIXTURE_PATH}
 
@@ -357,15 +352,12 @@ TC013 - Verify Test BVA Personal Data API Response Matches Fixture
 # ==============================================================================
 # API FIRST-RUN DATA CAPTURE TEST
 # Run with:
-#   robot --include first-run-api \
-#         --variable ENABLE_API_FIRST_RUN_TESTS:True \
-#         tests/ui/ts_04b_register_selection_bva.robot
+#   robotcode --profile default --profile first-run-api robot \
+#         --by-longname "Ui.Ts 04B Register Selection Bva"
 #
 # Forced overwrite of an existing fixture:
-#   robot --include first-run-api \
-#         --variable ENABLE_API_FIRST_RUN_TESTS:True \
-#         --variable API_FIXTURE_FORCE_REGENERATE:True \
-#         tests/ui/ts_04b_register_selection_bva.robot
+#   robotcode --profile default --profile first-run-api-force robot \
+#         --by-longname "Ui.Ts 04B Register Selection Bva"
 #
 # This test is guarded and skips unless ENABLE_API_FIRST_RUN_TESTS=True.
 # ==============================================================================
@@ -376,12 +368,12 @@ API First Run: Capture BVA Personal Data API Response Fixture
     ...                complete response body to test_data/registers/bva.json.
     ...
     ...                Run once before TC013:
-    ...                  robot --include first-run-api \
-    ...                        --variable ENABLE_API_FIRST_RUN_TESTS:True \
-    ...                        tests/ui/ts_04b_register_selection_bva.robot
+    ...                  robotcode --profile default --profile first-run-api robot \
+    ...                        --by-longname "Ui.Ts 04B Register Selection Bva"
     ...
     ...                To overwrite an existing bva.json add:
-    ...                        --variable API_FIXTURE_FORCE_REGENERATE:True
+    ...                  robotcode --profile default --profile first-run-api-force robot \
+    ...                        --by-longname "Ui.Ts 04B Register Selection Bva"
     ...
     ...                After the run: review test_data/registers/bva.json and commit.
     [Setup]    Require Explicit Api First Run Mode

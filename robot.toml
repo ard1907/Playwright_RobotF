@@ -1,0 +1,74 @@
+# Alle relevanten UI-Suiten für Discovery und Standardstarts.
+paths = ["tests/ui"]
+
+# Robot Framework Ausgaben
+output-dir = "results"
+
+[profiles.default]
+description = "Vollstart aller UI-Tests unter tests/ui"
+paths = ["tests/ui"]
+
+[profiles.default.variables]
+CI = "False"
+CI_SELF_HOSTED = "False"
+BASE_URL = "https://qs-datenschutzcockpit.dsc.govkg.de/spa/"
+BROWSER = "chromium"
+HEADLESS = "False"
+ENABLE_FIRST_RUN_TESTS = "False"
+FIXTURE_FORCE_REGENERATE = "False"
+ENABLE_API_FIRST_RUN_TESTS = "False"
+API_FIXTURE_FORCE_REGENERATE = "False"
+
+[profiles.smoke]
+description = "Kuratierte Smoke-Auswahl innerhalb von tests/ui"
+includes = ["smoke"]
+
+[profiles.first-run]
+description = "YAML First-Run fuer generische Register-Fixtures"
+includes = ["first-run"]
+
+[profiles.first-run.variables]
+ENABLE_FIRST_RUN_TESTS = "True"
+
+[profiles.first-run-force]
+description = "YAML First-Run mit erzwungener Fixture-Regeneration"
+includes = ["first-run"]
+
+[profiles.first-run-force.variables]
+ENABLE_FIRST_RUN_TESTS = "True"
+FIXTURE_FORCE_REGENERATE = "True"
+
+[profiles.first-run-api]
+description = "API First-Run fuer JSON-Fixtures"
+includes = ["first-run-api"]
+
+[profiles.first-run-api.variables]
+ENABLE_API_FIRST_RUN_TESTS = "True"
+
+[profiles.first-run-api-force]
+description = "API First-Run mit erzwungener Fixture-Regeneration"
+includes = ["first-run-api"]
+
+[profiles.first-run-api-force.variables]
+ENABLE_API_FIRST_RUN_TESTS = "True"
+API_FIXTURE_FORCE_REGENERATE = "True"
+
+[profiles.ci-github-hosted]
+description = "GitHub-hosted CI gegen Prod"
+
+[profiles.ci-github-hosted.variables]
+CI = "True"
+CI_SELF_HOSTED = "False"
+BASE_URL = "https://datenschutzcockpit.bund.de/spa/"
+BROWSER = "chromium"
+HEADLESS = "True"
+
+[profiles.ci-selfhosted]
+description = "Self-hosted CI gegen QS"
+
+[profiles.ci-selfhosted.variables]
+CI = "True"
+CI_SELF_HOSTED = "True"
+BASE_URL = "https://qs-datenschutzcockpit.dsc.govkg.de/spa/"
+BROWSER = "chromium"
+HEADLESS = "True"

@@ -120,14 +120,11 @@ USER robot
 
 # QS-Umgebung: https://qs-datenschutzcockpit.dsc.govkg.de/spa/
 # QS-Stable-Umgebung: https://qs-datenschutzcockpit.dsc.govkg.de/spa/
-CMD ["robot", \
-     "-v", "CI:True", \
-     "-v", "CI_SELF_HOSTED:True", \
-     "-v", "HEADLESS:True", \
-     "-v", "BASE_URL:https://qs-datenschutzcockpit.dsc.govkg.de/spa/", \
-     "-v", "BROWSER:chromium", \
+CMD ["robotcode", \
+    "--profile", "default", \
+    "--profile", "ci-selfhosted", \
+    "robot", \
      "--outputdir", "/app/results2", \
     "--report", "/app/results2/report.html", \
     "--log", "/app/results2/log.html", \
-    "--xunit", "/app/results2/xunit.xml", \
-    "tests/ui/"]
+    "--xunit", "/app/results2/xunit.xml"]

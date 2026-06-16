@@ -7,6 +7,7 @@ robotframework-databaselibrary
 robotframework-requests
 robotframework-jsonlibrary
 robotframework-pabot
+robotcode[runner]
 
 # Hilfsbibliotheken
 requests>=2.31.0

@@ -83,22 +83,19 @@ jobs:
             find results -mindepth 1 -maxdepth 1 -exec rm -rf {} +
           fi
 
-      # ── 8. Run all tests (headless + CI mode) ─────────────────────────────
-      # --variable CI:True      → uses the IF ${CI} branch in setup_teardown.robot
-      # --variable HEADLESS:True → forces headless mode (no physical screen in CI)
-      # --outputdir results      → all Robot output goes to the results/ folder
+      # ── 8. Run all tests via robot.toml profile composition ───────────────
+      # default            → starts the full tests/ui scope
+      # ci-github-hosted   → sets headless CI mode against Prod
       - name: Run Robot Framework tests
         run: |
-          robot \
-            --variable CI:True \
-            --variable HEADLESS:True \
-            --variable BASE_URL:https://datenschutzcockpit.bund.de/spa/ \
-            --variable BROWSER:chromium \
+          robotcode \
+            --profile default \
+            --profile ci-github-hosted \
+            robot \
             --outputdir results \
             --report report.html \
             --log log.html \
-            --xunit xunit.xml \
-            tests/ui/
+            --xunit xunit.xml
 
       # ── 9. Upload test results (always, even on failure) ──────────────────
       # Use @v4 — v3 is deprecated and shows a warning in every run.
