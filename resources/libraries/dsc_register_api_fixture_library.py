@@ -109,9 +109,8 @@ class dsc_register_api_fixture_library:
             raise FileNotFoundError(
                 f"API response fixture not found: {fixture_path}\n"
                 "Run the first-run-api test to generate it:\n"
-                "  robot --include first-run-api "
-                "--variable ENABLE_API_FIRST_RUN_TESTS:True "
-                "tests/ui/ts_05b_register_cards_generic.robot"
+                "  robotcode --profile default --profile first-run-api robot "
+                '--by-longname "Ui.Ts 05B Register Cards Generic"'
             )
         with open(path, encoding="utf-8") as fh:
             return json.load(fh)

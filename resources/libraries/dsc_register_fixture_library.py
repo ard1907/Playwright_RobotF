@@ -66,8 +66,8 @@ class dsc_register_fixture_library:
             raise FileNotFoundError(
                 f"Register fixture not found: {fixture_path}\n"
                 "Run the first-run test to generate it:\n"
-                "  robot --include first-run "
-                "tests/ui/ts_05_register_cards_generic.robot"
+                "  robotcode --profile default --profile first-run robot "
+                '--by-longname "Ui.Ts 05 Register Cards Generic"'
             )
         with open(path, encoding="utf-8") as fh:
             return yaml.safe_load(fh)

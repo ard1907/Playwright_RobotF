@@ -43,31 +43,43 @@ pip install -r requirements.txt
 Run all UI suites:
 
 ```bash
-robot tests/ui
+robotcode --profile default robot
 ```
 
 Run the curated smoke selection:
 
 ```bash
-robot --include smoke --outputdir results tests/ui
+robotcode --profile default --profile smoke robot
 ```
 
 Run only the generic dialog/YAML suite:
 
 ```bash
-robot tests/ui/ts_05_register_cards_generic.robot
+robotcode --profile default robot --by-longname "Ui.Ts 05 Register Cards Generic"
 ```
 
 Enable YAML first-run explicitly:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_register_cards_generic.robot
+robotcode --profile default --profile first-run robot --by-longname "Ui.Ts 05 Register Cards Generic"
 ```
 
 Enable API first-run explicitly:
 
 ```bash
-robot --include first-run-api --variable ENABLE_API_FIRST_RUN_TESTS:True tests/ui/ts_05b_register_cards_generic.robot
+robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 05B Register Cards Generic"
+```
+
+Run the full UI scope in GitHub-hosted CI mode against Prod:
+
+```bash
+robotcode --profile default --profile ci-github-hosted robot
+```
+
+Run the full UI scope in self-hosted CI mode against QS:
+
+```bash
+robotcode --profile default --profile ci-selfhosted robot
 ```
 
 ## Docker and CI/CD

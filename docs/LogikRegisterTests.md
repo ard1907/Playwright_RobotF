@@ -145,19 +145,19 @@ Sie laufen also nicht einfach mit, wenn man nur normal testen will.
 Dialog-/YAML-First-Run:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_register_cards_generic.robot
+robotcode --profile default --profile first-run robot --by-longname "Ui.Ts 05 Register Cards Generic"
 ```
 
 API-First-Run:
 
 ```bash
-robot --include first-run-api --variable ENABLE_API_FIRST_RUN_TESTS:True tests/ui/ts_05b_register_cards_generic.robot
+robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 05B Register Cards Generic"
 ```
 
 Optionales Ueberschreiben vorhandener Daten:
 
-- `FIXTURE_FORCE_REGENERATE:True` fuer YAML
-- `API_FIXTURE_FORCE_REGENERATE:True` fuer JSON
+- `--profile first-run-force` fuer YAML
+- `--profile first-run-api-force` fuer JSON
 
 ## Wann welche Suite sinnvoll ist
 
@@ -198,25 +198,25 @@ Darum existieren beide Linien nebeneinander.
 Normaler Lauf:
 
 ```bash
-robot tests/ui/ts_05_register_cards_generic.robot
+robotcode --profile default robot --by-longname "Ui.Ts 05 Register Cards Generic"
 ```
 
 Nur ein normaler Testfall:
 
 ```bash
-robot --test "Verify Register Card Workflow: Test BVA" tests/ui/ts_05_register_cards_generic.robot
+robotcode --profile default robot --test "Verify Register Card Workflow: Test BVA"
 ```
 
 Expliziter First-Run:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_register_cards_generic.robot
+robotcode --profile default --profile first-run robot --by-longname "Ui.Ts 05 Register Cards Generic"
 ```
 
 Expliziter First-Run mit Ueberschreiben fertiger Fixtures:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True --variable FIXTURE_FORCE_REGENERATE:True tests/ui/ts_05_register_cards_generic.robot
+robotcode --profile default --profile first-run-force robot --by-longname "Ui.Ts 05 Register Cards Generic"
 ```
 
 ## Kurzfassung

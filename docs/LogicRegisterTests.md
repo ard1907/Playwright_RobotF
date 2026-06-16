@@ -147,19 +147,19 @@ They do not run just because somebody starts the suite normally.
 Dialog/YAML first-run:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_register_cards_generic.robot
+robotcode --profile default --profile first-run robot --by-longname "Ui.Ts 05 Register Cards Generic"
 ```
 
 API first-run:
 
 ```bash
-robot --include first-run-api --variable ENABLE_API_FIRST_RUN_TESTS:True tests/ui/ts_05b_register_cards_generic.robot
+robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 05B Register Cards Generic"
 ```
 
 Optional overwrite of existing data:
 
-- `FIXTURE_FORCE_REGENERATE:True` for YAML
-- `API_FIXTURE_FORCE_REGENERATE:True` for JSON
+- `--profile first-run-force` for YAML
+- `--profile first-run-api-force` for JSON
 
 ## When to use which suite
 
@@ -200,25 +200,25 @@ That is why both lines exist side by side.
 Normal run:
 
 ```bash
-robot tests/ui/ts_05_register_cards_generic.robot
+robotcode --profile default robot --by-longname "Ui.Ts 05 Register Cards Generic"
 ```
 
 Only one normal test case:
 
 ```bash
-robot --test "Verify Register Card Workflow: Test BVA" tests/ui/ts_05_register_cards_generic.robot
+robotcode --profile default robot --test "Verify Register Card Workflow: Test BVA"
 ```
 
 Explicit first-run:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True tests/ui/ts_05_register_cards_generic.robot
+robotcode --profile default --profile first-run robot --by-longname "Ui.Ts 05 Register Cards Generic"
 ```
 
 Explicit first-run with overwrite of completed fixtures:
 
 ```bash
-robot --include first-run --variable ENABLE_FIRST_RUN_TESTS:True --variable FIXTURE_FORCE_REGENERATE:True tests/ui/ts_05_register_cards_generic.robot
+robotcode --profile default --profile first-run-force robot --by-longname "Ui.Ts 05 Register Cards Generic"
 ```
 
 ## Short summary
