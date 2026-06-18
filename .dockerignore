@@ -3,18 +3,51 @@
 
 # Git ignorieren
 .git
+.gitignore
 
 # Sensible Daten
 .env
 
+# Playwright- und Testartefakte
 .playwright-mcp
-.vscode
 browser
-results
+# browser/traces/
 screenshots
 # test_data
 tests/examples
-venv
-.gitignore
 *.html
 *.xml
+
+# Ergebnisse aus CI / lokalen Läufen
+results
+results2
+
+# virtuelle Umgebungen
+venv
+.venv/
+
+# Python Caches / Artefakte
+__pycache__/
+*.pyc
+.pytest_cache/
+.mypy_cache/
+
+# Allgemeine Cache-Ordner
+.cache/
+
+# Node / JS
+node_modules/
+
+# IDE / OS
+.vscode
+.idea/
+.DS_Store
+
+# Logs und Build-Artefakte
+*.log
+dist/
+build/
+*.egg-info/
+
+
+

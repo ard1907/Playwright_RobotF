@@ -1,7 +1,7 @@
 # =========================
 # 1️⃣ Builder Stage
 # =========================
-FROM python:3.11-slim AS builder
+FROM python:3.11-slim-bookworm AS builder
 
 WORKDIR /app
 
@@ -37,7 +37,7 @@ RUN pip install --no-cache-dir robotframework-browser
 # =========================
 # 2️⃣ Final Stage
 # =========================
-FROM python:3.11-slim
+FROM python:3.11-slim-bookworm
 
 WORKDIR /app
 
