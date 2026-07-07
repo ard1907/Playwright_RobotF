@@ -225,7 +225,7 @@ Testfaelle:
 - `TC013 - Verify Test BVA Personal Data API Response Matches Fixture`: Live-API gegen `bva.json`
 - `API First Run: Capture BVA Personal Data API Response Fixture`: JSON-Referenz erzeugen oder erneuern
 
-### `ts_05_register_cards_generic.robot`
+### `ts_05_register_cards_generic_dom_test.robot`
 
 Inhalt:
 
@@ -239,7 +239,7 @@ Testfaelle:
 - `First Run: Capture And Generate Fixture For Test BVA`: `bva.yaml` erzeugen oder erneuern
 - `First Run: Capture And Generate Fixture For Test-DGUV`: `dguv.yaml` erzeugen oder erneuern
 
-### `ts_05b_register_cards_generic.robot`
+### `ts_05_register_cards_generic_api_test.robot`
 
 Inhalt:
 

@@ -261,7 +261,7 @@ Run Register Api Card Verification
     ${fixture}=    Load Api Response Fixture    ${fixture_path}
     ${is_complete}=    Is Api Fixture Completed    ${fixture}
     Skip If    not ${is_complete}
-    ...    API fixture not yet populated by first-run-api: ${fixture_path}\nRun: robot --include first-run-api --variable ENABLE_API_FIRST_RUN_TESTS:True tests/ui/ts_05b_register_cards_generic.robot
+    ...    API fixture not yet populated by first-run-api: ${fixture_path}\nRun: robot --include first-run-api --variable ENABLE_API_FIRST_RUN_TESTS:True tests/ui/ts_05_register_cards_generic_api_test.robot
     ${is_decrypted_fixture}=    Is Decrypted Api Fixture    ${fixture}
     Skip If    not ${is_decrypted_fixture}
     ...    API fixture still uses the legacy encrypted-envelope format: ${fixture_path}\nRe-run first-run-api to regenerate the decrypted fixture pair.

@@ -1,5 +1,5 @@
 # ==============================================================================
-# ts_05_register_cards_generic.robot  –  Generic Register Card
+# ts_05_register_cards_generic_dom_test.robot  –  Generic Register Card
 #                                         Test Suite
 #
 # Tests any number of register cards generically against YAML fixture files.

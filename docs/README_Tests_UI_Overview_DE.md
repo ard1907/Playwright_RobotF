@@ -75,14 +75,14 @@ Dieses Dokument listet alle UI-Suiten und ihre Testfaelle in kompakter Form auf.
 - `TC013 - Verify Test BVA Personal Data API Response Matches Fixture` - vergleicht die Live-API-Response mit `bva.json`.
 - `API First Run: Capture BVA Personal Data API Response Fixture` - erzeugt oder aktualisiert `bva.json` gezielt im `first-run-api`-Modus.
 
-## 6) `tests/ui/ts_05_register_cards_generic.robot`
+## 6) `tests/ui/ts_05_register_cards_generic_dom_test.robot`
 
 - `Verify Register Card Workflow: Test BVA` - prueft den generischen BVA-Dialog gegen `bva.yaml`.
 - `Verify Register Card Workflow: Test-DGUV` - prueft den generischen DGUV-Dialog gegen `dguv.yaml`.
 - `First Run: Capture And Generate Fixture For Test BVA` - erzeugt oder aktualisiert `bva.yaml` im expliziten `first-run`-Modus.
 - `First Run: Capture And Generate Fixture For Test-DGUV` - erzeugt oder aktualisiert `dguv.yaml` im expliziten `first-run`-Modus.
 
-## 7) `tests/ui/ts_05b_register_cards_generic.robot`
+## 7) `tests/ui/ts_05_register_cards_generic_api_test.robot`
 
 - `Verify Register Api Workflow: Test BVA` - prueft die API-Response des generischen BVA-Flows gegen `bva.json`.
 - `Verify Register Api Workflow: Test-DGUV` - prueft die API-Response des generischen DGUV-Flows gegen `dguv.json`.

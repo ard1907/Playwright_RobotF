@@ -29,8 +29,8 @@ Its focus is UI validation for public pages, login-adjacent cockpit flows, regis
 - `ts_03_register_selection.robot`: post-login register selection, grid/list view, dialogs, timer, feedback, and stability
 - `ts_04_register_selection_bva.robot`: fixed BVA workflow including results page, dialog, PDF download, and back navigation
 - `ts_04b_register_selection_bva.robot`: BVA workflow plus API-response verification against a JSON fixture
-- `ts_05_register_cards_generic.robot`: generic register-card verification against YAML fixtures
-- `ts_05b_register_cards_generic.robot`: generic register-card verification against decrypted API responses stored as JSON fixtures
+- `ts_05_register_cards_generic_dom_test.robot`: generic register-card verification against YAML fixtures
+- `ts_05_register_cards_generic_api_test.robot`: generic register-card verification against decrypted API responses stored as JSON fixtures
 
 ## Typical commands
 

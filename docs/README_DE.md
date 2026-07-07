@@ -29,8 +29,8 @@ Der Schwerpunkt liegt auf UI-Tests fuer oeffentliche Seiten, Login-nahe Cockpit-
 - `ts_03_register_selection.robot`: Registerauswahl nach Login, Grid-/Listenansicht, Dialoge, Timer, Feedback und Stabilitaet
 - `ts_04_register_selection_bva.robot`: fester BVA-Workflow inkl. Ergebnisseite, Dialog, PDF-Download und Ruecknavigation
 - `ts_04b_register_selection_bva.robot`: BVA-Workflow plus API-Response-Verifikation gegen JSON-Fixture
-- `ts_05_register_cards_generic.robot`: generische Registerkarten-Pruefung gegen YAML-Fixtures
-- `ts_05b_register_cards_generic.robot`: generische Registerkarten-Pruefung gegen entschluesselte API-Responses in JSON-Fixtures
+- `ts_05_register_cards_generic_dom_test.robot`: generische Registerkarten-Pruefung gegen YAML-Fixtures
+- `ts_05_register_cards_generic_api_test.robot`: generische Registerkarten-Pruefung gegen entschluesselte API-Responses in JSON-Fixtures
 
 ## Typische Befehle
 

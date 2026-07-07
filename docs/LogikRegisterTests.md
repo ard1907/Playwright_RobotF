@@ -3,8 +3,8 @@
 Dieses Dokument erklaert die Registertest-Logik fuer drei verwandte Suiten:
 
 - `ts_04b_register_selection_bva.robot`
-- `ts_05_register_cards_generic.robot`
-- `ts_05b_register_cards_generic.robot`
+- `ts_05_register_cards_generic_dom_test.robot`
+- `ts_05_register_cards_generic_api_test.robot`
 
 Der Unterschied ist einfach:
 
@@ -41,9 +41,9 @@ Kurz gesagt:
 - Python-Helfer lesen und schreiben Fixtures
 - Fixtures liefern die Vergleichsbasis fuer normale Verifikation
 
-## Variante 1: Dialogbasierte generische Pruefung mit YAML
+## Variante 1: DOM-basierte Pruefung mit YAML
 
-Die Suite `ts_05_register_cards_generic.robot` ist fuer den Alltagslauf gedacht.
+Die Suite `ts_05_register_cards_generic_dom_test.robot` ist fuer den Alltagslauf gedacht.
 Sie arbeitet mit YAML-Dateien wie `bva.yaml` oder `dguv.yaml`.
 
 Der Ablauf ist:
@@ -110,7 +110,7 @@ Damit ist `ts_04b` die Bruecke zwischen festem Einzeltest und spaeterer Generali
 
 ## Rolle von `ts_05b`
 
-`ts_05b_register_cards_generic.robot` macht aus dem BVA-Muster einen wiederverwendbaren Standard.
+`ts_05_register_cards_generic_api_test.robot` macht aus dem BVA-Muster einen wiederverwendbaren Standard.
 Die Suite arbeitet nicht mehr nur mit BVA, sondern mit beliebigen Registern, solange es eine JSON-Fixture gibt.
 
 Aktuell sind enthalten:

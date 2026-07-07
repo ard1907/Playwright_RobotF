@@ -3,8 +3,8 @@
 This document explains the register-testing logic used by three related suites:
 
 - `ts_04b_register_selection_bva.robot`
-- `ts_05_register_cards_generic.robot`
-- `ts_05b_register_cards_generic.robot`
+- `ts_05_register_cards_generic_dom_test.robot`
+- `ts_05_register_cards_generic_api_test.robot`
 
 The difference is simple:
 
@@ -42,9 +42,9 @@ In short:
 - Python helpers read and write fixtures
 - fixtures provide the comparison baseline for normal verification
 
-## Variant 1: generic dialog verification with YAML
+## Variant 1: DOM-based verification with YAML
 
-`ts_05_register_cards_generic.robot` is the everyday suite.
+`ts_05_register_cards_generic_dom_test.robot` is the everyday suite.
 It works with YAML files such as `bva.yaml` or `dguv.yaml`.
 
 The flow is:
@@ -109,9 +109,10 @@ That makes sense because the new approach is first stabilized on a fixed workflo
 
 So `ts_04b` is the bridge between a fixed single-suite workflow and the later generic approach.
 
+
 ## The role of `ts_05b`
 
-`ts_05b_register_cards_generic.robot` turns the BVA pattern into a reusable standard.
+`ts_05_register_cards_generic_api_test.robot` turns the BVA pattern into a reusable standard.
 It is no longer limited to BVA, as long as a JSON fixture exists for the target register.
 
 At the moment the suite covers:

@@ -27,11 +27,11 @@ Dieses Dokument beschreibt die Testbereiche des Repositories, die wichtigsten Su
   - identischer BVA-Grundworkflow wie `ts_04`
   - zusaetzlich API-Response-Verifikation gegen `test_data/registers/bva.json`
   - enthaelt einen expliziten `first-run-api`-Pfad zum Erzeugen der JSON-Fixture
-- `ts_05_register_cards_generic.robot`
+- `ts_05_register_cards_generic_dom_test.robot`
   - generische Registerkarten-Suite auf Basis von YAML-Fixtures
   - aktuell fuer `bva.yaml` und `dguv.yaml`
   - trennt Normalmodus und expliziten `first-run`
-- `ts_05b_register_cards_generic.robot`
+- `ts_05_register_cards_generic_api_test.robot`
   - generische Registerkarten-Suite auf Basis entschluesselter API-Responses
   - aktuell fuer `bva.json` und `dguv.json`
   - trennt Normalmodus und expliziten `first-run-api`
