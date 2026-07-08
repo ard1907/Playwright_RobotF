@@ -190,7 +190,7 @@ Testfaelle:
 - `TC017 - Toggle All Registers In List View Select And Deselect`: globale Auswahl im Listenmodus
 - `TC018 - Reload Keeps Registerauswahl Stable`: Stabilitaet nach Reload
 
-### `ts_04_register_selection_bva.robot`
+### `ts_04_register_selection_bva_ui.robot`
 
 Inhalt:
 
@@ -212,7 +212,7 @@ Testfaelle:
 - `TC011 - Close Protokolldaten Dialog Returns To Results View`: Dialog schliessen
 - `TC012 - Navigate Back To Register Auswahl Restores Correct URL`: zurueck zur Registerauswahl
 
-### `ts_04b_register_selection_bva.robot`
+### `ts_05_register_selection_bva_ui_api.robot`
 
 Inhalt:
 
@@ -225,7 +225,7 @@ Testfaelle:
 - `TC013 - Verify Test BVA Personal Data API Response Matches Fixture`: Live-API gegen `bva.json`
 - `API First Run: Capture BVA Personal Data API Response Fixture`: JSON-Referenz erzeugen oder erneuern
 
-### `ts_05_register_cards_generic_dom_test.robot`
+### `ts_06_register_cards_generic_dom_test.robot`
 
 Inhalt:
 
@@ -239,7 +239,7 @@ Testfaelle:
 - `First Run: Capture And Generate Fixture For Test BVA`: `bva.yaml` erzeugen oder erneuern
 - `First Run: Capture And Generate Fixture For Test-DGUV`: `dguv.yaml` erzeugen oder erneuern
 
-### `ts_05_register_cards_generic_api_test.robot`
+### `ts_07_register_cards_generic_api_test.robot`
 
 Inhalt:
 

@@ -4,7 +4,7 @@
 #
 # Workflow entry  : https://qs-datenschutzcockpit.dsc.govkg.de/spa/cockpit/register-auswahl
 # Results page    : https://qs-datenschutzcockpit.dsc.govkg.de/spa/cockpit/datenabfrage
-# Suite           : tests/ui/ts_04_register_selection_bva.robot
+# Suite           : tests/ui/ts_04_register_selection_bva_ui.robot
 #
 # This page object covers the full BVA data-query workflow:
 #   1. Select "Test BVA" register card on the register-auswahl page

@@ -1,5 +1,5 @@
-# ==============================================================================
-# ts_05b_register_cards_generic.robot  –  Generic Register Card
+# ===============================================================================
+# ts_07_register_cards_generic_api_test.robot  –  Generic Register Card
 #                                          Test Suite
 #                                                     (API-Response Verification)
 #
@@ -9,23 +9,23 @@
 # Each register card is one test case (static list); adding a new card means
 # adding one verification test + one first-run-api test + two JSON fixtures.
 #
-# ── Relation to ts_05 ──────────────────────────────────────────────────────────
+# ── Relation to ts_06 ─────────────────────────────────────────────────────────
 # This suite is the API-response counterpart of
-# ts_05_register_cards_generic.robot:
+# ts_06_register_cards_generic_dom_test.robot:
 #
-#   ts_05  → dialog-content verification against YAML fixtures
+#   ts_06  → dialog-content verification against DOM / YAML fixtures
 #             (test_data/registers/<tag>.yaml)
-#   ts_05b → API-response verification against decrypted JSON fixtures
+#   ts_07 → API-response verification against decrypted JSON fixtures
 #             (test_data/registers/<tag>.json + <tag>_raw.json)
 #
 # Both suites exist independently; neither modifies the other.
 # The decryption uses a BrowserLibrary JS extension to capture XHR traffic
 # and crypto.subtle.decrypt calls from the app's main thread.
 #
-# ── Two Operating Modes ────────────────────────────────────────────────────────
+# ── Two Operating Modes ───────────────────────────────────────────────────────
 #
 #   Normal mode (default run):
-#     robotcode --profile default robot --by-longname "Ui.Ts 05B Register Cards Generic"
+#     robotcode --profile default robot --by-longname "Ui.Ts 07 Register Cards Generic Api Test"
 #     Loads each JSON fixture and compares the live API response against it.
 #     Requires: fixture populated by a prior first-run-api execution.
 #     Skip note: test is skipped (not failed) when the fixture is absent or
@@ -33,16 +33,16 @@
 #
 #   First-run-api mode (data capture):
 #     robotcode --profile default --profile first-run-api robot \
-#           --by-longname "Ui.Ts 05B Register Cards Generic"
+#           --by-longname "Ui.Ts 07 Register Cards Generic Api Test"
 #     Drives the full workflow, captures the encrypted API response, decrypts it
 #     in the browser, and writes (or updates) the JSON fixture pair.
 #     By default, skips writing when a fixture already exists and is completed.
 #
 #   First-run-api with forced overwrite:
 #     robotcode --profile default --profile first-run-api-force robot \
-#           --by-longname "Ui.Ts 05B Register Cards Generic"
+#           --by-longname "Ui.Ts 07 Register Cards Generic Api Test"
 #
-# ── Fixture File Convention ────────────────────────────────────────────────────
+# ── Fixture File Convention ───────────────────────────────────────────────────
 #   test_data/registers/<tag>.json       processed decrypted key/value payload
 #   test_data/registers/<tag>_raw.json   verbatim decrypted XML payload
 #   Same directory as YAML fixtures; different extension.
@@ -53,7 +53,7 @@
 #   3. Run first-run-api to populate both JSON fixtures, review, and commit.
 #   (No YAML file needed for this suite; only the JSON fixture pair.)
 #
-# ── Suite Lifecycle ────────────────────────────────────────────────────────────
+# ── Suite Lifecycle ───────────────────────────────────────────────────────────
 #   Suite Setup     → Login once (AusweisApp eID)
 #   Test Setup      → Navigate to register-auswahl in default grid view
 #   Suite Teardown  → Close any open dialog + logout + close all browsers
@@ -61,7 +61,7 @@
 # NOTE: AusweisApp SDK must be available. On standard CI the suite is skipped
 #       automatically by the shared Open Browser And Login For AusweisApp Suite
 #       keyword; see resources/dsc_setup_teardown.robot for the CI guard.
-# ==============================================================================
+# ===============================================================================
 
 *** Settings ***
 Library     Browser
@@ -94,7 +94,7 @@ ${API_FIXTURES_DIR}                  ${CURDIR}${/}..${/}..${/}test_data${/}regis
 ${API_FIXTURE_FORCE_REGENERATE}      ${False}
 
 # Explicit opt-in so first-run-api tests never execute during a default run:
-#   robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 05B Register Cards Generic"
+#   robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 07 Register Cards Generic"
 ${ENABLE_API_FIRST_RUN_TESTS}        ${False}
 
 
@@ -128,7 +128,7 @@ Require Explicit Api First Run Mode
     [Documentation]    Guards first-run-api capture tests so they only execute when
     ...                the suite is started with explicit first-run-api intent.
     Skip If    not ${ENABLE_API_FIRST_RUN_TESTS}
-    ...    API first-run tests are opt-in. Run with: robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 05B Register Cards Generic"
+    ...    API first-run tests are opt-in. Run with: robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 07 Register Cards Generic Api Test"
 
 
 # ── Composite First-Run-Api Keyword ────────────────────────────────────────────
@@ -162,13 +162,13 @@ Run Register Api Card First Run Capture
 
 *** Test Cases ***
 
-# ==============================================================================
+# ===============================================================================
 # NORMAL VERIFICATION TESTS
 # Run without any filter to execute these tests.
 # Prerequisite: JSON fixture must be populated (first_run.completed: true).
 # Skip behaviour: test is skipped (not failed) when the fixture is absent or
 #                 not yet populated.
-# ==============================================================================
+# ===============================================================================
 
 Verify Register Api Workflow: Test BVA
     [Documentation]    Loads test_data/registers/bva.json and verifies the live
@@ -211,7 +211,7 @@ Verify Register Api Workflow: Test-DGUV
 # FIRST-RUN-API DATA CAPTURE TESTS
 # Run with:
 #   robotcode --profile default --profile first-run-api robot \
-#         --by-longname "Ui.Ts 05B Register Cards Generic"
+#         --by-longname "Ui.Ts 07 Register Cards Generic Api Test"
 # Forced overwrite: use --profile first-run-api-force instead
 #
 # These tests are guarded and skip unless ENABLE_API_FIRST_RUN_TESTS=True.
@@ -225,11 +225,11 @@ API First Run: Capture And Generate Fixture For Test BVA
     ...
     ...                Run once before the normal verification tests:
     ...                  robotcode --profile default --profile first-run-api robot \
-    ...                        --by-longname "Ui.Ts 05B Register Cards Generic"
+    ...                        --by-longname "Ui.Ts 07 Register Cards Generic Api Test"
     ...
     ...                To overwrite an existing bva.json:
     ...                  robotcode --profile default --profile first-run-api-force robot \
-    ...                        --by-longname "Ui.Ts 05B Register Cards Generic"
+    ...                        --by-longname "Ui.Ts 07 Register Cards Generic Api Test"
     ...
     ...                After the run: review test_data/registers/bva.json and
     ...                test_data/registers/bva_raw.json, then commit.
@@ -246,11 +246,11 @@ API First Run: Capture And Generate Fixture For Test-DGUV
     ...
     ...                Run once before the normal verification tests:
     ...                  robotcode --profile default --profile first-run-api robot \
-    ...                        --by-longname "Ui.Ts 05B Register Cards Generic"
+    ...                        --by-longname "Ui.Ts 07 Register Cards Generic Api Test"
     ...
     ...                To overwrite an existing dguv.json:
     ...                  robotcode --profile default --profile first-run-api-force robot \
-    ...                        --by-longname "Ui.Ts 05B Register Cards Generic"
+    ...                        --by-longname "Ui.Ts 07 Register Cards Generic Api Test"
     ...
     ...                After the run: review test_data/registers/dguv.json and
     ...                test_data/registers/dguv_raw.json, then commit.
@@ -272,3 +272,4 @@ API First Run: Capture And Generate Fixture For Test-DGUV
 #     [Setup]    Require Explicit Api First Run Mode
 #     [Tags]    first-run-api    kba
 #     Run Register Api Card First Run Capture    Test KBA    kba    ${API_FIXTURES_DIR}${/}kba.json
+

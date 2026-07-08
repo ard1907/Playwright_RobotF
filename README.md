@@ -27,7 +27,7 @@ The documentation is split into language-specific README files, test overviews, 
 ## Most important suites
 
 - `tests/ui/ts_03_register_selection.robot` - authenticated register-selection smoke tests
-- `tests/ui/ts_04_register_selection_bva.robot` - BVA-specific result workflow
+- `tests/ui/ts_04_register_selection_bva_ui.robot` - BVA-specific result workflow
 - `tests/ui/ts_05_register_cards_generic.robot` - generic register-card verification via YAML fixtures
 
 ## Typical commands

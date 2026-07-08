@@ -2,9 +2,9 @@
 
 Dieses Dokument erklaert die Registertest-Logik fuer drei verwandte Suiten:
 
-- `ts_04b_register_selection_bva.robot`
-- `ts_05_register_cards_generic_dom_test.robot`
-- `ts_05_register_cards_generic_api_test.robot`
+- `ts_05_register_selection_bva_ui_api.robot`
+- `ts_06_register_cards_generic_dom_test.robot`
+- `ts_07_register_cards_generic_api_test.robot`
 
 Der Unterschied ist einfach:
 
@@ -43,7 +43,7 @@ Kurz gesagt:
 
 ## Variante 1: DOM-basierte Pruefung mit YAML
 
-Die Suite `ts_05_register_cards_generic_dom_test.robot` ist fuer den Alltagslauf gedacht.
+Die Suite `ts_06_register_cards_generic_dom_test.robot` ist fuer den Alltagslauf gedacht.
 Sie arbeitet mit YAML-Dateien wie `bva.yaml` oder `dguv.yaml`.
 
 Der Ablauf ist:
@@ -97,7 +97,7 @@ Die JSON-Fixtures speichern danach zwei Sichten:
 
 ## Rolle von `ts_04b`
 
-`ts_04b_register_selection_bva.robot` ist der kontrollierte Einstieg in die API-Pruefung.
+`ts_05_register_selection_bva_ui_api.robot` ist der kontrollierte Einstieg in die API-Pruefung.
 Die Suite nimmt genau einen festen Fall, naemlich BVA.
 
 Das ist sinnvoll, weil man den neuen API-Ansatz erst an einem bekannten Register absichert:
@@ -110,7 +110,7 @@ Damit ist `ts_04b` die Bruecke zwischen festem Einzeltest und spaeterer Generali
 
 ## Rolle von `ts_05b`
 
-`ts_05_register_cards_generic_api_test.robot` macht aus dem BVA-Muster einen wiederverwendbaren Standard.
+`ts_07_register_cards_generic_api_test.robot` macht aus dem BVA-Muster einen wiederverwendbaren Standard.
 Die Suite arbeitet nicht mehr nur mit BVA, sondern mit beliebigen Registern, solange es eine JSON-Fixture gibt.
 
 Aktuell sind enthalten:

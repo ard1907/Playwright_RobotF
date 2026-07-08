@@ -1,5 +1,5 @@
-# ==============================================================================
-# ts_05_register_cards_generic_dom_test.robot  –  Generic Register Card
+# ===============================================================================
+# ts_06_register_cards_generic_dom_test.robot  –  Generic Register Card
 #                                         Test Suite
 #
 # Tests any number of register cards generically against YAML fixture files.
@@ -35,7 +35,7 @@
 #   3. Add one "First Run: Capture … <Name>" test case below
 #   4. Run first-run to populate the fixture, review, and commit.
 #
-# ── Suite lifecycle ────────────────────────────────────────────────────────────
+# ── Suite lifecycle ───────────────────────────────────────────────────────────
 #   Suite Setup     → Login once (AusweisApp eID)
 #   Test Setup      → Navigate to register-auswahl in default grid view
 #   Suite Teardown  → Logout + close all browsers
@@ -43,7 +43,7 @@
 # NOTE: AusweisApp SDK must be available. On standard CI the suite is skipped
 #       automatically by the shared Open Browser And Login For AusweisApp Suite
 #       keyword; see resources/dsc_setup_teardown.robot for the CI guard.
-# ==============================================================================
+# ===============================================================================
 
 *** Settings ***
 Library     Browser
@@ -181,12 +181,12 @@ Run Register First Run Capture
 
 *** Test Cases ***
 
-# ==============================================================================
+# ===============================================================================
 # NORMAL VERIFICATION TESTS
 # Run without any filter to execute these tests.
 # Prerequisite: fixture YAML must be populated (first_run.completed: true).
 # Skip behaviour: test is skipped (not failed) when fixture is not yet populated.
-# ==============================================================================
+# ===============================================================================
 
 Verify Register Card Workflow: Test BVA
     [Documentation]    Loads test_data/registers/bva.yaml and verifies the full
@@ -198,7 +198,7 @@ Verify Register Card Workflow: Test BVA
     ...                Skip: when bva.yaml is not yet populated by a first-run.
     [Tags]    smoke    bva    register-card    generic
     Run Register Card Verification    ${FIXTURES_DIR}${/}bva.yaml
-
+    
 Verify Register Card Workflow: Test-DGUV
     [Documentation]    Loads test_data/registers/dguv.yaml and verifies the full
     ...                DGUV register card workflow against expected fixture data:
@@ -279,3 +279,4 @@ First Run: Capture And Generate Fixture For Test-DGUV
 #     [Documentation]    Captures live Test KBA dialog data → writes kba.yaml.
 #     [Tags]    first-run    kba
 #     Run Register First Run Capture    Test KBA    kba    ${FIXTURES_DIR}${/}kba.yaml
+

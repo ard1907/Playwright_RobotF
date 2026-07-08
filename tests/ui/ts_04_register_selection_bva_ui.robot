@@ -1,5 +1,5 @@
 # ==============================================================================
-# ts_04_register_selection_bva.robot  –  Test Suite for the
+# ts_04_register_selection_bva_ui.robot  –  Test Suite for the
 #                                                   Test BVA Register Workflow
 #
 # Target  : https://qs-datenschutzcockpit.dsc.govkg.de/spa/cockpit/datenabfrage
@@ -284,3 +284,4 @@ TC012 - Navigate Back To Register Auswahl Restores Correct URL
     Should Be Equal As Strings    ${url}    ${REGISTER_AUSWAHL_URL}
     Verify Page Title Contains    ${TITLE_REGISTER_AUSWAHL}
     Element Is Visible    ${RA_H1_HEADING}
+

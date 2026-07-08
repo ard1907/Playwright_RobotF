@@ -54,7 +54,7 @@ This document lists all UI suites and their test cases in compact form.
 - `TC017 - Toggle All Registers In List View Select And Deselect` - checks global select/deselect behavior in list view.
 - `TC018 - Reload Keeps Registerauswahl Stable` - checks that the page stays stable after reload.
 
-## 4) `tests/ui/ts_04_register_selection_bva.robot`
+## 4) `tests/ui/ts_04_register_selection_bva_ui.robot`
 
 - `TC001 - Select Test BVA Register Card Enables Anfrage Starten` - checks selection of the BVA card.
 - `TC002 - Deselect Test BVA Register Card Returns Empty Selection State` - checks clean deselection of the BVA card.
@@ -69,20 +69,20 @@ This document lists all UI suites and their test cases in compact form.
 - `TC011 - Close Protokolldaten Dialog Returns To Results View` - checks dialog closing behavior.
 - `TC012 - Navigate Back To Register Auswahl Restores Correct URL` - checks back navigation.
 
-## 5) `tests/ui/ts_04b_register_selection_bva.robot`
+## 5) `tests/ui/ts_05_register_selection_bva_ui_api.robot`
 
 - `TC001` to `TC012` - mirror the BVA workflow from `ts_04` as a self-contained suite.
 - `TC013 - Verify Test BVA Personal Data API Response Matches Fixture` - compares the live API response with `bva.json`.
 - `API First Run: Capture BVA Personal Data API Response Fixture` - generates or updates `bva.json` in explicit `first-run-api` mode.
 
-## 6) `tests/ui/ts_05_register_cards_generic_dom_test.robot`
+## 6) `tests/ui/ts_06_register_cards_generic_dom_test.robot`
 
 - `Verify Register Card Workflow: Test BVA` - validates the generic BVA dialog against `bva.yaml`.
 - `Verify Register Card Workflow: Test-DGUV` - validates the generic DGUV dialog against `dguv.yaml`.
 - `First Run: Capture And Generate Fixture For Test BVA` - generates or updates `bva.yaml` in explicit `first-run` mode.
 - `First Run: Capture And Generate Fixture For Test-DGUV` - generates or updates `dguv.yaml` in explicit `first-run` mode.
 
-## 7) `tests/ui/ts_05_register_cards_generic_api_test.robot`
+## 7) `tests/ui/ts_07_register_cards_generic_api_test.robot`
 
 - `Verify Register Api Workflow: Test BVA` - validates the API response of the generic BVA flow against `bva.json`.
 - `Verify Register Api Workflow: Test-DGUV` - validates the API response of the generic DGUV flow against `dguv.json`.
@@ -91,6 +91,6 @@ This document lists all UI suites and their test cases in compact form.
 
 ## Shared notes
 
-- Suites `ts_03` to `ts_05b` require a successful AusweisApp login.
+- Suites `ts_03` to `ts_07` require a successful AusweisApp login.
 - `first-run` and `first-run-api` are intentionally opt-in and do not run during a normal suite execution.
 - The generic register-testing approach is explained in more detail in `LogicRegisterTests.md`.

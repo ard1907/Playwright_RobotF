@@ -1,5 +1,5 @@
 # ==============================================================================
-# ts_04b_register_selection_bva.robot  –  Test Suite for the
+# ts_05_register_selection_bva_ui_api.robot  –  Test Suite for the
 #                                                     BVA Register Workflow
 #                                                     (API-Response Verification)
 #
@@ -7,7 +7,7 @@
 # Pattern : Page Object Model (POM) + shared resources
 #
 # ── Relation to ts_04 ──────────────────────────────────────────────────────────
-# This suite mirrors ts_04_register_selection_bva.robot (TC001–TC012)
+# This suite mirrors ts_04_register_selection_bva_ui.robot (TC001–TC012)
 # and adds:
 #
 #   TC013  Verify Test BVA Personal Data API Response Matches Fixture
@@ -21,19 +21,19 @@
 #            writes it to test_data/registers/bva.json.
 #            This test is skipped unless ENABLE_API_FIRST_RUN_TESTS=True.
 #
-# ── Operating Modes ────────────────────────────────────────────────────────────
+# ── Operating Modes ───────────────────────────────────────────────────────────
 #
 #   Normal run (TC001–TC013):
-#     robotcode --profile default robot --by-longname "Ui.Ts 04B Register Selection Bva"
+#     robotcode --profile default robot --by-longname "Ui.Ts 05 Register Selection Bva Ui Api"
 #     TC013 is skipped when bva.json is not yet populated.
 #
 #   First-run-api (capture JSON fixture):
 #     robotcode --profile default --profile first-run-api robot \
-#           --by-longname "Ui.Ts 04B Register Selection Bva"
+#           --by-longname "Ui.Ts 05 Register Selection Bva Ui Api"
 #
 #   First-run-api with forced overwrite:
 #     robotcode --profile default --profile first-run-api-force robot \
-#           --by-longname "Ui.Ts 04B Register Selection Bva"
+#           --by-longname "Ui.Ts 05 Register Selection Bva Ui Api"
 #
 # NOTE: This suite requires a successful eID login via AusweisApp.
 #       On standard CI it is skipped automatically.
@@ -95,7 +95,7 @@ ${BVA_API_FIXTURE_PATH}     ${CURDIR}${/}..${/}..${/}test_data${/}registers${/}b
 ${API_FIXTURE_FORCE_REGENERATE}    ${False}
 
 # Explicit opt-in so first-run-api tests never run during a default suite run:
-#   robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 04B Register Selection Bva"
+#   robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 05 Register Selection Bva Ui Api"
 ${ENABLE_API_FIRST_RUN_TESTS}      ${False}
 
 
@@ -163,7 +163,7 @@ Require Explicit Api First Run Mode
     [Documentation]    Guards first-run-api capture tests so they only execute when
     ...                the suite is explicitly started with first-run-api intent.
     Skip If    not ${ENABLE_API_FIRST_RUN_TESTS}
-    ...    API first-run tests are opt-in. Run with: robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 04B Register Selection Bva"
+    ...    API first-run tests are opt-in. Run with: robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 05 Register Selection Bva Ui Api"
 
 
 Run BVA Api Card First Run Capture
@@ -187,11 +187,10 @@ Run BVA Api Card First Run Capture
 
 *** Test Cases ***
 
-# ==============================================================================
-# TC001–TC012 – Same BVA workflow tests as ts_04.
-# These tests use identical keywords and page objects; they are reproduced here
-# so ts_04b is a self-contained, runnable suite.
-# ==============================================================================
+# ==================================================================================================
+# TC001–TC012 – Same BVA workflow tests as ts_04. These tests use identical keywords and page objects;
+# they are reproduced here so ts_04b is a self-contained, runnable suite.
+# ==================================================================================================
 
 TC001 - Select Test BVA Register Card Enables Anfrage Starten
     [Documentation]    Selects the "Test BVA" register card on the register-auswahl
@@ -379,3 +378,4 @@ API First Run: Capture BVA Personal Data API Response Fixture
     [Setup]    Require Explicit Api First Run Mode
     [Tags]    first-run-api    bva
     Run BVA Api Card First Run Capture
+

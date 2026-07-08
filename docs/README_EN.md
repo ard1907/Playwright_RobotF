@@ -27,10 +27,10 @@ Its focus is UI validation for public pages, login-adjacent cockpit flows, regis
 - `ts_01_landing_page.robot`: landing page, dialogs, FAQ, footer, and the full public journey flow
 - `ts_02_auth_info_page.robot`: authentication-info page, FAQ, external links, and the AusweisApp start button
 - `ts_03_register_selection.robot`: post-login register selection, grid/list view, dialogs, timer, feedback, and stability
-- `ts_04_register_selection_bva.robot`: fixed BVA workflow including results page, dialog, PDF download, and back navigation
-- `ts_04b_register_selection_bva.robot`: BVA workflow plus API-response verification against a JSON fixture
-- `ts_05_register_cards_generic_dom_test.robot`: generic register-card verification against YAML fixtures
-- `ts_05_register_cards_generic_api_test.robot`: generic register-card verification against decrypted API responses stored as JSON fixtures
+- `ts_04_register_selection_bva_ui.robot`: fixed BVA workflow including results page, dialog, PDF download, and back navigation
+- `ts_05_register_selection_bva_ui_api.robot`: BVA workflow plus API-response verification against a JSON fixture
+- `ts_06_register_cards_generic_dom_test.robot`: generic register-card verification against YAML fixtures
+- `ts_07_register_cards_generic_api_test.robot`: generic register-card verification against decrypted API responses stored as JSON fixtures
 
 ## Typical commands
 
@@ -55,19 +55,19 @@ robotcode --profile default --profile smoke robot
 Run only the generic dialog/YAML suite:
 
 ```bash
-robotcode --profile default robot --by-longname "Ui.Ts 05 Register Cards Generic"
+robotcode --profile default robot --by-longname "Ui.Ts 06 Register Cards Generic"
 ```
 
 Enable YAML first-run explicitly:
 
 ```bash
-robotcode --profile default --profile first-run robot --by-longname "Ui.Ts 05 Register Cards Generic"
+robotcode --profile default --profile first-run robot --by-longname "Ui.Ts 06 Register Cards Generic"
 ```
 
 Enable API first-run explicitly:
 
 ```bash
-robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 05B Register Cards Generic"
+robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 07 Register Cards Generic"
 ```
 
 Run the full UI scope in GitHub-hosted CI mode against Prod:

@@ -11,10 +11,10 @@ This document summarizes the main test areas, the page-object layer, and the sha
 - `ts_01_landing_page.robot` covers the public landing page, public dialogs, FAQ, footer content, and the public journey flow.
 - `ts_02_auth_info_page.robot` covers the authentication-info page, external links, FAQ content, and the AusweisApp start entry.
 - `ts_03_register_selection.robot` covers post-login register selection, grid/list view, dialogs, timer behavior, feedback, and reload stability.
-- `ts_04_register_selection_bva.robot` covers the fixed BVA result workflow including result expansion, detail dialog, and PDF checks.
-- `ts_04b_register_selection_bva.robot` mirrors the BVA workflow and adds API-response verification against `test_data/registers/bva.json`.
--- `ts_05_register_cards_generic_dom_test.robot` verifies generic register cards through YAML fixtures such as `bva.yaml` and `dguv.yaml`.
--- `ts_05_register_cards_generic_api_test.robot` verifies generic register cards through decrypted API-response fixtures such as `bva.json` and `dguv.json`.
+- `ts_04_register_selection_bva_ui.robot` covers the fixed BVA result workflow including result expansion, detail dialog, and PDF checks.
+- `ts_05_register_selection_bva_ui_api.robot` mirrors the BVA workflow and adds API-response verification against `test_data/registers/bva.json`.
+- `ts_06_register_cards_generic_dom_test.robot` verifies generic register cards through YAML fixtures such as `bva.yaml` and `dguv.yaml`.
+- `ts_07_register_cards_generic_api_test.robot` verifies generic register cards through decrypted API-response fixtures such as `bva.json` and `dguv.json`.
 
 ### `tests/helpers/`
 

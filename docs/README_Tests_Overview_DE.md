@@ -20,18 +20,21 @@ Dieses Dokument beschreibt die Testbereiche des Repositories, die wichtigsten Su
   - Registerauswahl nach erfolgreichem Login
   - Grid- und Listenansicht
   - Auswahl, Abwahl, FAQ, Intro-Dialoge, Feedback, Session-Timer, Reload-Stabilitaet
-- `ts_04_register_selection_bva.robot`
+- `ts_04_register_selection_bva_ui.robot`
   - fester BVA-Workflow von der Registerauswahl bis zum Ergebnisdialog
   - PDF-Dateiname und PDF-Inhalt werden mitgeprueft
-- `ts_04b_register_selection_bva.robot`
+
+- `ts_05_register_selection_bva_ui_api.robot`
   - identischer BVA-Grundworkflow wie `ts_04`
   - zusaetzlich API-Response-Verifikation gegen `test_data/registers/bva.json`
   - enthaelt einen expliziten `first-run-api`-Pfad zum Erzeugen der JSON-Fixture
-- `ts_05_register_cards_generic_dom_test.robot`
+
+- `ts_06_register_cards_generic_dom_test.robot`
   - generische Registerkarten-Suite auf Basis von YAML-Fixtures
   - aktuell fuer `bva.yaml` und `dguv.yaml`
   - trennt Normalmodus und expliziten `first-run`
-- `ts_05_register_cards_generic_api_test.robot`
+
+- `ts_07_register_cards_generic_api_test.robot`
   - generische Registerkarten-Suite auf Basis entschluesselter API-Responses
   - aktuell fuer `bva.json` und `dguv.json`
   - trennt Normalmodus und expliziten `first-run-api`

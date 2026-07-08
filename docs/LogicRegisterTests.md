@@ -2,9 +2,9 @@
 
 This document explains the register-testing logic used by three related suites:
 
-- `ts_04b_register_selection_bva.robot`
-- `ts_05_register_cards_generic_dom_test.robot`
-- `ts_05_register_cards_generic_api_test.robot`
+- `ts_05_register_selection_bva_ui_api.robot`
+- `ts_06_register_cards_generic_dom_test.robot`
+- `ts_07_register_cards_generic_api_test.robot`
 
 The difference is simple:
 
@@ -44,7 +44,7 @@ In short:
 
 ## Variant 1: DOM-based verification with YAML
 
-`ts_05_register_cards_generic_dom_test.robot` is the everyday suite.
+`ts_06_register_cards_generic_dom_test.robot` is the everyday suite.
 It works with YAML files such as `bva.yaml` or `dguv.yaml`.
 
 The flow is:
@@ -98,7 +98,7 @@ The JSON fixtures then store two views:
 
 ## The role of `ts_04b`
 
-`ts_04b_register_selection_bva.robot` is the controlled entry point into API verification.
+`ts_05_register_selection_bva_ui_api.robot` is the controlled entry point into API verification.
 It uses exactly one known case: BVA.
 
 That makes sense because the new approach is first stabilized on a fixed workflow:
@@ -112,7 +112,7 @@ So `ts_04b` is the bridge between a fixed single-suite workflow and the later ge
 
 ## The role of `ts_05b`
 
-`ts_05_register_cards_generic_api_test.robot` turns the BVA pattern into a reusable standard.
+`ts_07_register_cards_generic_api_test.robot` turns the BVA pattern into a reusable standard.
 It is no longer limited to BVA, as long as a JSON fixture exists for the target register.
 
 At the moment the suite covers:
