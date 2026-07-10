@@ -1,6 +1,6 @@
 # UI-Testuebersicht — `tests/ui/`
 
-Stand: 2026-06-11
+Stand: 2026-07-10
 
 Dieses Dokument listet alle UI-Suiten und ihre Testfaelle in kompakter Form auf.
 

@@ -1,6 +1,6 @@
 # Testuebersicht — Playwright_RobotF
 
-Stand: 2026-06-11
+Stand: 2026-07-10
 
 Dieses Dokument beschreibt die Testbereiche des Repositories, die wichtigsten Suite-Zwecke sowie die tragenden Page-Object- und Resource-Dateien.
 

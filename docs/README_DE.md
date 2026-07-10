@@ -55,19 +55,19 @@ robotcode --profile default --profile smoke robot
 Nur die generische Dialog-/YAML-Pruefung ausfuehren:
 
 ```bash
-robotcode --profile default robot --by-longname "Ui.Ts 06 Register Cards Generic"
+robotcode --profile default robot --by-longname "Ui.Ts 06 Register Cards Generic Dom Test"
 ```
 
 YAML-First-Run explizit aktivieren:
 
 ```bash
-robotcode --profile default --profile first-run robot --by-longname "Ui.Ts 06 Register Cards Generic"
+robotcode --profile default --profile first-run robot --by-longname "Ui.Ts 06 Register Cards Generic Dom Test"
 ```
 
 API-First-Run explizit aktivieren:
 
 ```bash
-robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 07 Register Cards Generic"
+robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 07 Register Cards Generic Api Test"
 ```
 
 GitHub-hosted CI gegen Prod ausfuehren:

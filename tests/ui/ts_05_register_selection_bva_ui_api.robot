@@ -76,8 +76,8 @@ Resource    ../../pages/dsc_register_selection_bva.robot
 Resource    ../../pages/dsc_register_result_page_api.robot
 
 # ── Suite-level browser lifecycle ─────────────────────────────────────────────
-Suite Setup     Open Browser And Login For BVA Suite (4b)
-Suite Teardown  Close Browser After BVA Suite (4b)
+Suite Setup     Open Browser And Login For BVA Api Suite
+Suite Teardown  Close Browser After BVA Api Suite
 Test Setup      Open Register Auswahl In Default Grid View
 
 
@@ -101,7 +101,7 @@ ${ENABLE_API_FIRST_RUN_TESTS}      ${False}
 
 *** Keywords ***
 
-Open Browser And Login For BVA Suite (4b)
+Open Browser And Login For BVA Api Suite
     [Documentation]    Suite setup: stores the suite start epoch timestamp (used
     ...                for PDF timestamp validation in TC009) and delegates to the
     ...                shared AusweisApp login keyword.
@@ -110,7 +110,7 @@ Open Browser And Login For BVA Suite (4b)
     Open Browser And Login For AusweisApp Suite    ${AUTH_INFO_URL}
 
 
-Close Browser After BVA Suite (4b)
+Close Browser After BVA Api Suite
     [Documentation]    Suite teardown: closes any open Protokolldaten dialog
     ...                before logout (prevents an open dialog from blocking the
     ...                logout trigger button after a test failure).
@@ -189,7 +189,7 @@ Run BVA Api Card First Run Capture
 
 # ==================================================================================================
 # TC001–TC012 – Same BVA workflow tests as ts_04. These tests use identical keywords and page objects;
-# they are reproduced here so ts_04b is a self-contained, runnable suite.
+# they are reproduced here so ts_05 is a self-contained, runnable suite.
 # ==================================================================================================
 
 TC001 - Select Test BVA Register Card Enables Anfrage Starten
@@ -343,7 +343,7 @@ TC013 - Verify Test BVA Personal Data API Response Matches Fixture
     ...
     ...                To generate bva.json run:
     ...                  robotcode --profile default --profile first-run-api robot \
-    ...                        --by-longname "Ui.Ts 04B Register Selection Bva"
+    ...                        --by-longname "Ui.Ts 05 Register Selection Bva Ui Api"
     [Tags]    bva    api-response    api-verification
     Run Register Api Card Verification    ${BVA_API_FIXTURE_PATH}
 
@@ -352,11 +352,11 @@ TC013 - Verify Test BVA Personal Data API Response Matches Fixture
 # API FIRST-RUN DATA CAPTURE TEST
 # Run with:
 #   robotcode --profile default --profile first-run-api robot \
-#         --by-longname "Ui.Ts 04B Register Selection Bva"
+#         --by-longname "Ui.Ts 05 Register Selection Bva Ui Api"
 #
 # Forced overwrite of an existing fixture:
 #   robotcode --profile default --profile first-run-api-force robot \
-#         --by-longname "Ui.Ts 04B Register Selection Bva"
+#         --by-longname "Ui.Ts 05 Register Selection Bva Ui Api"
 #
 # This test is guarded and skips unless ENABLE_API_FIRST_RUN_TESTS=True.
 # ==============================================================================
@@ -368,11 +368,11 @@ API First Run: Capture BVA Personal Data API Response Fixture
     ...
     ...                Run once before TC013:
     ...                  robotcode --profile default --profile first-run-api robot \
-    ...                        --by-longname "Ui.Ts 04B Register Selection Bva"
+    ...                        --by-longname "Ui.Ts 05 Register Selection Bva Ui Api"
     ...
     ...                To overwrite an existing bva.json add:
     ...                  robotcode --profile default --profile first-run-api-force robot \
-    ...                        --by-longname "Ui.Ts 04B Register Selection Bva"
+    ...                        --by-longname "Ui.Ts 05 Register Selection Bva Ui Api"
     ...
     ...                After the run: review test_data/registers/bva.json and commit.
     [Setup]    Require Explicit Api First Run Mode

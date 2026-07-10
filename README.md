@@ -28,7 +28,9 @@ The documentation is split into language-specific README files, test overviews, 
 
 - `tests/ui/ts_03_register_selection.robot` - authenticated register-selection smoke tests
 - `tests/ui/ts_04_register_selection_bva_ui.robot` - BVA-specific result workflow
-- `tests/ui/ts_05_register_cards_generic.robot` - generic register-card verification via YAML fixtures
+- `tests/ui/ts_05_register_selection_bva_ui_api.robot` - BVA-specific workflow with API-response verification
+- `tests/ui/ts_06_register_cards_generic_dom_test.robot` - generic register-card verification via YAML fixtures
+- `tests/ui/ts_07_register_cards_generic_api_test.robot` - generic register-card verification via JSON fixtures
 
 ## Typical commands
 
@@ -56,22 +58,28 @@ Run the curated smoke selection only:
 robotcode --profile default --profile smoke robot
 ```
 
-Run only the generic register-card suite:
+Run only the generic dialog/YAML suite:
 
 ```bash
-robotcode --profile default robot --by-longname "Ui.Ts 05 Register Cards Generic"
+robotcode --profile default robot --by-longname "Ui.Ts 06 Register Cards Generic Dom Test"
 ```
 
-Run generic first-run capture explicitly:
+Run generic YAML first-run capture explicitly:
 
 ```bash
-robotcode --profile default --profile first-run robot --by-longname "Ui.Ts 05 Register Cards Generic"
+robotcode --profile default --profile first-run robot --by-longname "Ui.Ts 06 Register Cards Generic Dom Test"
 ```
 
-Force regeneration of completed generic fixtures:
+Force regeneration of completed YAML fixtures:
 
 ```bash
-robotcode --profile default --profile first-run-force robot --by-longname "Ui.Ts 05 Register Cards Generic"
+robotcode --profile default --profile first-run-force robot --by-longname "Ui.Ts 06 Register Cards Generic Dom Test"
+```
+
+Run generic API first-run capture explicitly:
+
+```bash
+robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 07 Register Cards Generic Api Test"
 ```
 
 Run the full UI scope in GitHub-hosted CI mode against Prod:
@@ -89,7 +97,7 @@ robotcode --profile default --profile ci-selfhosted robot
 ## Notes
 
 - The curated smoke run currently covers 6 representative UI cases: landing page, authentication info page, AusweisApp start flow, register selection, BVA start flow, and generic BVA register-card verification.
-- The generic register-card suite has a normal verification mode and a separate first-run capture mode.
-- First-run is intentionally opt-in and requires `ENABLE_FIRST_RUN_TESTS=True`.
+- The generic register-card suites separate normal verification from explicit `first-run` and `first-run-api` capture modes.
+- First-run modes are intentionally opt-in and require `ENABLE_FIRST_RUN_TESTS=True` or `ENABLE_API_FIRST_RUN_TESTS=True`.
 - `default` is the canonical full-start profile for `tests/ui`; environment-specific behavior is layered on top via additive profiles such as `smoke`, `first-run`, `ci-github-hosted`, and `ci-selfhosted`.
 - New register-card logic documentation is available in both German and English via the files linked above.

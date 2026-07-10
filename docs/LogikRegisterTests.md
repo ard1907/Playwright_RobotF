@@ -8,9 +8,9 @@ Dieses Dokument erklaert die Registertest-Logik fuer drei verwandte Suiten:
 
 Der Unterschied ist einfach:
 
-- `ts_04b` prueft den API-Ansatz zuerst an einem festen Beispiel, naemlich BVA.
-- `ts_05` prueft Register ueber sichtbare Dialoginhalte und YAML-Fixtures.
-- `ts_05b` verallgemeinert den API-Ansatz fuer mehrere Register und nutzt JSON-Fixtures.
+- `ts_05` prueft den API-Ansatz zuerst an einem festen Beispiel, naemlich BVA.
+- `ts_06` prueft Register ueber sichtbare Dialoginhalte und YAML-Fixtures.
+- `ts_07` verallgemeinert den API-Ansatz fuer mehrere Register und nutzt JSON-Fixtures.
 
 ## Ziel der Logik
 
@@ -95,7 +95,7 @@ Die JSON-Fixtures speichern danach zwei Sichten:
 - `<tag>.json`: aufbereitete, gut vergleichbare Nutzdaten
 - `<tag>_raw.json`: rohe, entschluesselte XML-Nutzlast als Nachweis
 
-## Rolle von `ts_04b`
+## Rolle von `ts_05`
 
 `ts_05_register_selection_bva_ui_api.robot` ist der kontrollierte Einstieg in die API-Pruefung.
 Die Suite nimmt genau einen festen Fall, naemlich BVA.
@@ -106,9 +106,9 @@ Das ist sinnvoll, weil man den neuen API-Ansatz erst an einem bekannten Register
 - dazu ein zusaetzlicher API-Vergleich gegen `bva.json`
 - eigener `first-run-api`-Test zum erstmaligen Erzeugen der Referenz
 
-Damit ist `ts_04b` die Bruecke zwischen festem Einzeltest und spaeterer Generalisierung.
+Damit ist `ts_05` die Bruecke zwischen festem Einzeltest und spaeterer Generalisierung.
 
-## Rolle von `ts_05b`
+## Rolle von `ts_07`
 
 `ts_07_register_cards_generic_api_test.robot` macht aus dem BVA-Muster einen wiederverwendbaren Standard.
 Die Suite arbeitet nicht mehr nur mit BVA, sondern mit beliebigen Registern, solange es eine JSON-Fixture gibt.
@@ -145,13 +145,13 @@ Sie laufen also nicht einfach mit, wenn man nur normal testen will.
 Dialog-/YAML-First-Run:
 
 ```bash
-robotcode --profile default --profile first-run robot --by-longname "Ui.Ts 05 Register Cards Generic"
+robotcode --profile default --profile first-run robot --by-longname "Ui.Ts 06 Register Cards Generic Dom Test"
 ```
 
 API-First-Run:
 
 ```bash
-robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 05B Register Cards Generic"
+robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 07 Register Cards Generic Api Test"
 ```
 
 Optionales Ueberschreiben vorhandener Daten:
@@ -162,30 +162,30 @@ Optionales Ueberschreiben vorhandener Daten:
 ## Wann welche Suite sinnvoll ist
 
 - `ts_04`: wenn ein fester BVA-End-to-End-Flow mit UI- und PDF-Pruefung gebraucht wird
-- `ts_04b`: wenn derselbe BVA-Flow zusaetzlich fachlich ueber die API abgesichert werden soll
-- `ts_05`: wenn mehrere Register ueber sichtbare Dialogdaten geprueft werden sollen
-- `ts_05b`: wenn mehrere Register fachlich stabil ueber API-Nutzdaten geprueft werden sollen
+- `ts_05`: wenn derselbe BVA-Flow zusaetzlich fachlich ueber die API abgesichert werden soll
+- `ts_06`: wenn mehrere Register ueber sichtbare Dialogdaten geprueft werden sollen
+- `ts_07`: wenn mehrere Register fachlich stabil ueber API-Nutzdaten geprueft werden sollen
 
 ## Neue Registerkarte aufnehmen
 
 Fuer die dialogbasierte Variante:
 
 1. YAML-Datei unter `test_data/registers/` anlegen.
-2. Testfall in `ts_05` anlegen.
-3. optionalen `first-run`-Test in `ts_05` anlegen.
+2. Testfall in `ts_06` anlegen.
+3. optionalen `first-run`-Test in `ts_06` anlegen.
 4. `first-run` bewusst starten und Ergebnis pruefen.
 
 Fuer die API-basierte Variante:
 
-1. Testfall in `ts_05b` anlegen.
-2. `first-run-api`-Test in `ts_05b` anlegen.
+1. Testfall in `ts_07` anlegen.
+2. `first-run-api`-Test in `ts_07` anlegen.
 3. `first-run-api` bewusst starten.
 4. `json` und `raw.json` pruefen und committen.
 
 ## Praktische Entscheidung
 
-Wenn das UI-Layout stabil und fachlich ausreichend ist, reicht oft `ts_05`.
-Wenn die eigentliche Nutzlast im Mittelpunkt steht und das Layout eher wechseln darf, ist `ts_05b` robuster.
+Wenn das UI-Layout stabil und fachlich ausreichend ist, reicht oft `ts_06`.
+Wenn die eigentliche Nutzlast im Mittelpunkt steht und das Layout eher wechseln darf, ist `ts_07` robuster.
 
 Darum existieren beide Linien nebeneinander.
 
@@ -198,7 +198,7 @@ Darum existieren beide Linien nebeneinander.
 Normaler Lauf:
 
 ```bash
-robotcode --profile default robot --by-longname "Ui.Ts 05 Register Cards Generic"
+robotcode --profile default robot --by-longname "Ui.Ts 06 Register Cards Generic Dom Test"
 ```
 
 Nur ein normaler Testfall:
@@ -210,22 +210,42 @@ robotcode --profile default robot --test "Verify Register Card Workflow: Test BV
 Expliziter First-Run:
 
 ```bash
-robotcode --profile default --profile first-run robot --by-longname "Ui.Ts 05 Register Cards Generic"
+robotcode --profile default --profile first-run robot --by-longname "Ui.Ts 06 Register Cards Generic Dom Test"
 ```
 
 Expliziter First-Run mit Ueberschreiben fertiger Fixtures:
 
 ```bash
-robotcode --profile default --profile first-run-force robot --by-longname "Ui.Ts 05 Register Cards Generic"
+robotcode --profile default --profile first-run-force robot --by-longname "Ui.Ts 06 Register Cards Generic Dom Test"
+```
+
+Normaler API-Lauf:
+
+```bash
+robotcode --profile default robot --by-longname "Ui.Ts 07 Register Cards Generic Api Test"
+```
+
+Expliziter API-First-Run:
+
+```bash
+robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 07 Register Cards Generic Api Test"
+```
+
+Expliziter API-First-Run mit Ueberschreiben fertiger Fixtures:
+
+```bash
+robotcode --profile default --profile first-run-api-force robot --by-longname "Ui.Ts 07 Register Cards Generic Api Test"
 ```
 
 ## Kurzfassung
 
 Die Registerkarten-Tests arbeiten heute so:
 
-- normale Tests pruefen gegen YAML-Fixtures
-- First-Run erzeugt oder aktualisiert Fixtures
-- First-Run ist bewusst opt-in
+- `ts_05` prueft den festen BVA-API-Flow gegen `bva.json`
+- `ts_06` prueft generische Registerdialoge gegen YAML-Fixtures
+- `ts_07` prueft generische Register-API-Nutzdaten gegen JSON-Fixtures
+- `first-run` und `first-run-api` erzeugen oder aktualisieren Fixtures
+- beide Capture-Modi sind bewusst opt-in
 - unvollstaendige Fixtures werden im First-Run automatisch neu erzeugt
 - bereits fertige Fixtures werden nur mit Force-Regenerate ersetzt
 - Auswahl und Dialogoeffnung sind auf die richtige Registerkarte gebunden

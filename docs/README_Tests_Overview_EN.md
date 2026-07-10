@@ -1,6 +1,6 @@
-# Test Overview â€” Playwright_RobotF
+# Test Overview - Playwright_RobotF
 
-Status: 2026-06-11
+Status: 2026-07-10
 
 This document summarizes the main test areas, the page-object layer, and the shared resource layer of the repository.
 

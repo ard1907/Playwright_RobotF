@@ -1,6 +1,6 @@
 # UI Test Overview — `tests/ui/`
 
-Status: 2026-06-11
+Status: 2026-07-10
 
 This document lists all UI suites and their test cases in compact form.
 

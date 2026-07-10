@@ -8,9 +8,9 @@ This document explains the register-testing logic used by three related suites:
 
 The difference is simple:
 
-- `ts_04b` proves the API-based approach on one fixed example: BVA.
-- `ts_05` validates registers through visible dialog content and YAML fixtures.
-- `ts_05b` generalizes the API-based approach for multiple registers and uses JSON fixtures.
+- `ts_05` proves the API-based approach on one fixed example: BVA.
+- `ts_06` validates registers through visible dialog content and YAML fixtures.
+- `ts_07` generalizes the API-based approach for multiple registers and uses JSON fixtures.
 
 ## What the logic is meant to verify
 
@@ -96,7 +96,7 @@ The JSON fixtures then store two views:
 - `<tag>.json`: processed, comparison-friendly business data
 - `<tag>_raw.json`: raw decrypted XML payload kept as evidence
 
-## The role of `ts_04b`
+## The role of `ts_05`
 
 `ts_05_register_selection_bva_ui_api.robot` is the controlled entry point into API verification.
 It uses exactly one known case: BVA.
@@ -107,10 +107,9 @@ That makes sense because the new approach is first stabilized on a fixed workflo
 - plus an extra API comparison against `bva.json`
 - plus a dedicated `first-run-api` test to generate the first reference fixture
 
-So `ts_04b` is the bridge between a fixed single-suite workflow and the later generic approach.
+So `ts_05` is the bridge between a fixed single-suite workflow and the later generic approach.
 
-
-## The role of `ts_05b`
+## The role of `ts_07`
 
 `ts_07_register_cards_generic_api_test.robot` turns the BVA pattern into a reusable standard.
 It is no longer limited to BVA, as long as a JSON fixture exists for the target register.
@@ -148,13 +147,13 @@ They do not run just because somebody starts the suite normally.
 Dialog/YAML first-run:
 
 ```bash
-robotcode --profile default --profile first-run robot --by-longname "Ui.Ts 05 Register Cards Generic"
+robotcode --profile default --profile first-run robot --by-longname "Ui.Ts 06 Register Cards Generic Dom Test"
 ```
 
 API first-run:
 
 ```bash
-robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 05B Register Cards Generic"
+robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 07 Register Cards Generic Api Test"
 ```
 
 Optional overwrite of existing data:
@@ -165,30 +164,30 @@ Optional overwrite of existing data:
 ## When to use which suite
 
 - `ts_04`: when you need a fixed BVA end-to-end flow with UI and PDF checks
-- `ts_04b`: when that same BVA flow should also be verified through the API payload
-- `ts_05`: when multiple registers should be verified through visible dialog data
-- `ts_05b`: when multiple registers should be verified through stable API business data
+- `ts_05`: when that same BVA flow should also be verified through the API payload
+- `ts_06`: when multiple registers should be verified through visible dialog data
+- `ts_07`: when multiple registers should be verified through stable API business data
 
 ## Adding a new register card
 
 For the dialog-based path:
 
 1. Create a YAML file under `test_data/registers/`.
-2. Add a verification test in `ts_05`.
-3. Add an optional `first-run` test in `ts_05`.
+2. Add a verification test in `ts_06`.
+3. Add an optional `first-run` test in `ts_06`.
 4. Run `first-run` explicitly and review the result.
 
 For the API-based path:
 
-1. Add a verification test in `ts_05b`.
-2. Add a `first-run-api` test in `ts_05b`.
+1. Add a verification test in `ts_07`.
+2. Add a `first-run-api` test in `ts_07`.
 3. Run `first-run-api` explicitly.
 4. Review `json` and `raw.json` and commit them.
 
 ## Practical rule of thumb
 
-If the visible dialog layout is stable and sufficient, `ts_05` is often enough.
-If the business payload matters more and the layout may change, `ts_05b` is usually more robust.
+If the visible dialog layout is stable and sufficient, `ts_06` is often enough.
+If the business payload matters more and the layout may change, `ts_07` is usually more robust.
 
 That is why both lines exist side by side.
 
@@ -201,7 +200,7 @@ That is why both lines exist side by side.
 Normal run:
 
 ```bash
-robotcode --profile default robot --by-longname "Ui.Ts 05 Register Cards Generic"
+robotcode --profile default robot --by-longname "Ui.Ts 06 Register Cards Generic Dom Test"
 ```
 
 Only one normal test case:
@@ -213,22 +212,42 @@ robotcode --profile default robot --test "Verify Register Card Workflow: Test BV
 Explicit first-run:
 
 ```bash
-robotcode --profile default --profile first-run robot --by-longname "Ui.Ts 05 Register Cards Generic"
+robotcode --profile default --profile first-run robot --by-longname "Ui.Ts 06 Register Cards Generic Dom Test"
 ```
 
 Explicit first-run with overwrite of completed fixtures:
 
 ```bash
-robotcode --profile default --profile first-run-force robot --by-longname "Ui.Ts 05 Register Cards Generic"
+robotcode --profile default --profile first-run-force robot --by-longname "Ui.Ts 06 Register Cards Generic Dom Test"
+```
+
+Normal API run:
+
+```bash
+robotcode --profile default robot --by-longname "Ui.Ts 07 Register Cards Generic Api Test"
+```
+
+Explicit API first-run:
+
+```bash
+robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 07 Register Cards Generic Api Test"
+```
+
+Explicit API first-run with overwrite of completed fixtures:
+
+```bash
+robotcode --profile default --profile first-run-api-force robot --by-longname "Ui.Ts 07 Register Cards Generic Api Test"
 ```
 
 ## Short summary
 
 The register-card tests now work like this:
 
-- normal tests verify against YAML fixtures
-- first-run creates or refreshes fixtures
-- first-run is intentionally opt-in
+- `ts_05` verifies the fixed BVA API flow against `bva.json`
+- `ts_06` verifies generic register dialogs against YAML fixtures
+- `ts_07` verifies generic register API payloads against JSON fixtures
+- `first-run` and `first-run-api` create or refresh fixtures
+- both capture modes are intentionally opt-in
 - incomplete fixtures are regenerated automatically during first-run
 - completed fixtures are only replaced with force-regenerate
 - selection and dialog opening are bound to the correct register card

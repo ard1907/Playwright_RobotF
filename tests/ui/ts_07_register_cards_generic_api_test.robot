@@ -94,7 +94,7 @@ ${API_FIXTURES_DIR}                  ${CURDIR}${/}..${/}..${/}test_data${/}regis
 ${API_FIXTURE_FORCE_REGENERATE}      ${False}
 
 # Explicit opt-in so first-run-api tests never execute during a default run:
-#   robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 07 Register Cards Generic"
+#   robotcode --profile default --profile first-run-api robot --by-longname "Ui.Ts 07 Register Cards Generic Api Test"
 ${ENABLE_API_FIRST_RUN_TESTS}        ${False}
 
 

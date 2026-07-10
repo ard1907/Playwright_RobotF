@@ -110,7 +110,7 @@ class dsc_register_api_fixture_library:
                 f"API response fixture not found: {fixture_path}\n"
                 "Run the first-run-api test to generate it:\n"
                 "  robotcode --profile default --profile first-run-api robot "
-                '--by-longname "Ui.Ts 05B Register Cards Generic"'
+                '--by-longname "Ui.Ts 07 Register Cards Generic Api Test"'
             )
         with open(path, encoding="utf-8") as fh:
             return json.load(fh)
