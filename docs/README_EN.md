@@ -102,4 +102,5 @@ robotcode --profile default --profile ci-selfhosted robot
 - `README_Tests_Overview_EN.md`: overall test, page, and resource overview
 - `README_Tests_UI_Overview_EN.md`: all UI suites and test cases in detail
 - `LogicRegisterTests.md`: register-testing logic for YAML- and API-based verification
+- `README_Test_Runtime.md`: Docker test runtime for colleagues and other runtime users
 - `presentation.md`: short German project presentation in simple language

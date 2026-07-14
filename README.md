@@ -23,6 +23,7 @@ The documentation is split into language-specific README files, test overviews, 
 
 - English guide: [docs/LogicRegisterTests.md](docs/LogicRegisterTests.md)
 - Deutsche Anleitung: [docs/LogikRegisterTests.md](docs/LogikRegisterTests.md)
+- Docker runtime guide: [docs/README_Test_Runtime.md](docs/README_Test_Runtime.md)
 
 ## Most important suites
 

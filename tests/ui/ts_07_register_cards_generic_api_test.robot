@@ -190,7 +190,7 @@ Verify Register Api Workflow: Test-DGUV
     ...
     ...                Skip: when dguv.json is absent or not yet populated by a
     ...                first-run-api execution.
-    [Tags]    dguv    api-response    generic
+    [Tags]    smoke    dguv    api-response    generic
     Run Register Api Card Verification    ${API_FIXTURES_DIR}${/}dguv.json
 
 # ── Template for additional register cards ─────────────────────────────────────

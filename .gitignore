@@ -23,6 +23,7 @@ Thumbs.db
 ########################################
 docker/runner/docker-compose.yml
 # docker/tests/Emma_Mustermann.json
+docker/test-runtime/*.tar
 
 ########################################
 # Node.js / JavaScript

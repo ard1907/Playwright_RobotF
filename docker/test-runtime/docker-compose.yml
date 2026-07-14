@@ -1,0 +1,36 @@
+name: test-runtime
+
+services:
+  ausweisapp-sdk:
+    build:
+      context: ../..
+      dockerfile: docker/test-runtime/ausweisapp.Dockerfile
+    ports:
+      - "127.0.0.1:24727:24727"
+    restart: "no"
+
+  robot-runtime:
+    build:
+      context: ../..
+      dockerfile: docker/test-runtime/Dockerfile
+    depends_on:
+      - ausweisapp-sdk
+    network_mode: "service:ausweisapp-sdk"
+    environment:
+      BASE_URL: ${BASE_URL:-https://qs-datenschutzcockpit.dsc.govkg.de/spa/}
+      BROWSER: ${BROWSER:-chromium}
+      HEADLESS: ${HEADLESS:-True}
+      CI: "True"
+      CI_SELF_HOSTED: "True"
+      AUSWEISAPP_URL: http://127.0.0.1:24727
+      CHROMIUM_EXECUTABLE: /usr/bin/chromium
+      ROBOT_PROFILES: ${ROBOT_PROFILES:-default,ci-selfhosted,smoke}
+      ROBOT_BY_LONGNAME: ${ROBOT_BY_LONGNAME:-}
+      ROBOT_INCLUDE: ${ROBOT_INCLUDE:-}
+      ROBOT_EXCLUDE: ${ROBOT_EXCLUDE:-}
+      ROBOT_EXTRA_ARGS: ${ROBOT_EXTRA_ARGS:-}
+      ROBOT_OUTPUTDIR: /app/results2
+    restart: "no"
+    user: robot
+    volumes:
+      - ../../results2:/app/results2

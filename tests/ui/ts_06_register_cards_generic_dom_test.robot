@@ -207,7 +207,7 @@ Verify Register Card Workflow: Test-DGUV
     ...                  • Fields with assert_value:true also have matching values
     ...
     ...                Skip: when dguv.yaml is not yet populated by a first-run.
-    [Tags]    dguv    register-card    generic
+    [Tags]    smoke  dguv    register-card    generic
     Run Register Card Verification    ${FIXTURES_DIR}${/}dguv.yaml
 
 # ── Template for additional register cards ─────────────────────────────────────
