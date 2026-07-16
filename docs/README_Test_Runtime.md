@@ -3,6 +3,9 @@
 Diese Runtime stellt die vorhandenen Robot-Framework-Tests als Docker-Stack bereit.
 Kollegen brauchen damit keine lokale Python-, Robot- oder Playwright-Installation.
 
+Wichtig fuer die Einordnung: `docker/tests` bleibt der CI/CD-orientierte Docker-Stack fuer die Pipeline-Workflows.
+`docker/test-runtime` ist die getrennte Runtime fuer lokale Testlaeufe, portable Nutzung und die Weitergabe an Kollegen.
+
 Die Runtime besteht aus zwei Containern:
 
 - `robot-runtime`: fuehrt die Tests mit `robotcode` aus.
@@ -143,10 +146,10 @@ Wenn dabei Ausgabepfade angepasst werden sollen, muessen die gewuenschten Output
 
 ## Netzwerkmodell
 
-Die bisherige CI-nahe Test-Compose unter `docker/tests` nutzt `network_mode: host`.
+Die CI/CD-nahe Test-Compose unter `docker/tests` nutzt `network_mode: host`.
 Das ist fuer eine portable Kollegen-Runtime unguenstig, besonders mit Docker Desktop.
 
-Die neue Runtime bildet stattdessen das Verhalten der funktionierenden selfhosted-Pipeline nach:
+Die Kollegen-Runtime unter `docker/test-runtime` bildet stattdessen das Verhalten der funktionierenden selfhosted-Pipeline nach:
 
 - `ausweisapp-sdk` veroeffentlicht den Port `24727` lokal auf dem Host.
 - `robot-runtime` nutzt `network_mode: "service:ausweisapp-sdk"`.
@@ -199,4 +202,3 @@ Alternativ eignet sich eine interne Container-Registry noch besser, wenn mehrere
 - Wenn nur Teilmengen laufen sollen, `ROBOT_BY_LONGNAME`, `ROBOT_INCLUDE` oder `ROBOT_EXCLUDE` nutzen.
 
 Diese Punkte decken die haeufigsten Probleme der Runtime ab.
-

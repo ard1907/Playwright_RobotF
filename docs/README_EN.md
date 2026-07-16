@@ -12,7 +12,7 @@ Its focus is UI validation for public pages, login-adjacent cockpit flows, regis
 - `pages/` implements the Page Object Model for pages, dialogs, and result workflows.
 - `resources/` holds setup, teardown, shared navigation, variables, and Python helper libraries.
 - `test_data/registers/` stores YAML and JSON fixtures for generic register testing.
-- `docker/sdk/`, `docker/tests/`, and `docker/runner/` provide Docker stacks for SDK simulation, test execution, and the self-hosted runner.
+- `docker/sdk/`, `docker/tests/`, `docker/test-runtime/`, and `docker/runner/` provide Docker stacks for SDK simulation, CI/CD test execution, a local colleague-friendly runtime, and the self-hosted runner.
 
 ## Tech stack
 
@@ -85,7 +85,8 @@ robotcode --profile default --profile ci-selfhosted robot
 ## Docker and CI/CD
 
 - `docker/sdk/docker-compose.yml` starts a local AusweisApp SDK simulator on port `24727`.
-- `docker/tests/docker-compose.yml` starts `ausweisapp-sdk` and the non-root `robot-tests` container for CI-like runs.
+- `docker/tests/docker-compose.yml` starts `ausweisapp-sdk` and the non-root `robot-tests` container for CI/CD pipeline workflows and CI-like runs.
+- `docker/test-runtime/docker-compose.yml` starts `ausweisapp-sdk` and `robot-runtime` for local execution, portable handoff scenarios, and colleague-facing runtime usage.
 - `docker/runner/docker-compose.yml` starts a pinned self-hosted GitHub Actions runner container.
 - `.github/workflows/ci_tests_workflow.yml` runs the UI suites on `ubuntu-latest`, installs browser dependencies, and uploads Robot artifacts.
 - `.github/workflows/ci_tests_workflow_selfhosted.yml` runs the Docker test stack on the self-hosted runner and copies artifacts out of the `robot-tests` container.
@@ -102,5 +103,5 @@ robotcode --profile default --profile ci-selfhosted robot
 - `README_Tests_Overview_EN.md`: overall test, page, and resource overview
 - `README_Tests_UI_Overview_EN.md`: all UI suites and test cases in detail
 - `LogicRegisterTests.md`: register-testing logic for YAML- and API-based verification
-- `README_Test_Runtime.md`: Docker test runtime for colleagues and other runtime users
+- `README_Test_Runtime.md`: Docker test runtime for local usage, colleague handoff, and portable non-CI starts
 - `presentation.md`: short German project presentation in simple language

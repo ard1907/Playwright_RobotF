@@ -12,7 +12,7 @@ Der Schwerpunkt liegt auf UI-Tests fuer oeffentliche Seiten, Login-nahe Cockpit-
 - `pages/` bildet das Page Object Model fuer Seiten, Dialoge und Ergebnisfluesse.
 - `resources/` kapselt Setup, Teardown, gemeinsame Navigation, Variablen und Python-Hilfsbibliotheken.
 - `test_data/registers/` enthaelt YAML- und JSON-Fixtures fuer generische Registertests.
-- `docker/sdk/`, `docker/tests/` und `docker/runner/` bilden die Docker-Stacks fuer SDK, Testausfuehrung und Self-hosted-Runner.
+- `docker/sdk/`, `docker/tests/`, `docker/test-runtime/` und `docker/runner/` bilden die Docker-Stacks fuer SDK, CI/CD-Testausfuehrung, lokale Kollegen-Runtime und Self-hosted-Runner.
 
 ## Tech-Stack
 
@@ -85,7 +85,8 @@ robotcode --profile default --profile ci-selfhosted robot
 ## Docker und CI/CD
 
 - `docker/sdk/docker-compose.yml` startet einen lokalen AusweisApp-SDK-Simulator auf Port `24727`.
-- `docker/tests/docker-compose.yml` startet `ausweisapp-sdk` und den Non-Root-Container `robot-tests` fuer CI-nahe Testlaeufe.
+- `docker/tests/docker-compose.yml` startet `ausweisapp-sdk` und den Non-Root-Container `robot-tests` fuer die CI/CD-Pipeline-Workflows und CI-nahe Testlaeufe.
+- `docker/test-runtime/docker-compose.yml` startet `ausweisapp-sdk` und `robot-runtime` fuer lokale Tests, portable Nutzung und die Weitergabe an Kollegen.
 - `docker/runner/docker-compose.yml` startet einen gepinnten Self-hosted-GitHub-Actions-Runner als Container.
 - `.github/workflows/ci_tests_workflow.yml` fuehrt die UI-Suiten auf `ubuntu-latest` aus, installiert Browser-Abhaengigkeiten und laedt Robot-Artefakte hoch.
 - `.github/workflows/ci_tests_workflow_selfhosted.yml` startet auf dem Self-hosted-Runner den Docker-Teststack und kopiert Ergebnisse aus dem `robot-tests`-Container.
@@ -102,5 +103,5 @@ robotcode --profile default --profile ci-selfhosted robot
 - `README_Tests_Overview_DE.md`: Gesamtueberblick ueber Testbereiche, Pages und Resources
 - `README_Tests_UI_Overview_DE.md`: alle UI-Suiten und Testfaelle im Detail
 - `LogikRegisterTests.md`: Registertest-Logik fuer YAML- und API-basierte Verifikation
-- `README_Test_Runtime.md`: Docker-Test-Runtime fuer Kollegen und andere Laufzeitnutzer
+- `README_Test_Runtime.md`: Docker-Test-Runtime fuer lokale Nutzung, Weitergabe an Kollegen und portable Starts ausserhalb der CI/CD-Stacks
 - `presentation.md`: kurze Projektpraesentation in einfacher Sprache

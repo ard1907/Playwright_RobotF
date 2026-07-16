@@ -69,13 +69,16 @@ Vorteil:
 
 ## Docker-Container im Projekt
 
-Es gibt drei wichtige Docker-Bereiche:
+Es gibt vier wichtige Docker-Bereiche:
 
 - `docker/sdk/`
   - startet den AusweisApp-SDK-Simulator lokal
 - `docker/tests/`
   - startet `ausweisapp-sdk` und `robot-tests`
-  - damit lassen sich CI-nahe Testlaeufe in Containern ausfuehren
+  - damit laufen die CI/CD-Pipeline-Workflows und andere CI-nahe Testlaeufe in Containern
+- `docker/test-runtime/`
+  - startet `ausweisapp-sdk` und `robot-runtime`
+  - damit lassen sich lokale Tests und portable Runtime-Pakete fuer Kollegen ausfuehren
 - `docker/runner/`
   - startet einen Self-hosted GitHub-Actions-Runner als Container
 
@@ -83,6 +86,7 @@ Wichtige Container:
 
 - `ausweisapp-sdk`
 - `robot-tests`
+- `robot-runtime`
 - `github-runner`
 
 ## CI/CD mit GitHub Actions

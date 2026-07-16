@@ -8,6 +8,11 @@ Die Anleitung ist bewusst genauer und Schritt fuer Schritt geschrieben.
 Mit dieser Runtime kann ein Kollege die Robot-Framework-Tests starten,
 ohne Python, Robot Framework oder Playwright lokal zu installieren.
 
+Wichtig fuer die Abgrenzung:
+
+- `docker/tests` bleibt fuer die CI/CD-Pipeline-Workflows relevant.
+- `docker/test-runtime` ist die lokale und portable Runtime fuer Kollegen.
+
 Es gibt zwei Container:
 
 - `ausweisapp-sdk`

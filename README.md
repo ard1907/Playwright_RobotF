@@ -101,4 +101,5 @@ robotcode --profile default --profile ci-selfhosted robot
 - The generic register-card suites separate normal verification from explicit `first-run` and `first-run-api` capture modes.
 - First-run modes are intentionally opt-in and require `ENABLE_FIRST_RUN_TESTS=True` or `ENABLE_API_FIRST_RUN_TESTS=True`.
 - `default` is the canonical full-start profile for `tests/ui`; environment-specific behavior is layered on top via additive profiles such as `smoke`, `first-run`, `ci-github-hosted`, and `ci-selfhosted`.
+- `docker/tests` remains the CI/CD-oriented Docker stack used by workflows, while `docker/test-runtime` is the local and handoff-friendly runtime for colleagues.
 - New register-card logic documentation is available in both German and English via the files linked above.
