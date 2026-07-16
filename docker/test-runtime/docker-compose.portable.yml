@@ -1,18 +1,14 @@
-name: test-runtime
+name: test-runtime-portable
 
 services:
   ausweisapp-sdk:
-    build:
-      context: ../..
-      dockerfile: docker/test-runtime/ausweisapp.Dockerfile
+    image: test-runtime-ausweisapp-sdk:latest
     ports:
       - "127.0.0.1:24727:24727"
     restart: "no"
 
   robot-runtime:
-    build:
-      context: ../..
-      dockerfile: docker/test-runtime/Dockerfile
+    image: test-runtime-robot-runtime:latest
     depends_on:
       - ausweisapp-sdk
     network_mode: "service:ausweisapp-sdk"
@@ -33,4 +29,4 @@ services:
     restart: "no"
     user: robot
     volumes:
-      - ${RESULTS_DIR:-../../results2}:/app/results2
+      - ${RESULTS_DIR:-./results2}:/app/results2
