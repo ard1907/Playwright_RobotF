@@ -88,7 +88,7 @@ docker compose -f docker/test-runtime/docker-compose.yml build --no-cache robot-
 
 Weitergeben an Kollegen
 
-- Doker Images exportieren:
+- Docker-Images exportieren:
 
 PowerShell:
 
