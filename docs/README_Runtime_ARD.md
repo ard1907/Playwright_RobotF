@@ -129,7 +129,7 @@ Wichtigste Datei fuer Menschen:
 
 - `results2/log.html`
 
-## Haefige Konfigurationen
+## Haeufige Konfigurationen
 
 ### Smoke-Run
 
