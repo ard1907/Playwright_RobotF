@@ -3,6 +3,10 @@
 Eigenstaendiges, portables Paket fuer den AusweisApp2 SDK-Container mit eingebetteter
 Testkarte im **Automatic Mode** (TR-03124-1).
 
+Die Docker-Definition fuer dieses Image liegt jetzt zentral unter `docker/common/`.
+Dadurch verwenden `docker/sdk`, `docker/tests` und `docker/test-runtime` denselben Build
+und denselben Imagenamen `ausweisapp-sdk:latest`.
+
 Geeignet fuer Testautomatisierung (z. B. Robot Framework, Playwright, Selenium):
 Der Container simuliert eine echte eID-Karte und authentifiziert vollautomatisch,
 ohne dass echte Hardware oder ein PIN-Dialog benoetigt wird.
@@ -11,11 +15,11 @@ ohne dass echte Hardware oder ein PIN-Dialog benoetigt wird.
 
 ## Inhalt
 
-| Datei | Zweck |
-|---|---|
-| `docker/sdk/ausweisapp-sdk.Dockerfile` | Baut das SDK-Image mit eingebetteter Karte |
-| `docker/sdk/docker-compose.yml` | Startet den Container, Port `127.0.0.1:24727` |
-| `docker/sdk/Emma_Mustermann.json` | Testkarte im SDK-Simulator-Format |
+- `docker/common/ausweisapp-sdk.Dockerfile`: Gemeinsame Dockerfile fuer das AusweisApp-SDK-Image
+- `docker/common/Emma_Mustermann.json`: Gemeinsame Testkarte im SDK-Simulator-Format
+- `docker/sdk/docker-compose.yml`: Baut und startet das gemeinsame Image lokal auf Port `127.0.0.1:24727`
+- `docker/tests/docker-compose.yml`: Verwendet dasselbe Image fuer CI/CD-nahe Testlaeufe
+- `docker/test-runtime/docker-compose.yml`: Verwendet dasselbe Image fuer lokale und portable Runtime-Laeufe
 
 ---
 
@@ -29,8 +33,12 @@ ohne dass echte Hardware oder ein PIN-Dialog benoetigt wird.
 ## Starten
 
 ```bash
-docker compose up --build
+docker compose -f docker/sdk/docker-compose.yml build
+docker compose -f docker/sdk/docker-compose.yml up
 ```
+
+Sobald `ausweisapp-sdk:latest` einmal gebaut wurde, nutzen auch die Compose-Dateien unter
+`docker/tests/` und `docker/test-runtime/` dieses bereits vorhandene Image.
 
 ---
 
@@ -111,22 +119,18 @@ Der gesamte Stack laesst sich ohne Registry oder Quellcode weitergeben:
 
 ```bash
 # Einmalig bauen und exportieren
-docker compose build
-docker save autoflow-ausweisapp-sdk | gzip > ausweisapp-sdk.tar.gz
+docker compose -f docker/sdk/docker-compose.yml build
+docker save ausweisapp-sdk:latest | gzip > ausweisapp-sdk.tar.gz
 ```
 
 ```bash
 # Auf dem Zielrechner laden und starten
 docker load < ausweisapp-sdk.tar.gz
-docker compose up
+docker compose -f docker/sdk/docker-compose.yml up
 ```
-
-Den exakten Imagenamen nach dem Build mit `docker image ls` ermitteln.
 
 ---
 
 ## Portbelegung
 
-| Port (Host) | Beschreibung |
-|---|---|
-| `127.0.0.1:24727` | AusweisApp SDK — TR-03124-1-Endpunkt fuer Browser und Testframeworks |
+- `127.0.0.1:24727`: AusweisApp SDK — TR-03124-1-Endpunkt fuer Browser und Testframeworks

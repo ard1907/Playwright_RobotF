@@ -2,9 +2,10 @@ name: test-runtime
 
 services:
   ausweisapp-sdk:
+    image: ausweisapp-sdk:latest
     build:
       context: ../..
-      dockerfile: docker/test-runtime/ausweisapp.Dockerfile
+      dockerfile: docker/common/ausweisapp-sdk.Dockerfile
     ports:
       - "127.0.0.1:24727:24727"
     restart: "no"

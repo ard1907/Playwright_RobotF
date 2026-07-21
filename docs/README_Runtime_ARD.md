@@ -192,7 +192,7 @@ docker compose -f docker/test-runtime/docker-compose.yml build
 #### Schritt 2: Images in eine TAR-Datei exportieren
 
 ```bash
-docker image save -o docker/test-runtime/test-runtime-images.tar test-runtime-robot-runtime:latest test-runtime-ausweisapp-sdk:latest
+docker image save -o docker/test-runtime/test-runtime-images.tar test-runtime-robot-runtime:latest ausweisapp-sdk:latest
 ```
 
 #### Schritt 3: Diese Dateien an den Kollegen weitergeben
@@ -382,7 +382,7 @@ Die drei wichtigsten Befehle sind:
 ```bash
 docker compose -f docker/test-runtime/docker-compose.yml build
 docker compose -f docker/test-runtime/docker-compose.yml up --abort-on-container-exit
-docker image save -o docker/test-runtime/test-runtime-images.tar test-runtime-robot-runtime:latest test-runtime-ausweisapp-sdk:latest
+docker image save -o docker/test-runtime/test-runtime-images.tar test-runtime-robot-runtime:latest ausweisapp-sdk:latest
 ```
 
 ## Troubleshooting

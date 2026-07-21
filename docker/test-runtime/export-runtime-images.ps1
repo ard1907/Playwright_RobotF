@@ -12,7 +12,7 @@ if ($BuildFirst) {
 
 $images = @(
     "test-runtime-robot-runtime:latest",
-    "test-runtime-ausweisapp-sdk:latest"
+    "ausweisapp-sdk:latest"
 )
 
 foreach ($image in $images) {

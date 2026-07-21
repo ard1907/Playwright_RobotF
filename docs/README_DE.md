@@ -84,7 +84,8 @@ robotcode --profile default --profile ci-selfhosted robot
 
 ## Docker und CI/CD
 
-- `docker/sdk/docker-compose.yml` startet einen lokalen AusweisApp-SDK-Simulator auf Port `24727`.
+- `docker/common/ausweisapp-sdk.Dockerfile` definiert das gemeinsame Image `ausweisapp-sdk:latest`, das von allen Docker-Compose-Stacks verwendet wird.
+- `docker/sdk/docker-compose.yml` baut und startet den gemeinsamen AusweisApp-SDK-Simulator auf Port `24727`.
 - `docker/tests/docker-compose.yml` startet `ausweisapp-sdk` und den Non-Root-Container `robot-tests` fuer die CI/CD-Pipeline-Workflows und CI-nahe Testlaeufe.
 - `docker/test-runtime/docker-compose.yml` startet `ausweisapp-sdk` und `robot-runtime` fuer lokale Tests, portable Nutzung und die Weitergabe an Kollegen.
 - `docker/runner/docker-compose.yml` startet einen gepinnten Self-hosted-GitHub-Actions-Runner als Container.

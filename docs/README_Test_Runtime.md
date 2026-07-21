@@ -22,11 +22,14 @@ Die Runtime besteht aus zwei Containern:
 
 - `docker/test-runtime/docker-compose.yml`
 - `docker/test-runtime/Dockerfile`
-- `docker/test-runtime/ausweisapp.Dockerfile`
 - `docker/test-runtime/entrypoint.sh`
 - `docker/test-runtime/.env.example`
 - `docker/test-runtime/export-runtime-images.ps1`
 - `docker/test-runtime/load-runtime-images.ps1`
+
+Die AusweisApp-SDK-Definition liegt zentral unter `docker/common/ausweisapp-sdk.Dockerfile`.
+Dadurch verwenden `docker/sdk`, `docker/tests` und `docker/test-runtime` dasselbe Image
+`ausweisapp-sdk:latest`, statt jeweils ein eigenes Compose-spezifisches Image zu erzeugen.
 
 ## Voraussetzungen
 
@@ -180,8 +183,9 @@ Die einfachste Bereitstellung ohne sichtbaren Quellcode ist:
 Beispiel:
 
 ```bash
+docker compose -f docker/sdk/docker-compose.yml build
 docker compose -f docker/test-runtime/docker-compose.yml build
-docker image save -o docker/test-runtime/test-runtime-images.tar test-runtime-robot-runtime:latest test-runtime-ausweisapp-sdk:latest
+docker image save -o docker/test-runtime/test-runtime-images.tar test-runtime-robot-runtime:latest ausweisapp-sdk:latest
 ```
 
 Auf dem Zielrechner:
