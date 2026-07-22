@@ -11,6 +11,7 @@ services:
     restart: "no"
 
   robot-runtime:
+    image: test-runtime-robot:latest
     build:
       context: ../..
       dockerfile: docker/test-runtime/Dockerfile

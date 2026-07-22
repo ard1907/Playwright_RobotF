@@ -8,7 +8,7 @@ services:
     restart: "no"
 
   robot-runtime:
-    image: test-runtime-robot-runtime:latest
+    image: test-runtime-robot:latest
     depends_on:
       - ausweisapp-sdk
     network_mode: "service:ausweisapp-sdk"

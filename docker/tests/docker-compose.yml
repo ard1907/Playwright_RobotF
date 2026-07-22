@@ -13,11 +13,11 @@ services:
       dockerfile: docker/common/ausweisapp-sdk.Dockerfile
     ports:
       - "24727:24727"
-
     restart: "no"
     # restart: unless-stopped
 
   robot-tests:
+    image: robot-tests:latest
     build:
       context: ../..
       dockerfile: docker/tests/robot_tests.Dockerfile

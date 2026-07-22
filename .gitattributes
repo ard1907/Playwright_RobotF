@@ -1,0 +1,22 @@
+# Linux-Dateien
+*.sh         text eol=lf
+Dockerfile   text eol=lf
+*.yml        text eol=lf
+*.yaml       text eol=lf
+
+# Windows-Dateien
+*.bat        text eol=crlf
+*.cmd        text eol=crlf
+
+# Quellcode
+*.cs         text
+*.js         text
+*.ts         text
+*.json       text
+
+# Binärdateien nicht verändern
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.zip binary
